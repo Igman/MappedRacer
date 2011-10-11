@@ -12,3 +12,23 @@ function load()
 {
     dashcode.setupParts();
 }
+
+
+function loginbtnOnClickHandler(event)
+{
+        var views = document.getElementById('stackLayout');
+		var front = document.getElementById('new-race-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function createbtnOnClickHandler(event)
+{
+        var views = document.getElementById('stackLayout');
+		var front = document.getElementById('main-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}

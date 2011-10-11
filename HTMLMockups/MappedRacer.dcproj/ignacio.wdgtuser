@@ -12,8 +12,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {859, 401}}</string>
-			<string>{{0, 411}, {859, 384}}</string>
+			<string>{{0, 0}, {1286, 778}}</string>
+			<string>{{0, 788}, {1286, 263}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
@@ -25,7 +25,7 @@
 		<key>EmailToNotifyAddress</key>
 		<string>ignacio@ignacio.ca</string>
 		<key>Path</key>
-		<string>MappedRacer</string>
+		<string>Untitled 2</string>
 		<key>enableSimulation</key>
 		<true/>
 		<key>simulatedHost</key>
@@ -34,7 +34,11 @@
 	<key>Desktop</key>
 	<dict>
 		<key>Objects view last selections</key>
-		<array/>
+		<array>
+			<array>
+				<integer>0</integer>
+			</array>
+		</array>
 	</dict>
 	<key>Last selected product type</key>
 	<string>MobileWeb</string>
@@ -44,12 +48,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {244, 816}}</string>
-			<string>{{245, 0}, {860, 816}}</string>
+			<string>{{0, 0}, {244, 1072}}</string>
+			<string>{{245, 0}, {1287, 1072}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>352 281 1104 858 0 0 2560 1418 </string>
+	<string>508 127 1531 1114 0 0 2560 1418 </string>
 	<key>MobileWeb</key>
 	<dict>
 		<key>Objects view expanded items</key>
@@ -73,20 +77,202 @@
 			</array>
 			<array>
 				<integer>0</integer>
-				<integer>1</integer>
-			</array>
-			<array>
-				<integer>0</integer>
-				<integer>1</integer>
-				<integer>0</integer>
-			</array>
-			<array>
 				<integer>0</integer>
 				<integer>0</integer>
 				<integer>1</integer>
 				<integer>0</integer>
 			</array>
 			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>4</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>5</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>4</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>4</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>4</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>3</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>3</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>3</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>3</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>7</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>7</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>7</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>6</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>6</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
 				<integer>0</integer>
 				<integer>0</integer>
 				<integer>2</integer>
@@ -94,16 +280,93 @@
 			<array>
 				<integer>0</integer>
 				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>2</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
 				<integer>2</integer>
 				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>3</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>6</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>9</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>9</integer>
+				<integer>0</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>9</integer>
+				<integer>1</integer>
+			</array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>2</integer>
+				<integer>9</integer>
+				<integer>2</integer>
 			</array>
 		</array>
 		<key>Objects view last selections</key>
 		<array/>
-		<key>Opened Steps</key>
+		<key>Visible StackLayout Views</key>
 		<array>
-			<integer>0</integer>
-			<integer>2</integer>
+			<string>view1</string>
+			<string>new-race-view</string>
 		</array>
 	</dict>
 	<key>NavigatorSplitViewGeometry</key>
@@ -116,8 +379,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {246, 441}}</string>
-			<string>{{0, 451}, {246, 344}}</string>
+			<string>{{0, 0}, {246, 589}}</string>
+			<string>{{0, 599}, {246, 452}}</string>
 		</array>
 	</dict>
 </dict>
