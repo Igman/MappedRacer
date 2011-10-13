@@ -8,6 +8,8 @@
 		<dict>
 			<key>AppIconImageSettings</key>
 			<string>image-theme: 1; image-shape: 0; image-opacity: 1.00; image-top-color: 1,1,1; image-bottom-color: 0.925490201,0.925490201,0.925490201; image-radius: 12,12,12,12; image-border-color: 0.670000017,0.670000017,0.670000017;</string>
+			<key>CYBackwardCompatibleExport</key>
+			<false/>
 			<key>CYShineVersion</key>
 			<integer>2</integer>
 			<key>MainCSS</key>
@@ -88,6 +90,8 @@
 		<dict>
 			<key>AppIconImageSettings</key>
 			<string>image-theme: 1; image-shape: 0; image-opacity: 1.00; image-top-color: 1,1,1; image-bottom-color: 0.925490201,0.925490201,0.925490201; image-radius: 12,12,12,12; image-border-color: 0.670000017,0.670000017,0.670000017;</string>
+			<key>CYBackwardCompatibleExport</key>
+			<false/>
 			<key>CYShineVersion</key>
 			<integer>2</integer>
 			<key>MainCSS</key>

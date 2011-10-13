@@ -7,10 +7,7 @@
 var dashcodePartSpecs = {
     "add-waypoint": { "text": "Add Waypoint:", "view": "DC.Text" },
     "button": { "initialHeight": 31, "initialWidth": 150, "leftImageWidth": 5, "rightImageWidth": 5, "text": "Checkin", "view": "DC.PushButton" },
-    "button1": { "initialHeight": 28, "initialWidth": 112, "leftImageWidth": 5, "rightImageWidth": 5, "text": "Picture", "view": "DC.PushButton" },
-    "button2": { "initialHeight": 29, "initialWidth": 131, "leftImageWidth": 5, "rightImageWidth": 5, "text": "Voice comment", "view": "DC.PushButton" },
     "button3": { "initialHeight": 56, "initialWidth": 300, "leftImageWidth": 5, "onclick": "createbtnOnClickHandler", "rightImageWidth": 5, "text": "Create Race", "view": "DC.PushButton" },
-    "button4": { "initialHeight": 30, "initialWidth": 262, "leftImageWidth": 5, "rightImageWidth": 5, "text": "Comment", "view": "DC.PushButton" },
     "create-race": { "text": "Create Race", "view": "DC.Text" },
     "destination": { "text": "Destination:", "view": "DC.Text" },
     "distance-text": { "text": "Distance to destination: 10 km", "view": "DC.Text" },
@@ -27,4 +24,5 @@ var dashcodePartSpecs = {
     "text2": { "text": "This Race is really awesome! #mappedracer", "view": "DC.Text" },
     "text3": { "text": "Start Time:", "view": "DC.Text" }
 };
+
 
