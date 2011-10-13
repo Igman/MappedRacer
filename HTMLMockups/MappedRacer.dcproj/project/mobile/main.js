@@ -14,20 +14,79 @@ function load()
 }
 
 
-function loginbtnOnClickHandler(event)
+function loginclickhandler(event)
 {
         var views = document.getElementById('stackLayout');
-		var front = document.getElementById('new-race-view');
+		var front = document.getElementById('site-view');
 		if (views && views.object && front) {
 			views.object.setCurrentView(front, true);
 		}
 }
 
 
-function createbtnOnClickHandler(event)
+function logouthandler(event)
 {
         var views = document.getElementById('stackLayout');
-		var front = document.getElementById('main-view');
+		var front = document.getElementById('login-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+}}
+
+
+function racebuttonhandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('race-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function sendcheckinhandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('race-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function checkinbuttonhandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('checkin-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function createracehandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('home-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function newracebuttonhandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('home-view');
+		if (views && views.object && front) {
+			views.object.setCurrentView(front, true);
+		}
+}
+
+
+function footerhandler(event)
+{
+        var views = document.getElementById('application-layout');
+		var front = document.getElementById('home-view');
 		if (views && views.object && front) {
 			views.object.setCurrentView(front, true);
 		}
