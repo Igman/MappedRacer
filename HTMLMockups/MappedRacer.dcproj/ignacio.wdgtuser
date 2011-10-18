@@ -12,8 +12,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1037, 402}}</string>
-			<string>{{0, 412}, {1037, 715}}</string>
+			<string>{{0, 0}, {1037, 994}}</string>
+			<string>{{0, 1004}, {1037, 123}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
@@ -692,12 +692,12 @@
 		<array/>
 		<key>Visible StackLayout Views</key>
 		<array>
-			<string>site-view</string>
+			<string>Home</string>
 			<string>view2</string>
 			<string>home</string>
 			<string>view1</string>
 			<string>checkin-view</string>
-			<string>Home</string>
+			<string>site-view</string>
 		</array>
 	</dict>
 	<key>NavigatorSplitViewGeometry</key>
