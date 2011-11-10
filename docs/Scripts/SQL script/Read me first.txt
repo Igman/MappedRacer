@@ -1,0 +1,9 @@
+Instructions to install DB_SCHEMA
+
+1. Go to phpMyAdmin
+2. Go to SQL Console
+3. Create SCHEMA
+4. Go to Schema Page
+5. Go to SQL Console
+6. Copy and paste in it every block, one by one.
+7. DONE!
