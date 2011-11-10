@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>MappedRacer</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.6">
+    <meta name="apple-mobile-web-app-capable" content="YES">
+    <link rel="apple-touch-icon" href="Images/WebClipIcon.png">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" type="text/css" href="../Parts/Transitions.css">
+    <script type="text/javascript" src="Parts/parts.js" charset="utf-8"></script>
+    <script type="text/javascript" src="main.js" charset="utf-8"></script>
+</head>
+<body onload="load();">
+    <div id="stackLayout" apple-part="com.apple.Dashcode.part.StackLayout"><div id="login-view" apple-part-locked="true"><div id="content">
+                <div id="welcome-box" apple-part="com.apple.Dashcode.part.roundedbox">
+                    <div id="welcome-text" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                </div>
+                <div apple-part="com.apple.Dashcode.part.imageLayout" id="twitter-login" apple-group="image" onclick="loginclickhandler(event)"><img class="apple-hidden" src="../Images/sign-in-with-twitter-d.png" id="inner_image" apple-group="image"></div>
+            </div></div><div id="site-view" apple-part-locked="true">
+            <div id="main-browser" apple-part="com.apple.Dashcode.part.browser">
+                <div apple-part="com.apple.Dashcode.part.header" apple-part-locked="true" apple-style="image-theme: 1; image-shape: 3; image-button-type: 3; image-opacity: 1.00; image-top-color: 0.592156887,0.65882355,0.741176486,1; image-bottom-color: 0.411764711,0.513725519,0.635294139,1; image-radius: 0,0,0,0; image-border: 0; image-border-color: 0.529399991,0.529399991,0.529399991,1; image-border-width: 1; shine-on: 1; shine-strength: 0.08; shine-alpha-level: 0.00; shine-height: 0.50; glass-arc-height: 0.00; shadow-include-shadow: 0;" id="header" apple-group="div">
+                    <div apple-part="com.apple.Dashcode.part.gobackbutton" apple-part-locked="true" class="apple-no-children dashcode-header-backbutton back-button_template" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 11; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;" apple-template="true" id="back-button"></div>
+                </div>
+                <div apple-part="com.apple.Dashcode.part.StackLayout" apple-part-locked="true" id="application-layout"><div id="home-view" apple-part-locked="true">
+                        <div id="columnLayout" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout">
+                            <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 22%; " id="div"><div id="image-column" apple-part-locked="true" apple-group="columnLayout">
+                                    <div apple-part="com.apple.Dashcode.part.imageLayout" id="profile-pic" apple-group="image"><img class="apple-hidden" src="../Images/profile.jpeg" id="inner_image1" apple-group="image"></div>
+                                </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 78%; " id="div1"><div id="name-column" apple-part-locked="true" apple-group="columnLayout">
+                                    <div id="name" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                </div></div></div>
+                        <div id="race-box" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <ul id="active-races" apple-part="com.apple.Dashcode.part.edgeToEdgeList" class="">
+                                <li id="listRowTemplate" apple-template="true" class="listRowTemplate_template first" style="">
+                                    <div id="label" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children label_template" apple-text-overflow="ellipsis" onclick="racebuttonhandler(event)"></div>
+                                    <div id="arrow" apple-part="com.apple.Dashcode.part.box" class="arrow_template">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="button" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                        <div id="logout-text" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;" onclick="logouthandler(event)"></div>
+                    </div><div id="race-view" apple-part-locked="true">
+                        <div id="box" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <div id="checkin-button" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                            <div apple-part="com.apple.Dashcode.part.imageLayout" id="map-image" apple-group="image"><img class="apple-hidden" src="../Images/Screen%20Shot%202011-10-09%20at%2011.55.39%20PM.png" id="inner_image2" apple-group="image"></div>
+                            <div id="distance-text" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                        </div>
+                        <div id="box1" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <div id="first-player" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout1">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div8"><div id="profile-column" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div id="profile-info" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout2">
+                                            <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 33.56%; " id="div14"><div id="column8" apple-part-locked="true" apple-group="columnLayout2">
+                                                    <div apple-part="com.apple.Dashcode.part.imageLayout" id="image1" apple-group="image1"><img class="apple-hidden" src="../Images/profile.jpeg" id="inner_image5" apple-group="image1"></div>
+                                                </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 66.44%; " id="div15"><div id="column9" apple-part-locked="true" apple-group="columnLayout2">
+                                                    <div id="text" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                                </div></div></div>
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div9"><div id="column3" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div id="text2" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                    </div></div></div>
+                            <div id="second-player" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout2">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div10"><div id="column4" apple-part-locked="true" apple-group="columnLayout2">
+                                        <div id="columnLayout1" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout1">
+                                            <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 35.61%; " id="div12"><div id="column6" apple-part-locked="true" apple-group="columnLayout1">
+                                                    <div apple-part="com.apple.Dashcode.part.imageLayout" id="image2" apple-group="image2"><img class="apple-hidden" src="../Images/homer.jpeg" id="inner_image6" apple-group="image2"></div>
+                                                </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 64.39%; " id="div13"><div id="column7" apple-part-locked="true" apple-group="columnLayout1">
+                                                    <div id="text3" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                                </div></div></div>
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div11"><div id="column5" apple-part-locked="true" apple-group="columnLayout2">
+                                        <div id="text4" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                    </div></div></div>
+                        </div>
+                        <div id="tweet-box" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <div id="tweet-header" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                            <textarea id="tweet-imput" apple-part="com.apple.Dashcode.part.textarea"></textarea>
+                            <div id="button1" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                        </div>
+                        <div id="feed-box" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <div id="fead-header" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                            <div id="live-feed" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout1">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 17%; " id="div2"><div id="profile-pix" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div apple-part="com.apple.Dashcode.part.imageLayout" id="image" apple-group="image"><img class="apple-hidden" src="../Images/profile.jpeg" id="inner_image3" apple-group="image"></div>
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 83%; " id="div3"><div id="tweets" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div id="text1" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                    </div></div></div>
+                        </div>
+                    </div><div id="new-race-view" apple-part-locked="true">
+                        <div id="map-box" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <input id="name-field" type="text" name="" value="Name" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield">
+                            <input id="destination" type="search" value="" placeholder="Destination" results="10" incremental="incremental" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.searchfield">
+                            <div apple-part="com.apple.Dashcode.part.imageLayout" id="map-image1" apple-group="image1"><img class="apple-hidden" src="../Images/Screen%20Shot%202011-10-09%20at%2011.55.39%20PM.png" id="inner_image4" apple-group="image1"></div>
+                            <div id="point-buttons" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout1">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div4"><div id="column" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div id="add-items" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div5"><div id="column1" apple-part-locked="true" apple-group="columnLayout1">
+                                        <div id="add-date" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                                    </div></div></div>
+                            <input id="add-friends" type="search" value="" placeholder="Add Friends" results="10" incremental="incremental" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.searchfield">
+                            <div id="start-layout" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout1">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div6"><div id="date-column" apple-part-locked="true" apple-group="columnLayout1">
+                                        <input id="date" type="text" name="" value="Start Date" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield">
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout1" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div7"><div id="time-column" apple-part-locked="true" apple-group="columnLayout1">
+                                        <input id="time" type="text" name="" value="Start Time" class="apple-textfield apple-no-children" apple-part="com.apple.Dashcode.part.textfield">
+                                    </div></div></div>
+                        </div>
+                        <div id="create-button" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                    </div><div id="checkin-view" apple-part-locked="true">
+                        <div id="checkin-container" apple-part="com.apple.Dashcode.part.roundedbox">
+                            <div apple-part="com.apple.Dashcode.part.imageLayout" id="image3" apple-group="image3"><img class="apple-hidden" src="../Images/Screen%20Shot%202011-10-09%20at%2011.55.39%20PM.png" id="inner_image7" apple-group="image3"></div>
+                            <textarea id="message-area" apple-part="com.apple.Dashcode.part.textarea"></textarea>
+                            <div id="columnLayout2" apple-part="com.apple.Dashcode.part.ColumnLayout" apple-group="columnLayout2">
+                                <div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div17"><div id="column2" apple-part-locked="true" apple-group="columnLayout2">
+                                        <div id="twitter-check" apple-part="com.apple.Dashcode.part.checkboxbutton" apple-group="checkbox">
+                                            <input type="checkbox" name="Checkbox" checked="checked" apple-part="com.apple.Dashcode.part.input" id="input" apple-group="checkbox">
+                                            <div id="div16">Post to Twitter</div>
+                                        </div>
+                                    </div></div><div apple-part-locked="true" class="apple-collapse" apple-group="columnLayout2" style="position: relative; display: table-cell; vertical-align: top; height: auto; width: 50%; " id="div18"><div id="column10" apple-part-locked="true" apple-group="columnLayout2">
+                                        <div id="text5" apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" apple-style="part-height-dependent: true;part-width-dependent: true;"></div>
+                                    </div></div></div>
+                        </div>
+                        <div id="send-checkin-button" apple-part="com.apple.Dashcode.part.pushbutton" class="apple-no-children" apple-text-overflow="ellipsis" apple-style="image-theme: 0; image-shape: 3; image-button-type: 0; image-opacity: 1.00; image-top-color: 0.290196091,0.423529416,0.607843161,1; image-bottom-color: 1,1,1,1; image-radius: 5,5,5,5; image-border: 1; image-border-color: 0,0,0,0.2; image-border-width: 1; shine-on: 1; shine-strength: 0.17; shine-alpha-level: 0.04; shine-height: 0.50; glass-arc-height: 0.00; embossed-on: 1; embossed-depth: 1; embossed-shadow: 0.68; embossed-highlight: 0.3; shadow-include-shadow: 0;"></div>
+                    </div></div>
+            </div>
+        </div></div>
+    <div apple-part="com.apple.Dashcode.part.webtext" class="apple-text apple-no-children" apple-default-image-visibility="hidden" apple-text-overflow="ellipsis" id="footer" apple-group="text" apple-style="part-height-dependent: true;" onclick="footerhandler(event)"></div>
+</body>
+</html>
