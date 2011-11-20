@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/apache-tomcat-7.0.22/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Masterfod/workspace/MappedRacer/gwt-mobile-webkit-geolocation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
