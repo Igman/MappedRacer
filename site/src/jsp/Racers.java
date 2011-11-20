@@ -1,4 +1,5 @@
-package Beans;
+package jsp;
+import java.sql.Time;
 import java.util.*;
 
 /**********************************************
@@ -14,7 +15,7 @@ public class Racers{
 	private Time totalTime;
 	private int place;
 	
-	public Race(int raceId, int userId, boolean attend, Time totalTime, int place){
+	public Racers(int raceId, int userId, boolean attend, Time totalTime, int place){
 			this.raceId = raceId;
 			this.userId = userId;
 			this.attend = attend;

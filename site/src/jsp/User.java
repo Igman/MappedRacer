@@ -1,4 +1,4 @@
-package Beans;
+package jsp;
 import java.util.*;
 
 /***************************************
@@ -11,7 +11,7 @@ public class User{
 	private String username;
 	
 	public User(String username){
-		this.username = username
+		this.username = username;
 		//There is no int, since this variable is auto-incremented in the DB
 	}
 	

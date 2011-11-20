@@ -1,4 +1,4 @@
-package Beans;
+package jsp;
 import java.util.*;
 
 /**********************************************
@@ -11,7 +11,7 @@ public class CheckIn{
 	private int raceId;
 	private String picture;
 	private String comment;
-	private Strig geoLocation;
+	private String geoLocation;
 	
 	public CheckIn(int raceId, String picture, String comment, String geoLocation){
 			this.raceId = raceId;
