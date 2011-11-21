@@ -1,5 +1,4 @@
 package Beans;
-import java.util.*;
 
 /***************************************
  * User class that contains values     *
