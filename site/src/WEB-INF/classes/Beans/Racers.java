@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.*;
 
 /**********************************************
  * Racers class that contains all attributes * a racer may contain and is mapped
@@ -53,9 +52,9 @@ public class Racers {
 		try {
 			ps = c.prepareStatement("UPDATE Racer SET score = ?, WHERE raceId = ?, userId = ?");
 
-			ps.setInt(1, raceId);
-			ps.setInt(2, userId);
-			ps.setInt(3, score);
+			ps.setInt(2, raceId);
+			ps.setInt(3, userId);
+			ps.setInt(1, score);
 
 			int rowCount = ps.executeUpdate();
 			if (rowCount == 0)
