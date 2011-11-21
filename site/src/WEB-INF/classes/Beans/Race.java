@@ -1,4 +1,4 @@
-package jsp;
+package Beans;
 import java.sql.Time;
 import java.util.*;
 

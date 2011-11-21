@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="site/src"/>
+	<classpathentry kind="src" path="site/src/WEB-INF/classes"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Program Files/apache-tomcat-7.0.22/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>

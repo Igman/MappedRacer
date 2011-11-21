@@ -1,4 +1,4 @@
-package jsp;
+package Beans;
 import java.util.*;
 
 /***************************************
