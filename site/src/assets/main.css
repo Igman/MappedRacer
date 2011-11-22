@@ -8,7 +8,7 @@ body {
     margin: 0px;
     min-height: 356px;
     font-family: Helvetica;
-    background-image: url(../Images/backgroundStripes.png);
+    background-image: url(../images/backgroundStripes.png);
     background-repeat: repeat repeat;
 }
 
@@ -162,7 +162,7 @@ body {
     border-right-width: 1px;
     border-top-width: 0px;
     border-bottom-width: 0px;
-    -webkit-border-image: url(Parts/Images/header.png) 0 1 0 1 stretch stretch;
+    -webkit-border-image: url(..parts/images/header.png) 0 1 0 1 stretch stretch;
     margin-left: 0px;
     width: auto;
     margin-right: 0px;
@@ -267,12 +267,12 @@ body {
     height: 13px;
     right: 11px;
     top: 17px;
-    background-image: url(../Images/chevron.png);
+    background-image: url(../parts/images/chevron.png);
     background-repeat: no-repeat no-repeat;
 }
 
 .listRowTemplate_template .DC_selectionBG {
-    background-image: url(../Images/selectedRowiPhone.png);
+    background-image: url(../parts/images/selectedRowiPhone.png);
     background-attachment: initial;
     background-origin: initial;
     background-clip: initial;
@@ -285,7 +285,7 @@ body {
 }
 
 .listRowTemplate_template.selected .arrow_template {
-    background-image: url(../Images/chevron_white.png);
+    background-image: url(../parts/images/chevron_white.png);
 }
 
 #race-box {
