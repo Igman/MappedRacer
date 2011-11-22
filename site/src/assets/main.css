@@ -8,7 +8,7 @@ body {
     margin: 0px;
     min-height: 356px;
     font-family: Helvetica;
-    background-image: url(../Images/backgroundStripes.png);
+    background-image: url(images/backgroundStripes.png);
     background-repeat: repeat repeat;
 }
 
@@ -162,7 +162,7 @@ body {
     border-right-width: 1px;
     border-top-width: 0px;
     border-bottom-width: 0px;
-    -webkit-border-image: url(..parts/Images/header.png) 0 1 0 1 stretch stretch;
+    -webkit-border-image: url(parts/Images/header.png) 0 1 0 1 stretch stretch;
     margin-left: 0px;
     width: auto;
     margin-right: 0px;
