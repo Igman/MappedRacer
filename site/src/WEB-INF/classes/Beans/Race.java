@@ -26,7 +26,60 @@ public class Race {
 	private int creatorId;
 
 	private Connection c;
-
+	
+	/**
+	 * Constructor that allows you to create the race model without associating
+	 * it with a single race.
+	 */
+	public Race() {
+		
+	}
+	
+	/**
+	 * This function will allow its caller to create a new race in the database and get
+	 * back the race id for future reference.
+	 * 
+	 * @param name			The name of the race.
+	 * @param endPoint		A string representing the end location of the race.
+	 * @param startTime		The start date and time.
+	 * @param createDate	The the creation date of the race.
+	 * @param creatorId		The user id of the user who is creating the race.
+	 * @return				The id of the race that was just created.
+	 */
+	public int createRace(String name, String endPoint, Date startTime, Date createDate, int creatorId){
+		PreparedStatement ps;
+		
+		try {
+			// Adds the new race to the database
+			ps = c.prepareStatement("INSERT INTO Race VALUES (?,?,?,?,?)");
+			
+			ps.setInt(1, creatorId);
+			ps.setString(2, name);
+			ps.setString(3, endPoint);
+			ps.setDate(4, new java.sql.Date(startTime.getTime()));
+			ps.setDate(5, new java.sql.Date(createDate.getTime()));
+			
+			c.commit();
+			
+			//TODO how to get race id out?!
+			// Gets the raceId to return
+			ps = c.prepareStatement("SELECT RaceId FROM Race r ");
+			
+			ResultSet rs = ps.executeQuery();
+			ps.close();
+			
+			rs.next();
+			int raceId = rs.getInt(1);
+			
+			return raceId;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	
 	public Race(String name, String endPoint, Date createDate, Time startTime,
 			Date startDate, int creatorId) {
 		this.name = name;
