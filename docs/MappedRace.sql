@@ -3,17 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 16, 2011 at 07:01 PM
+-- Generation Time: Nov 23, 2011 at 07:30 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `MappedRace`
@@ -40,6 +34,51 @@ CREATE TABLE IF NOT EXISTS `CheckIn` (
 -- Dumping data for table `CheckIn`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Item`
+--
+
+DROP TABLE IF EXISTS `Item`;
+CREATE TABLE IF NOT EXISTS `Item` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TypeID` int(11) DEFAULT NULL,
+  `Status` tinyint(1) DEFAULT NULL,
+  `ValueWeight` int(11) DEFAULT NULL,
+  `Geolocation` varchar(255) DEFAULT NULL,
+  `RaceID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `RaceID` (`RaceID`),
+  KEY `TypeID` (`TypeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `Item`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ItemType`
+--
+
+DROP TABLE IF EXISTS `ItemType`;
+CREATE TABLE IF NOT EXISTS `ItemType` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TypeName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `ItemType`
+--
+
+INSERT INTO `ItemType` (`ID`, `TypeName`) VALUES(1, 'FinalDestination');
+INSERT INTO `ItemType` (`ID`, `TypeName`) VALUES(2, 'Positive');
+INSERT INTO `ItemType` (`ID`, `TypeName`) VALUES(3, 'Negative');
 
 -- --------------------------------------------------------
 
@@ -113,17 +152,34 @@ CREATE TABLE IF NOT EXISTS `User` (
 -- Constraints for table `CheckIn`
 --
 ALTER TABLE `CheckIn`
-  ADD CONSTRAINT `CheckIn_ibfk_1` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`);
+  ADD CONSTRAINT `CheckIn_ibfk_3` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `CheckIn_ibfk_1` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `CheckIn_ibfk_2` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`);
+
+--
+-- Constraints for table `Item`
+--
+ALTER TABLE `Item`
+  ADD CONSTRAINT `Item_ibfk_4` FOREIGN KEY (`TypeID`) REFERENCES `ItemType` (`ID`),
+  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `Item_ibfk_2` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `Item_ibfk_3` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`);
 
 --
 -- Constraints for table `Race`
 --
 ALTER TABLE `Race`
-  ADD CONSTRAINT `Race_ibfk_1` FOREIGN KEY (`CreatorID`) REFERENCES `User` (`ID`);
+  ADD CONSTRAINT `Race_ibfk_3` FOREIGN KEY (`CreatorID`) REFERENCES `User` (`ID`),
+  ADD CONSTRAINT `Race_ibfk_1` FOREIGN KEY (`CreatorID`) REFERENCES `User` (`ID`),
+  ADD CONSTRAINT `Race_ibfk_2` FOREIGN KEY (`CreatorID`) REFERENCES `User` (`ID`);
 
 --
 -- Constraints for table `Racers`
 --
 ALTER TABLE `Racers`
   ADD CONSTRAINT `Racers_ibfk_1` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
-  ADD CONSTRAINT `Racers_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`);
+  ADD CONSTRAINT `Racers_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`),
+  ADD CONSTRAINT `Racers_ibfk_3` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `Racers_ibfk_4` FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`),
+  ADD CONSTRAINT `Racers_ibfk_5` FOREIGN KEY (`RaceID`) REFERENCES `Race` (`ID`),
+  ADD CONSTRAINT `Racers_ibfk_6` FOREIGN KEY (`UserID`) REFERENCES `User` (`ID`);
