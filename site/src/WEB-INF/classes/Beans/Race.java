@@ -63,7 +63,7 @@ public class Race {
 			
 			//TODO how to get race id out?!
 			// Gets the raceId to return
-			ps = c.prepareStatement("SELECT RaceId FROM Race r ");
+			ps = c.prepareStatement("SELECT MAX(RaceId) FROM Race");
 			
 			ResultSet rs = ps.executeQuery();
 			ps.close();

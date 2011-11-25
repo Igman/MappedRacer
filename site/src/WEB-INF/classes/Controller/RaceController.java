@@ -4,6 +4,7 @@ import java.io.*;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -56,9 +57,9 @@ public class RaceController extends HttpServlet {
 	}
 	
 	/**
-	 * This function will handle the request that initializes the race that the user is
+	 * This function will handle the request that initialises the race that the user is
 	 * setting up. At this stage the user will have set the date, name, etc. It will
-	 * initialize the representation of the race in the DB.
+	 * Initialise the representation of the race in the DB.
 	 * 
 	 * @param request		Request obj containing parameters passed and session returned.
 	 * @param response
@@ -81,20 +82,38 @@ public class RaceController extends HttpServlet {
 		String endPoint = request.getParameter("end_point");
 		String name = request.getParameter("name");
 		Date createDate = new Date();
+		ArrayList items = (ArrayList)request.getAttribute("items");
+		ArrayList racers = (ArrayList)request.getAttribute("racers");
 		
 		// Calls the model to create the race and returns the race id
 		int raceID = race.createRace(name, endPoint, startTime, createDate, userID);
 		
-		if (raceID != -1) {
-			// Adds the race id to the current session to be passed back.
-			request.setAttribute("race_id", raceID);
+		boolean successful = addRacers(racers, raceID);
+		boolean successful2 = addItems(items, raceID);
+		
+		if (raceID != -1 && successful) {
 			// Determines the next page.
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSPs/add_items.jsp");
 			dispatcher.forward(request, response);
+			
+			
 		} else {
 			error("Race was unsuccessfully created.", request, response);
+			return;
 		}
-		
+			
+	}
+	
+	
+	private boolean addItems(ArrayList items) {
+		// Take list add it to the DB
+		for (int k = 0; k < items.size(); k++) {
+			addItemitems[k];
+		}
+	}
+	
+	private boolean addRacers(ArrayList items) {
+		// Take list add new racers to the db
 	}
 	
 	
@@ -124,31 +143,14 @@ public class RaceController extends HttpServlet {
 		}
 	}
 	
-	// TODO if this is is done all on the same page how will the request work?
-	/**
-	 * The user will be able to add an item with a specific point value and add it to the racer
-	 * created.
-	 * 
-	 * @param request 		Request obj containing parameters passed and session returned.
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	private void addItem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void addItem(ArrayList items) {
 		int points = Integer.parseInt(request.getParameter("points"));
 		String location = request.getParameter("location");
 		
-		//TODO need to add sql in Race to perform this operation where it adds this item to race.
-		// adds the item to the map in the db
+		
 		boolean successful = race.addItem(points, location);
 		
-		if (successful) {
-			// Determines the next page.
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSPs/add_racers.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			error("Item was not successfully added to map.", request, response);
-		}
+		
 	}
 	
 	/**
@@ -172,10 +174,7 @@ public class RaceController extends HttpServlet {
 			dispatcher.forward(request, response);
 		} else {
 			error("Could not end the race.", request, response);
-		}
-		
-		
-		
+		}	
 	}
 	
 	//TODO: Check in has to determine where it is and if it is at end or at item.
@@ -250,5 +249,17 @@ public class RaceController extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSPs/error.jsp");
 		dispatcher.forward(request, response);
 	}
-						
+	
+	
+	private class Item {
+		public String location;
+		public int value;
+		public int type;
+	}
+	
+	private class Racer {
+		public int 
+	}
 }
+
+
