@@ -12,8 +12,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {1037, 994}}</string>
-			<string>{{0, 1004}, {1037, 123}}</string>
+			<string>{{0, 0}, {1037, 342}}</string>
+			<string>{{0, 352}, {1037, 403}}</string>
 		</array>
 	</dict>
 	<key>ContentViewType</key>
@@ -50,12 +50,12 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {244, 1148}}</string>
-			<string>{{245, 0}, {1038, 1148}}</string>
+			<string>{{0, 0}, {244, 776}}</string>
+			<string>{{245, 0}, {1038, 776}}</string>
 		</array>
 	</dict>
 	<key>MainWindowFrame</key>
-	<string>317 169 1282 1190 0 0 2560 1418 </string>
+	<string>61 0 1282 878 0 0 1440 878 </string>
 	<key>MobileWeb</key>
 	<dict>
 		<key>Objects view expanded items</key>
@@ -689,7 +689,16 @@
 			</array>
 		</array>
 		<key>Objects view last selections</key>
-		<array/>
+		<array>
+			<array>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+				<integer>0</integer>
+			</array>
+		</array>
 		<key>Visible StackLayout Views</key>
 		<array>
 			<string>Home</string>
@@ -710,8 +719,8 @@
 		<integer>0</integer>
 		<key>sizes</key>
 		<array>
-			<string>{{0, 0}, {246, 1001}}</string>
-			<string>{{0, 1011}, {246, 116}}</string>
+			<string>{{0, 0}, {246, 422}}</string>
+			<string>{{0, 432}, {246, 323}}</string>
 		</array>
 	</dict>
 </dict>

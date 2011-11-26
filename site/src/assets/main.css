@@ -267,12 +267,12 @@ body {
     height: 13px;
     right: 11px;
     top: 17px;
-    background-image: url(../parts/Images/chevron.png);
+    background-image: url(parts/Images/chevron.png);
     background-repeat: no-repeat no-repeat;
 }
 
 .listRowTemplate_template .DC_selectionBG {
-    background-image: url(../parts/Images/selectedRowiPhone.png);
+    background-image: url(parts/Images/selectedRowiPhone.png);
     background-attachment: initial;
     background-origin: initial;
     background-clip: initial;
@@ -285,7 +285,7 @@ body {
 }
 
 .listRowTemplate_template.selected .arrow_template {
-    background-image: url(../parts/Images/chevron_white.png);
+    background-image: url(parts/Images/chevron_white.png);
 }
 
 #race-box {
