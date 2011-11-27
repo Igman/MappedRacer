@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="site/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/Masterfod/workspace/MappedRacer/json-org.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/apache-tomcat-7.0.22/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="site/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="site/lib/json-org.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
