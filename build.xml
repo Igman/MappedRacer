@@ -1,74 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="MappedRacer" default="default" basedir=".">
-    <description>Builds, tests, and runs the project MappedRacer.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
+<project name="Mapped Racer" default="package">
+	
+	<property name="site.dir" value="${basedir}/site"/>
+	<property name="web.dir" value="${site.dir}/web"/>
+	<property name="src.dir" value="${site.dir}/src"/>
+	<property name="lib.dir" value="${site.dir}/lib"/>
+	<property name="deploy.dir" value="${basedir}/deploy"/>
+	<property name="war.name" value="MappedRacer.war"/>
 
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
+	<target name="clean">
+		<delete dir="${deploy.dir}"/>
+		<delete file="${war.name}"/>
+	</target>
 
-    (Targets beginning with '-' are not intended to be called on their own.)
+	<target name="prepare" depends="clean">
+		<mkdir dir="${deploy.dir}"/>
+		<copy todir="${deploy.dir}">
+			<fileset dir="${web.dir}"/>
+		</copy>
+		<mkdir dir="${deploy.dir}/WEB-INF/lib"/>
+		<copy todir="${deploy.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}"/>
+		</copy>
+		<mkdir dir="${deploy.dir}/WEB-INF/classes"/>
+	</target>
+	
 
-    Example of inserting an obfuscator after compilation could look like this:
+		
+	<target name="compile">
+		<mkdir dir="${deploy.dir}/WEB-INF/classes"/>
+		<javac srcdir="${src.dir}" destdir="${deploy.dir}/WEB-INF/classes">
+			<classpath refid="compile.classpath"/>
+		</javac>	
+		<copy  todir="${deploy.dir}/WEB-INF/classes">
+	      <fileset dir="${src.dir}" excludes="**/*.java"/>
+	    </copy>
+	</target>
+	
+	<target name="package" depends="clean,prepare,compile">
+		<jar jarfile="MappedRacer.war" basedir="${deploy.dir}"/>
+	</target>
 
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
-
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
-
-
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
-
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar-with-manifest:    JAR building (if you are using a manifest)
-      -do-jar-without-manifest: JAR building (if you are not using a manifest)
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="MappedRacer-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
-    -->
 </project>
