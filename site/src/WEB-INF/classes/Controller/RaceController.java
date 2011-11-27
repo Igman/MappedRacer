@@ -13,11 +13,15 @@ import java.util.Set;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+
+// Retrieved jar from http://www.docjar.com/jar_detail/json-org.jar.html
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import Beans.Race;
-import Beans.Item;
-import Beans.Racer;
+
 
 /**
  * This class is responsible for handling any requests that directly relate to
@@ -31,6 +35,7 @@ public class RaceController extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StringBuffer buffer = new StringBuffer();
 		String line = null;
+		JSONObject jsonObject;
 		
 		try {
 			BufferedReader reader = request.getReader();
@@ -42,24 +47,15 @@ public class RaceController extends HttpServlet {
 		}
 		
 		try {
-			JSONObject jsonObject = new JSONObject(buffer.toString());
-		} catch (ParseException e) {
-			
+			jsonObject = new JSONObject(buffer.toString());
+		} catch (JSONException e) {
+			System.err.println("Error parsing JSON request string");
+			throw new IOException("Error parsing JSON request string");
 		}
 		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-		    BufferedReader reader = request.getReader();
-		    while ((line = reader.readLine()) != null)
-		      jb.append(line);
-		} catch (Exception e) { //report an error }
-			try {
-				JSONObject jsonObject = new JSONObject(jb.toString());
-		  } catch (ParseException e) {
-		    // crash and burn
-		    throw new IOException("Error parsing JSON request string");
-		  }
+		
+		
+		
 	}
 	
 	
