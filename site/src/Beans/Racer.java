@@ -33,8 +33,6 @@ public class Racer {
 		boolean noError = true;
 		
 		try {
-			//if userId is not in the DB, add user
-			
 			ps = c.prepareStatement("INSERT INTO Racer VALUES (?,?,?,?,?)");
 
 			ps.setInt(1, raceId);
