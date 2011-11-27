@@ -12,7 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Beans.Racers;
+import Beans.Racer;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class RacerController {
 	private Time totalTime;
 	private int place;
 	private int score;
-	private Racers racer;
+	private Racer racer;
 
 	private String address = ""; //TODO Change me
 
@@ -66,8 +66,8 @@ public class RacerController {
 			place = Integer.parseInt(request.getParameter("place"));
 			score = Integer.parseInt(request.getParameter("score"));
 
-			racer = new Racers(raceId, userId, attend, totalTime, place);
-			racer.racersDB();
+			racer = new Racer(raceId, userId, attend, totalTime, place);
+			racer.addRacerDB();
 
 			request.setAttribute("racer", racer); // SETS THE ITEM IN THE
 													// SESSION
@@ -80,7 +80,7 @@ public class RacerController {
 		case (ADD_POINTS):
 			score = Integer.parseInt(request.getParameter("score"));
 
-			racer.racersScoreDB(raceId, userId, score);
+			racer.updateRacerScoreDB(raceId, userId, score);
 
 			dispatcher = request.getRequestDispatcher(address); // FORWARDS TO
 																// THE NEXT PAGE

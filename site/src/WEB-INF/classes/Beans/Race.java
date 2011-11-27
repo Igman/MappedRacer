@@ -46,7 +46,7 @@ public class Race {
 	 * @param creatorId		The user id of the user who is creating the race.
 	 * @return				The id of the race that was just created.
 	 */
-	public int createRace(String name, String endPoint, Date startTime, Date createDate, int creatorId){
+	public int createRace(String name, String endPoint, Time startTime, Date startDate, int creatorId){
 		PreparedStatement ps;
 		
 		try {
@@ -57,7 +57,7 @@ public class Race {
 			ps.setString(2, name);
 			ps.setString(3, endPoint);
 			ps.setDate(4, new java.sql.Date(startTime.getTime()));
-			ps.setDate(5, new java.sql.Date(createDate.getTime()));
+			ps.setDate(5, new java.sql.Date(startDate.getTime()));
 			
 			c.commit();
 			
