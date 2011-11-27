@@ -14,6 +14,7 @@ import org.json.*;
 import Beans.Item;
 import Beans.Race;
 import Beans.Racer;
+import Beans.User;
 
 /**
  * This class is responsible for handling any requests that directly relate to
@@ -23,6 +24,8 @@ import Beans.Racer;
  */
 public class CreateRaceController extends HttpServlet {
 	private Race raceModel = new Race();
+	private User userModel = new User();
+	private String creatorName;
 
 	/**
 	 * 
@@ -30,13 +33,15 @@ public class CreateRaceController extends HttpServlet {
 	 * @return
 	 * @throws JSONException
 	 */
-	private boolean addRacersHelper(JSONArray racers) throws JSONException {
+	private boolean addRacersHelper(JSONArray racers, int raceId) throws JSONException {
 		boolean result = true;
 
 		for (int i = 0; i < racers.length(); ++i) {
 			JSONObject racer = racers.getJSONObject(i);
-			Racer temp = new Racer(racer.getInt("userId"),
-					racer.getInt("raceId"), false, null, 0);
+			if (i == 0)
+				creatorName = racer.getString("uname");
+			Racer temp = new Racer(userModel.addUserDB(racer.getString("uname")),
+					raceId, false, null, 0);
 			if (!temp.addRacerDB())
 				result = false;
 		}
@@ -49,7 +54,7 @@ public class CreateRaceController extends HttpServlet {
 	 * @return
 	 * @throws JSONException
 	 */
-	private boolean addItemsHelper(JSONArray items) throws JSONException {
+	private boolean addItemsHelper(JSONArray items, int raceId) throws JSONException {
 		boolean result = true;
 		
 		JSONObject finalDestination = items.getJSONObject(1);
@@ -70,6 +75,7 @@ public class CreateRaceController extends HttpServlet {
 		String line = null;
 		JSONObject jsonObject;
 		Calendar startTime = Calendar.getInstance();
+		int raceId = 0;
 
 		try {
 			BufferedReader reader = request.getReader();
@@ -102,7 +108,7 @@ public class CreateRaceController extends HttpServlet {
 		//add race
 		
 		try {
-			int raceId = raceModel.createRace(jsonObject.getString("name"), "",
+			raceId = raceModel.createRace(jsonObject.getString("name"), "",
 					new java.sql.Time(startTime.getTime().getTime()),
 					new java.sql.Date(startTime.getTime().getTime()), 0);
 		} catch (JSONException e) {
@@ -114,7 +120,7 @@ public class CreateRaceController extends HttpServlet {
 		// add racers -> add users
 		
 		try {
-			racerSuccess = addRacersHelper(jsonObject.getJSONArray("racers"));
+			racerSuccess = addRacersHelper(jsonObject.getJSONArray("racers"), raceId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
