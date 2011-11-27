@@ -15,9 +15,10 @@ import javax.servlet.http.*;
 
 import org.json.*;
 
-import Beans.Race;
 import Beans.Item;
+import Beans.Race;
 import Beans.Racer;
+
 
 /**
  * This class is responsible for handling any requests that directly relate to
@@ -32,8 +33,9 @@ public class RaceController extends HttpServlet {
 	 * 
 	 * @param racers
 	 * @return
+	 * @throws JSONException 
 	 */
-	private boolean addRacersHelper(JSONArray racers) {
+	private boolean addRacersHelper(JSONArray racers) throws JSONException {
 		boolean result = true;
 
 		for (int i = 0; i < racers.length(); ++i) {
@@ -50,8 +52,9 @@ public class RaceController extends HttpServlet {
 	 * 	
 	 * @param items
 	 * @return
+	 * @throws JSONException 
 	 */
-	public boolean addItemsHelper(JSONArray items) {
+	private boolean addItemsHelper(JSONArray items) throws JSONException {
 		boolean result = true;
 		
 		for (int i = 0; i < items.length(); i++) {
@@ -67,6 +70,7 @@ public class RaceController extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StringBuffer buffer = new StringBuffer();
 		String line = null;
+		JSONObject jsonObject;
 		
 		try {
 			BufferedReader reader = request.getReader();
@@ -78,24 +82,15 @@ public class RaceController extends HttpServlet {
 		}
 		
 		try {
-			JSONObject jsonObject = new JSONObject(buffer.toString());
-		} catch (ParseException e) {
-			
+			jsonObject = new JSONObject(buffer.toString());
+		} catch (JSONException e) {
+			System.err.println("Error parsing JSON request string");
+			throw new IOException("Error parsing JSON request string");
 		}
 		
-		StringBuffer jb = new StringBuffer();
-		String line = null;
-		try {
-		    BufferedReader reader = request.getReader();
-		    while ((line = reader.readLine()) != null)
-		      jb.append(line);
-		} catch (Exception e) { //report an error }
-			try {
-				JSONObject jsonObject = new JSONObject(jb.toString());
-		  } catch (ParseException e) {
-		    // crash and burn
-		    throw new IOException("Error parsing JSON request string");
-		  }
+		
+		
+		
 	}
 	
 	
