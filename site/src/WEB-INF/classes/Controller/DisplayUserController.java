@@ -13,7 +13,7 @@ import Beans.Race;
 
 /**
  * 
- * @author Masterfod
+ * @author Christiaan Fernando
  *
  */
 public class DisplayUserController {
@@ -21,7 +21,7 @@ public class DisplayUserController {
 	private int raceId;
 	private Race race;
 	
-	private String address = "";	//Change me
+	private String address = "";	//TODO Change me
 	
 	/**
 	 * 

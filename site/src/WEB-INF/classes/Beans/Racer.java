@@ -10,7 +10,7 @@ import java.sql.Time;
  * to * a table in the database *
  **********************************************/
 
-public class Racers {
+public class Racer {
 	private int raceId;
 	private int userId;
 	private boolean attend;
@@ -19,7 +19,7 @@ public class Racers {
 
 	private Connection c;
 
-	public Racers(int raceId, int userId, boolean attend, Time totalTime,
+	public Racer(int raceId, int userId, boolean attend, Time totalTime,
 			int place) {
 		this.raceId = raceId;
 		this.userId = userId;
@@ -28,8 +28,10 @@ public class Racers {
 		this.place = place;
 	}
 
-	public void racersDB() {
+	public boolean addRacerDB() {
 		PreparedStatement ps;
+		boolean noError = true;
+		
 		try {
 			ps = c.prepareStatement("INSERT INTO Racer VALUES (?,?,?,?,?)");
 
@@ -38,6 +40,10 @@ public class Racers {
 			ps.setBoolean(3, attend);
 			ps.setTime(4, totalTime);
 			ps.setInt(5, place);
+			
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0)
+				noError = false;
 
 			c.commit();
 			ps.close();
@@ -45,9 +51,10 @@ public class Racers {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return noError;
 	}
 
-	public void racersScoreDB(int raceId, int userId, int score) {
+	public void updateRacerScoreDB(int raceId, int userId, int score) {
 		PreparedStatement ps;
 		try {
 			ps = c.prepareStatement("UPDATE Racer SET score = ?, WHERE raceId = ?, userId = ?");

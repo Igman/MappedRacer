@@ -18,7 +18,7 @@ public class Item {
 
 	private Connection c;
 
-	public Item(int value, String geoLocation, boolean active) {
+	public Item(int value, boolean active, String geoLocation) {
 		this.value = value;
 		this.geoLocation = geoLocation;
 		this.active = active;
@@ -27,14 +27,19 @@ public class Item {
 	/**
 	 * 
 	 */
-	public void itemDB() {
+	public boolean addItemDB() {
 		PreparedStatement ps;
+		boolean noError = true;
 		try {
 			ps = c.prepareStatement("INSERT INTO Item VALUES (?,?,?)");
 
 			ps.setInt(1, value);
 			ps.setString(2, geoLocation);
 			ps.setBoolean(3, active);
+			
+			int rowCount = ps.executeUpdate();
+			if (rowCount == 0)
+				noError = false;
 
 			c.commit();
 			ps.close();
@@ -42,6 +47,7 @@ public class Item {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return noError;
 	}
 
 	/**
@@ -51,6 +57,7 @@ public class Item {
 	 * @param itemId
 	 */
 	public void getItemDB(int raceId, int userId, int itemId) {
+		int value = 0;
 		PreparedStatement ps;
 
 		try {
@@ -59,7 +66,7 @@ public class Item {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				this.value = Integer.parseInt(rs.getString(1));
+				value = Integer.parseInt(rs.getString(1));
 			}
 
 			ps = c.prepareStatement("UPDATE Item SET active = ?, WHERE itemId = ?");

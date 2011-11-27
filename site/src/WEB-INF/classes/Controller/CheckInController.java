@@ -12,7 +12,7 @@ import Beans.CheckIn;
 
 /**
  * 
- * @author Masterfod
+ * @author Christiaan Fernando
  *
  */
 public class CheckInController {
@@ -21,10 +21,9 @@ public class CheckInController {
 	String picUrl;
 	String comment;
 	String location;
-	String geolocation;
 
 	CheckIn checkIn;
-	private String address = ""; // Change me
+	private String address = ""; //TODO Change me
 
 	/**
 	 * 
@@ -45,7 +44,7 @@ public class CheckInController {
 		location = request.getParameter("location");
 
 		checkIn = new CheckIn(raceId, picUrl, comment, location);
-		checkIn.checkInDB();
+		checkIn.addCheckInDB();
 
 		request.setAttribute("checkin", checkIn); // SETS THE ITEM IN THE
 													// SESSION

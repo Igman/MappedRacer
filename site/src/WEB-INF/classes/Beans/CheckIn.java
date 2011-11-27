@@ -2,6 +2,7 @@ package Beans;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**********************************************
@@ -27,7 +28,7 @@ public class CheckIn {
 		// There is no int, since this variable is auto-incremented in the DB
 	}
 
-	public void checkInDB() {
+	public void addCheckInDB() {
 		PreparedStatement ps;
 		try {
 			ps = c.prepareStatement("INSERT INTO CheckIn VALUES (?,?,?,?,?)");
@@ -43,6 +44,33 @@ public class CheckIn {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public CheckIn getCheckInDB(int id) {
+		PreparedStatement ps;
+		ResultSet rs;
+		CheckIn result = null;
+
+		try {
+			ps = c.prepareStatement("SELECT * FROM CheckIn WHERE id = ?");
+			ps.setInt(1, id);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				result = new CheckIn(Integer.parseInt(rs.getString(2)),
+						rs.getString(3), rs.getString(4), rs.getString(5));
+				result.setId(Integer.parseInt(rs.getString(1)));
+			}
+
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 	public int getId() {

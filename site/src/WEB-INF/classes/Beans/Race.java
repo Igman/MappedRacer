@@ -90,6 +90,26 @@ public class Race {
 		this.creatorId = creatorId;
 		// There is no int, since this variable is auto-incremented in the DB
 	}
+	
+	public void addRaceDB() {
+		PreparedStatement ps;
+		try {
+			ps = c.prepareStatement("INSERT INTO Race VALUES (?,?,?,?,?,?)");
+
+			ps.setString(1, name);
+			ps.setString(2, endPoint);
+			ps.setDate(3, (java.sql.Date) createDate);
+			ps.setTime(4, startTime);
+			ps.setDate(5, (java.sql.Date) startDate);
+			ps.setInt(6, creatorId);
+
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public List<Race> getRacesDB(int raceId, int userId) {
 		PreparedStatement ps;

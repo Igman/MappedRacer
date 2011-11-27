@@ -16,7 +16,7 @@ import Beans.Racers;
 
 /**
  * 
- * @author Masterfod
+ * @author Christiaan Fernando
  * 
  */
 public class RacerController {
@@ -31,7 +31,7 @@ public class RacerController {
 	private int score;
 	private Racers racer;
 
-	private String address = ""; // Change me
+	private String address = ""; //TODO Change me
 
 	/**
 	 * 
