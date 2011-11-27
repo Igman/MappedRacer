@@ -19,6 +19,7 @@ import org.json.*;
 import Beans.Item;
 import Beans.Race;
 import Beans.Racer;
+import Beans.User;
 
 /**
  * This class is responsible for handling any requests that directly relate to
@@ -28,6 +29,7 @@ import Beans.Racer;
  */
 public class RaceController extends HttpServlet {
 	private Race raceModel = new Race();
+	private User userModel = new User();
 
 	/**
 	 * 
@@ -35,13 +37,13 @@ public class RaceController extends HttpServlet {
 	 * @return
 	 * @throws JSONException
 	 */
-	private boolean addRacersHelper(JSONArray racers) throws JSONException {
+	private boolean addRacersHelper(JSONArray racers, int raceId) throws JSONException {
 		boolean result = true;
 
 		for (int i = 0; i < racers.length(); ++i) {
 			JSONObject racer = racers.getJSONObject(i);
-			Racer temp = new Racer(racer.getInt("userId"),
-					racer.getInt("raceId"), false, null, 0);
+			Racer temp = new Racer(userModel.addUserDB(racer.getString("uname")),
+					raceId, false, null, 0);
 			if (!temp.addRacerDB())
 				result = false;
 		}
@@ -54,7 +56,7 @@ public class RaceController extends HttpServlet {
 	 * @return
 	 * @throws JSONException
 	 */
-	private boolean addItemsHelper(JSONArray items) throws JSONException {
+	private boolean addItemsHelper(JSONArray items, int raceId) throws JSONException {
 		boolean result = true;
 
 		for (int i = 0; i < items.length(); i++) {
@@ -94,8 +96,8 @@ public class RaceController extends HttpServlet {
 
 		try {
 			startTime.setTime(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
-					Locale.ENGLISH).parse(request.getParameter("start_time")));
-		} catch (ParseException e) {
+					Locale.ENGLISH).parse(jsonObject.getString("dateTime")));
+		} catch (ParseException | JSONException e) {
 			e.printStackTrace();
 
 			// ("Date not formated correctly.", request, response);
@@ -104,8 +106,9 @@ public class RaceController extends HttpServlet {
 		
 		//add race
 		
+		int raceId = -1;
 		try {
-			int raceId = raceModel.createRace(jsonObject.getString("name"), "",
+			raceId = raceModel.createRace(jsonObject.getString("name"), "",
 					new java.sql.Time(startTime.getTime().getTime()),
 					new java.sql.Date(startTime.getTime().getTime()), 0);
 		} catch (JSONException e) {
@@ -117,7 +120,7 @@ public class RaceController extends HttpServlet {
 		// add racers -> add users
 		
 		try {
-			racerSuccess = addRacersHelper(jsonObject.getJSONArray("racers"));
+			racerSuccess = addRacersHelper(jsonObject.getJSONArray("racers"), raceId);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
