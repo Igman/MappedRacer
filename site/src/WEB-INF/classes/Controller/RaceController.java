@@ -13,7 +13,7 @@ import java.util.Set;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.json.JSONObject;
+import org.json.*;
 
 import Beans.Race;
 import Beans.Item;
@@ -27,6 +27,42 @@ import Beans.Racer;
  */
 public class RaceController extends HttpServlet {
 	private Race raceModel = new Race();
+	
+	/**
+	 * 
+	 * @param racers
+	 * @return
+	 */
+	private boolean addRacersHelper(JSONArray racers) {
+		boolean result = true;
+
+		for (int i = 0; i < racers.length(); ++i) {
+			JSONObject racer = racers.getJSONObject(i);
+			Racer temp = new Racer(racer.getInt("userId"),
+					racer.getInt("raceId"), false, null, 0);
+			if (!temp.addRacerDB())
+				result = false;
+		}
+		return result;
+	}
+	
+	/**
+	 * 	
+	 * @param items
+	 * @return
+	 */
+	public boolean addItemsHelper(JSONArray items) {
+		boolean result = true;
+		
+		for (int i = 0; i < items.length(); i++) {
+			JSONObject item = items.getJSONObject(i);
+			Item temp = new Item(item.getInt("val"), true,
+					item.getString("loc"));
+			if (!temp.addItemDB())
+				result = false;
+		}
+		return result;
+	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StringBuffer buffer = new StringBuffer();
@@ -74,49 +110,14 @@ public class RaceController extends HttpServlet {
 //	private RacerController racers = new RacerController();
 //	private CheckInController checkIn = new CheckInController();
 //
-//	/**
-//	 * 
-//	 * @param racers
-//	 * @return
-//	 */
-//	public boolean addRacersHelper(JSONObject racers) {
-//		boolean result = true;
-//		Set<String> id;
-//		Iterator<String> itr;
-//
-//		id = racers.keySet();
-//		itr = id.iterator();
-//		while (itr.hasNext()) {
-//			JSONObject racer = racers.getJSONObject(itr.next());
-//			Racer temp = new Racer(racers.getInt("userId"),
-//					racers.getInt("raceId"), false, null, 0);
-//			if (!temp.addRacerDB())
-//				result = false;
-//		}
-//		return result;
-//	}
+	
 //
 //	/**
 //	 * 
 //	 * @param items
 //	 * @return
 //	 */
-//	public boolean addItemsHelper(JSONObject items) {
-//		boolean result = true;
-//		Set<String> id;
-//		Iterator<String> itr;
-//
-//		id = items.keySet();
-//		itr = id.iterator();
-//		while (itr.hasNext()) {
-//			JSONObject item = items.getJSONObject(itr.next());
-//			Item temp = new Item(items.getInt("val"), true,
-//					items.getString("loc"));
-//			if (!temp.addItemDB())
-//				result = false;
-//		}
-//		return result;
-//	}
+	
 //
 //	/**
 //	 * This is the doGet function which will be called when a request is made.
