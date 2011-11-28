@@ -12,8 +12,6 @@ oauth_token_secret VARCHAR(90)
 
 CREATE TABLE Race(
 	Name varchar(255),
-	EndPoint varchar(255),
-	CreateDate DATE,
 	StartTime TIMESTAMP,
 	StartDate DATE,
 	CreatorID int

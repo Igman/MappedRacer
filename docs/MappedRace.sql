@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 27, 2011 at 03:21 PM
+-- Generation Time: Nov 27, 2011 at 09:18 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -18,7 +18,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Table structure for table `CheckIn`
 --
--- Creation: Nov 27, 2011 at 03:21 PM
+-- Creation: Nov 27, 2011 at 09:17 PM
 --
 
 DROP TABLE IF EXISTS `CheckIn`;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `CheckIn` (
 --
 -- Table structure for table `Item`
 --
--- Creation: Nov 27, 2011 at 03:21 PM
+-- Creation: Nov 27, 2011 at 09:17 PM
 --
 
 DROP TABLE IF EXISTS `Item`;
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `Item` (
 --
 -- Table structure for table `ItemType`
 --
--- Creation: Nov 27, 2011 at 03:20 PM
+-- Creation: Nov 27, 2011 at 09:17 PM
 --
 
 DROP TABLE IF EXISTS `ItemType`;
@@ -91,15 +91,13 @@ INSERT INTO `ItemType` VALUES(3, 'Negative');
 --
 -- Table structure for table `Race`
 --
--- Creation: Nov 27, 2011 at 03:21 PM
+-- Creation: Nov 27, 2011 at 09:17 PM
 --
 
 DROP TABLE IF EXISTS `Race`;
 CREATE TABLE IF NOT EXISTS `Race` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
-  `EndPoint` varchar(255) DEFAULT NULL,
-  `CreateDate` date DEFAULT NULL,
   `StartTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `StartDate` date DEFAULT NULL,
   `CreatorID` int(11) DEFAULT NULL,
@@ -117,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `Race` (
 --
 -- Table structure for table `Racers`
 --
--- Creation: Nov 27, 2011 at 03:21 PM
+-- Creation: Nov 27, 2011 at 09:18 PM
 --
 
 DROP TABLE IF EXISTS `Racers`;
@@ -141,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `Racers` (
 --
 -- Table structure for table `Users`
 --
--- Creation: Nov 27, 2011 at 03:20 PM
+-- Creation: Nov 27, 2011 at 09:17 PM
 --
 
 DROP TABLE IF EXISTS `Users`;
