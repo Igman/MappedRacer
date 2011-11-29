@@ -14,27 +14,27 @@
 	<div id="header"><img src="img/header.png"/></div>
 	<div id="header_title">Mapped Racer</div>
 	<div id="back_button_div"><img id="back_button" src="img/back-button.png" onclick="goback()"/></div>
-	<div id="back_button_title">Back</div>
+	<div id="back_button_title" onclick="goback()">Back</div>
 	<form>
 		<input id="raceName_text" type="text" placeholder="Race name"/>
 	</form>
 	<div id="map_canvas" style="width:274px; height:170px"></div>
-	<div id="add_final_destination"><img src="img/button1.png" onclick="setType(1)" height="30px" width="70px"/></div>
-	<div class="buttons_map" id="add_final_destination_text">Add Final<br>Destination</div>
-	<div id="add_positive_items"><img src="img/button1.png" onclick="setType(2)" height="30px" width="70px"/></div>
-	<div class="buttons_map" id="add_positive_items_text">Add<br>Positive Items</div>
-	<div id="add_negative_items"><img src="img/button1.png" onclick="setType(3)" height="30px" width="70px"/></div>
-	<div class="buttons_map" id="add_negative_items_text">Add<br>Negative Items</div>
+	<div id="add_final_destination"><img src="img/small_button.png" onclick="setType(1)"/></div>
+	<div class="buttons_map" id="add_final_destination_text" onclick="setType(1)">Add Final<br>Destination</div>
+	<div id="add_positive_items"><img src="img/small_button.png" onclick="setType(2)"/></div>
+	<div class="buttons_map" id="add_positive_items_text" onclick="setType(2)">Add<br>Positive Items</div>
+	<div id="add_negative_items"><img src="img/small_button.png" onclick="setType(3)"/></div>
+	<div class="buttons_map" id="add_negative_items_text" onclick="setType(3)">Add<br>Negative Items</div>
 	<form>
 		<input id="addFriends" type="input" placeholder="Add Friends"/>
 		<div id="plus"><img src="img/button1.png" onclick="addUser()"/></div>
-		<div class="buttons_map" id="plus_text">Add</div>
+		<div class="buttons_map" id="plus_text" onclick="addUser()">Add</div>
 		<div id="userList"></div>
 		<input id="date" type="date" value="Date"/>
 		<input id="time" type="time" value="Time"/>
 	</form>
-	<div id="create_race_button"><img src="img/button1.png" onclick="validate()" height="30px" width="275px"/></div>
-	<div class="buttons_map" id="create_race_text">Create race</div>
+	<div id="create_race_button"><img src="img/big_button.png" onclick="validate()"/></div>
+	<div class="buttons_map" id="create_race_text" onclick="validate()">Create race</div>
 	<div id="footer">CPSC 410</div>
 </body>
 </html>

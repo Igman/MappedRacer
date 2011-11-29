@@ -4,7 +4,7 @@ var negative = 'img/bomb.png';
 var goal = 'img/goal.png';
 var im = new ItemManager(40);
 var userArray = [];
-var newRace = [];
+var jsonObject = [];
 var map;
 var marker;
 var circle;
@@ -12,7 +12,10 @@ var finalDestinationMarker = false;
 var string = "";
 var type = 0;
 var sizeOfRadius = 250;
-var zoomOfMap = 11;
+var zoomOfMap = 10;
+var goalIcon = 1;
+var positiveIcon = 2;
+var negativeIcon = 3;
 
 function setType(itemType){
 	type = itemType;
@@ -51,13 +54,13 @@ function addMarker(latlang){
 }
 
 function setIcon(){
-	if(type == 1){
+	if(type == goalIcon){
 		marker.setIcon(goal);
 		finalDestinationMarker = true;
 	}
-	else if(type == 2)
+	else if(type == positiveIcon)
 		marker.setIcon(positive);
-	else if(type == 3)
+	else if(type == negativeIcon)
 		marker.setIcon(negative);
 }
 
@@ -161,7 +164,7 @@ function createJSON(){
 	var users  = [];
 	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
 	
-	newRace.push({"name":document.getElementById("raceName_text")});
+	jsonObject.push({"name":document.getElementById("raceName_text")});
 	for(var i=0; i<im.getSize(); i++){
 		var x = im.getElementAt(i);
 		if(x.type == 0)
@@ -171,25 +174,26 @@ function createJSON(){
 		else if(x.type == 3)
 			items.push({"location":x.location, "type":x.type, "value":'-250'});
 	}
-	newRace.push({"items":items});
+	jsonObject.push({"items":items});
 	for(var i=0; i<userArray.length; i++){
 		if(i==0)
 			users.push({"username":'@ssalazars'});
 		else
 			users.push({"username":userArray[i]});
 	}
-	newRace.push({"racers":users});
-	newRace.push({"dateTime":dateTime});
+	jsonObject.push({"racers":users});
+	jsonObject.push({"dateTime":dateTime});
 	
 	send();
 }
 
 function send(){
 	var request = new XMLHttpRequest();
-	var url = "CreateRaceController?newRace="+newRace.toJSONString();
+	var newRace = JSON.stringify(jsonObject);
+	var url = "CreateRaceController?";
 	request.onreadystatechange = handleResponse;
-	request.open("GET",url,true);
-	request.send(null);
+	request.open("POST",url,true);
+	request.send(newRace);
 }
 
 function handleResponse(){

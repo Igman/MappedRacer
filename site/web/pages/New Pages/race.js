@@ -1,6 +1,6 @@
-var currentLocation;
 var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
 var ubc = new google.maps.LatLng(49.263261,-123.253899);
+var currentLocation;
 var browserSupportFlag =  new Boolean();
 var marker;
 var markerItem;
@@ -9,26 +9,32 @@ var contentString;
 var infowindow;
 var pic;
 var msg;
+var user;
 var itemManager = new Manager(40);
 var markerManager = new Manager(40);
 var userManager = new Manager(5);
-var user;
 var positive = 'img/star.png';
 var negative = 'img/bomb.png';
 var goal = 'img/goal.png';
-var itemMarkerCounter = 0;
 var markersArray = [];
 var circlesArray = [];
-var isFinalDestination = false;
+var jsonObject = [];
+var sizeOfRadius = 500;
+var goalIcon = 1;
+var positiveIcon = 2;
+var negativeIcon = 3;
+var zoomOfMap = 10;
 		
 function initialize() {
 	var myOptions = {
-    	zoom: 11,
+    	zoom: zoomOfMap,
     	center: ubc,
     	mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
   
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	
+	fillMapWithMarkers();
 }
 
 function getGeoLocation(){
@@ -39,7 +45,7 @@ function getGeoLocation(){
 		navigator.geolocation.getCurrentPosition(function(position) {
 		
 			currentLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);	//Get coordinates of user
-			map.setCenter(currentLocation);																	//Center map to location
+			//map.setCenter(currentLocation);																	//Center map to location
 					
 			addUserMarker(currentLocation);																		//Method to add a marker
 								
@@ -64,15 +70,13 @@ function handleNoGeolocation(errorFlag) {
 	map.setCenter(currentLocation);
 }
 
-function addUserMarker(location){											//Metodo que agrega un marker al click
-	marker = new google.maps.Marker({										//Creacion de marker
-		position: location,													//Establecer coordenadas del marker
-		map: map,															//En que mapa lo vamos a poner				
+function addUserMarker(location){											
+	marker = new google.maps.Marker({										
+		position: location,													
+		map: map,																			
 	});
 	
-	for(var i=0; i<itemManager.getSize(); i++)
-		obtainDistance(location, itemManager.getElementAt(i).location);				//Metodo para obtener una distancia entre dos markers
-	itemMarkerCounter = 0;
+	isItInsideRadius(location);
 	
 	setUserIcon(1);
 	
@@ -88,27 +92,34 @@ function addUserMarker(location){											//Metodo que agrega un marker al cli
 	document.getElementById("message").value = "";
 	
 	google.maps.event.addListener(marker, 'click', function() {
-	  infowindow.open(map,marker);	//Evento to open infowindow while a marker is clicked
+	  infowindow.open(map,marker);											//Evento to open infowindow while a marker is clicked
 	});
-	
-	obtainDistance(location, getFinalDestinationLocation());
-	var x = google.maps.geometry.spherical.computeDistanceBetween(location,getFinalDestinationLocation());
-	alert(x);
 }
 
-function getFinalDestinationLocation(){
-	for(var i=0; i<itemManager.getSize(); i++)
-		if(itemManager.getElementAt(i).type == '1'){
-			isFinalDestination  = true;
-			return itemManager.getElementAt(i).location;
+function isItInsideRadius(location){
+	var distance;
+	
+	for(var i=0; i<itemManager.getSize(); i++){
+		var item = itemManager.getElementAt(i);
+		distance = google.maps.geometry.spherical.computeDistanceBetween(location,item.location);
+				
+		if(distance < sizeOfRadius){
+			deleteMarkerIcon(i);
 		}
+		
+		if(distance < sizeOfRadius && item.type == 1)
+			alert("finalDestinationChecked");
+			//document.getElementById("distanceToDestination").innerHTML = 0 + "";
+	}
+	
+	//document.getElementById("distanceToDestination").innerHTML = distance + "";
 }
 
 function addInfoWindow(pic, msg){
-	contentString = '<div><img src="'+pic+'"/></br>'+msg+'</div>';									//Contenido del infowindow
+	contentString = '<div><img src="'+pic+'"/></br>'+msg+'</div>';									
 			
-	infowindow = new google.maps.InfoWindow({														//Creacion de infowindow
-	    content: contentString																		//Contenido
+	infowindow = new google.maps.InfoWindow({														
+	    content: contentString
 	});
 }
 
@@ -121,41 +132,6 @@ function setUserIcon(id){
 		marker.setIcon('http://maps.google.com/mapfiles/ms/micons/yellow-dot.png');
 	else if(id == 5)
 		marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png');
-}
-
-function obtainDistance(currentLocation,markerLocation){
-	var obtainDistanceFromTwoPoints = new google.maps.DistanceMatrixService();
-	obtainDistanceFromTwoPoints.getDistanceMatrix({
-		origins: [currentLocation],
-		destinations: [markerLocation],
-		travelMode: google.maps.TravelMode.WALKING
-	}, callback);
-}
-
-function callback(response,status){
-	if (status == google.maps.DistanceMatrixStatus.OK) {
-		var origins = response.originAddresses;
-		var destinations = response.destinationAddresses;
-			
-		for (var i = 0; i < origins.length; i++) {
-			var results = response.rows[i].elements;
-			for (var j = 0; j < results.length; j++) {
-				var element = results[j];
-				var distance = element.distance.value;
-				if(isFinalDestination){
-					if(distance > 250)
-						document.getElementById("distanceToDestination").innerHTML = distance + "";	
-					else{
-						document.getElementById("distanceToDestination").innerHTML = 0 + "";
-					}
-					isFinalDestination = false;	
-				}
-				if(distance < 250)					
-					deleteMarkerIcon(itemMarkerCounter);				
-			}
-		}
-	}
-	itemMarkerCounter++;
 }
 
 function Manager(){
@@ -220,11 +196,6 @@ function User(id, innerId){
 	this.innerId = innerId;
 }
 
-function display(){
-	for(var i=0; i<itemManager.getSize(); i++)
-		alert(itemManager.getElementAt(i).location + "     " + itemManager.getElementAt(i).type);
-}
-
 function fillMapWithMarkers(){
 	//Fill map with Markers and Items
 	var position;
@@ -278,18 +249,18 @@ function addIconMarker(location,type){
 }
 
 function setMarkerIcon(type){
-	if(type == 1)
+	if(type == goalIcon)
 		markerItem.setIcon(goal);
-	else if(type == 2)
+	else if(type == positiveIcon)
 		markerItem.setIcon(positive);
-	else if(type == 3)
+	else if(type == negativeIcon)
 		markerItem.setIcon(negative);
 }
 
 function addRadius(){
 	circle = new google.maps.Circle({
 	  map: map,
-	  radius: 1000,    								// 1km
+	  radius: sizeOfRadius,    								// 250mts
 	  fillColor: '#00BFFF',
 	  strokeWeight: '1px'
 	});
@@ -301,7 +272,7 @@ function addRadius(){
 function deleteMarkerIcon(marker){
 	itemManager.getElementAt(marker).value = 0;
 	itemManager.removeElementAt(marker);					//Don't know if this is useful
-	removeAllMarkers();
+	removeAllMarkers();										//Or if this is useful
 	updateMarkers();
 }
 
@@ -315,11 +286,54 @@ function removeAllMarkers(){
 	}
 }
 
-function initRequest(){
-	if(window.XMLHtppRequest)
-		return new XMLHttpRequest();
+function createJSON(){
+	var items = [];
+	var users  = [];
+	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
+	
+	jsonObject.push({"name":document.getElementById("raceName_text")});
+	for(var i=0; i<im.getSize(); i++){
+		var x = im.getElementAt(i);
+		if(x.type == 0)
+			items.push({"location":x.location, "type":x.type, "value":'0'});
+		else if(x.type == 1)
+			items.push({"location":x.location, "type":x.type, "value":'250'});
+		else if(x.type == 3)
+			items.push({"location":x.location, "type":x.type, "value":'-250'});
+	}
+	jsonObject.push({"items":items});
+	for(var i=0; i<userArray.length; i++){
+		if(i==0)
+			users.push({"username":'@ssalazars'});
+		else
+			users.push({"username":userArray[i]});
+	}
+	jsonObject.push({"racers":users});
+	jsonObject.push({"dateTime":dateTime});
+	
+	send();
 }
 
-function updateMap(){
-	
+function send(){
+	var request = new XMLHttpRequest();
+	var newRace = JSON.stringify(jsonObject);
+	var url = "CreateRaceController?";
+	request.onreadystatechange = handleResponse;
+	request.open("POST",url,true);
+	request.send(newRace);
+}
+
+function handleResponse(){
+	if((request.status == 200)&&(request.readyState == 4))
+		alert(":D");
+	else
+		alert(request.status);
+}
+
+function reDirect(url){
+	window.location = url;
+}
+
+function goback(){
+	history.go(-1);
 }

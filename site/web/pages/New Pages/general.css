@@ -33,9 +33,7 @@ body {
 }
 
 #back_button {
-    height: 30px;
     -webkit-dashboard-region: dashboard-region(control rectangle);
-    width: 70px;
     position: absolute;
     right: auto;
     bottom: auto;
@@ -45,8 +43,8 @@ body {
 
 #back_button_title{
 	position: fixed;
-	top: 4%;
-	left: 9.5%;
+	top: 5%;
+	left: 8.5%;
 	font-family: Helvetica;
 	font-weight: bold;
 	font-size: 12px;
