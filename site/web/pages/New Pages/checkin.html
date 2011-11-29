@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>MappedRacer</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.6, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="YES">
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="race.js"></script>
+	<link rel="stylesheet" type="text/css" href="general.css">
+	<link rel="stylesheet" type="text/css" href="checkin.css">
+</head>
+<body onload="initialize()">
+	<div id="header"><img src="img/header.png"/></div>
+	<div id="header_title">Mapped Racer</div>
+	<div id="back_button_div"><img id="back_button" src="img/back-button.png" onclick="goback()"/></div>
+	<div id="back_button_title">Back</div>
+	<div id="roundSquare" style="width:220px; height: 300px;"></div>
+	<div id="map_canvas" style="width:274px; height:170px"></div>
+	<form>
+		<input id="message" type="text" placeholder="Write your message here..."/>
+		<div id="postTwitter_div"><input id="postTwitter" type="Checkbox" />Post to Twitter</div>
+		<div id="addPhoto_div"><input id="addPhoto" type="text" placeholder="Add photo's URL"/></div>
+	</form>
+	<div id="checkin_button"><img src="img/button1.png" onclick="getGeoLocation()" height="30px" width="275px"/></div>
+	<div class="buttons_map" id="checkin_text">Check-In</div>
+	<div id="footer">CPSC 410</div>
+</body>
+</html>

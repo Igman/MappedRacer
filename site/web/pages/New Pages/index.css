@@ -1,0 +1,30 @@
+#roundSquare{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 105px;
+	margin-left: 11px;
+	padding:10px 40px; 
+	background:#FFFFFF;
+	border-radius:25px;
+	-moz-border-radius:25px;
+}
+
+#roundSquare_text{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -105px;
+	margin-left: 7px;
+	text-align: center;
+	font-size: 35px;
+	letter-spacing: 0;
+}
+
+#sing_in_twitter{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 50px;
+	margin-left: 90px;
+}
