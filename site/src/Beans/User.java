@@ -5,59 +5,75 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/***************************************
- * User class that contains values     *
- * that are found in the DB User table *
- ***************************************/
+/******************************************************
+ * This is a model class that will set and get any    *
+ * properties that have to do with the user objects   *
+ * that will be stored in the database.				  *
+ ******************************************************/
 
-public class User{
-	private int id;
-	private String username;
+public class User {
 	private Connection c;
 	
-	public User () {
-		
-	}
-	
-	public User(String username){
-		this.username = username;
-		//There is no int, since this variable is auto-incremented in the DB
-	}
-	
-	public int addUserDB(String username) {
+	/**
+	 * This function is used to get a user's ID. If it is -1 then
+	 * that means the user ID was not found in the DB.
+	 * 
+	 * @param userName		The user's user name.
+	 * @return				The user's user ID.
+	 * @throws SQLException
+	 */
+	public int getUserID(String userName) throws SQLException {
 		PreparedStatement ps;
 		ResultSet rs;
-		try {
-			ps = c.prepareStatement("SELECT uid FROM User WHERE uname = ?");
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-			
-			//if it's not there, add it
-			ps = c.prepareStatement("INSERT INTO User(uname) VALUES (?)");
-			ps.setString(1, username);		
-			ps = c.prepareStatement("SELECT uid FROM User WHERE uname = ?");
-			rs = ps.executeQuery();
-			return rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		int userID = -1;
+		
+		ps = c.prepareStatement("SELECT uid FROM User WHERE uname = ?");
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			userID = rs.getInt(1);
 		}
-		return -1;
+		
+		return userID;
 	}
 	
-	public int getId(){
-		return id;
-	}
-	public void setId(int id){
-		this.id = id;
+	/**
+	 * This function is used to add a user to the database. It first
+	 * checks if the user is in the database already meaning it will
+	 * not need to add. It will return the user's ID in the end.
+	 * 
+	 * @param userName		The user's user name.
+	 * @return				The user's user ID.
+	 * @throws SQLException
+	 */
+	public int addUser(String userName) throws SQLException {
+		int userID = getUserID(userName);
+		
+		if (userID == -1) {
+			PreparedStatement ps;
+			
+			ps = c.prepareStatement("INSERT INTO User(uname) VALUES (?)");
+			ps.setString(1, userName);		
+			
+			ps.executeUpdate();
+			userID = getUserID(userName);
+			
+			c.commit();
+		}
+		
+		return userID;
 	}
 	
-	public String getUsername(){
-		return username;
-	}
-	public void setUsername(String username){
-		this.username = username;
+	/**
+	 * A function that utilizes an alternative way of adding users
+	 * to the database more efficiently by accepting in an array
+	 * of user names. Will not return the user IDs.
+	 * 
+	 * @param users			Array of users names.
+	 * @throws SQLException
+	 */
+	public void addUsers(String[] users) throws SQLException {
+		for (int k = 0; k < users.length; k++) {
+			addUser(users[k]);
+		}
 	}
 }
