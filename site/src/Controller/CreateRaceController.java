@@ -47,10 +47,17 @@ public class CreateRaceController extends HttpServlet {
     public CreateRaceController() {
         super();
 
-        raceModel = new Race();
-        userModel = new User();
-        racerModel = new Racer();
-        itemModel = new Item();
+        try {
+			raceModel = new Race();
+			userModel = new User();
+	        racerModel = new Racer();
+	        itemModel = new Item();
+	        
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
     }
 
 	/**

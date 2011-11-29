@@ -1,6 +1,7 @@
 package Beans;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,18 @@ import java.sql.SQLException;
 
 public class User {
 	private Connection c;
+	
+	/**
+	 * This function is the constructor which will set up the connection
+	 * required to communicate with the DB.
+	 * 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+	public User() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+	}
 	
 	/**
 	 * This function is used to get a user's ID. If it is -1 then

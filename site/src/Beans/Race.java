@@ -2,6 +2,7 @@ package Beans;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -16,6 +17,18 @@ import java.util.Calendar;
 
 public class Race {
 	private Connection c;
+	
+	/**
+	 * This function is the constructor which will set up the connection
+	 * required to communicate with the DB.
+	 * 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+	public Race () throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+	}
 	
 	/**
 	 * This function is the one that will initialize the race and store it

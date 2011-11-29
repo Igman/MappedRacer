@@ -1,6 +1,7 @@
 package Beans;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -17,10 +18,16 @@ public class Racer {
 	private User userModel;
 	
 	/**
-	 * A simple constructed that initializes the user model which may
-	 * be used by this class.
+	 * This function is the constructor which will set up the connection
+	 * required to communicate with the DB.
+	 * 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
 	 */
-	public Racer() {
+	public Racer() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+		
 		userModel = new User();
 	}
 	

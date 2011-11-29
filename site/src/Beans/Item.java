@@ -1,6 +1,7 @@
 package Beans;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -14,6 +15,19 @@ import java.sql.SQLException;
 
 public class Item {
 	private Connection c;
+	
+	
+	/**
+	 * This function is the constructor which will set up the connection
+	 * required to communicate with the DB.
+	 * 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+	public Item() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+	}
 	
 	/**
 	 * This adds an item using a list of item objects. The object must be 
