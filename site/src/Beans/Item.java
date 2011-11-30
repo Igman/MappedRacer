@@ -5,18 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-<<<<<<< HEAD
 /**
  * 
  * @author Christiaan Fernando
  *
  */
-public class Item {
-	private int id;
-	private int value;
-	private String geoLocation;
-	private boolean active;
-=======
+
 /******************************************************
  * This is a model class that will set and get any    *
  * properties that have to do with the item objects   *
@@ -24,11 +18,9 @@ public class Item {
  * things like the finish line, positive point items  *
  * and negative point items.						  *
  ******************************************************/
->>>>>>> 5180461b27bd500a41594d10089a53af6f2478da
 
 public class Item {
 	private Connection c;
-	
 	
 	/**
 	 * This function is the constructor which will set up the connection
