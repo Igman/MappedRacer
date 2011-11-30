@@ -3,6 +3,7 @@ package Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 
@@ -25,8 +26,7 @@ public class Racer {
 	 * @throws SQLException 
 	 */
 	public Racer() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+		c = Conn.getInstance().getConnection();
 		
 		userModel = new User();
 	}
@@ -35,7 +35,7 @@ public class Racer {
 	 * This is a function for a method of adding racers by utilizing an
 	 * array of racers names.
 	 * 
-	 * @param racers		An array of  racers user names. 
+	 * @param racers		An array of racers user names. 
 	 * @param raceID		The race ID that the racers are in.
 	 * @throws SQLException
 	 */
@@ -55,6 +55,8 @@ public class Racer {
 	public void addRacer(String racer, int raceID) throws SQLException {
 		//TODO: Is this where we should keep the default values for the racers?
 		PreparedStatement ps;
+		//If user exists, get user ID
+		//Else, create user, then get user ID
 		int userID = userModel.addUser(racer);
 		boolean attend = false;
 		Time totalTime = new Time(0);
@@ -72,5 +74,44 @@ public class Racer {
 
 		c.commit();
 		ps.close();
+	}
+	
+	public void updateScore(int userID, int raceID, int score) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE Racer SET score = score + ? WHERE userID = ? AND raceID = ?");
+		
+		ps.setInt(1, score);
+		ps.setInt(2, userID);
+		ps.setInt(3, raceID);
+		
+		ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
+	}
+	
+	public int getScore(int userID, int raceID) throws SQLException {
+		PreparedStatement ps;
+		int result = 0;
+		
+		ps = c.prepareStatement("SELECT score FROM Racer WHERE userID = ? AND raceID = ?");
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getInt(6);
+		}
+		
+		return result;
+	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		User user = new User();
+		Racer racer = new Racer();
+		int userID = user.addUser("Joe");
+		racer.addRacer("Joe", 1);
+		racer.updateScore(userID, 1, 100);
+		System.out.println(racer.getScore(userID, 1));
 	}
 }

@@ -30,8 +30,7 @@ public class Item {
 	 * @throws SQLException 
 	 */
 	public Item() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+		c = Conn.getInstance().getConnection();
 	}
 	
 	/**
@@ -86,7 +85,7 @@ public class Item {
 	public void addItem(int value, String location, int type, boolean active) throws SQLException {
 		PreparedStatement ps;
 		
-		ps = c.prepareStatement("INSERT INTO Item VALUES (?,?,?)");
+		ps = c.prepareStatement("INSERT INTO Item VALUES (?,?,?,?)");
 		
 		ps.setInt(1, type);
 		ps.setInt(2, value);

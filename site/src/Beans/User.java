@@ -23,8 +23,7 @@ public class User {
 	 * @throws SQLException 
 	 */
 	public User() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+		c = Conn.getInstance().getConnection();
 	}
 	
 	/**

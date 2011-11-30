@@ -36,7 +36,7 @@ public class DisplayUserController {
 		raceId = Integer.parseInt(request.getParameter("raceId"));
 		userId = Integer.parseInt(request.getParameter("userId"));
 		
-		List<Race> lsRace = race.getRacesDB(raceId, userId);
+		List<Integer> lsRace = race.getRaces(userId);
 		
 		request.setAttribute("lsRace", lsRace);
 		

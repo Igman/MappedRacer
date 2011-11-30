@@ -66,8 +66,8 @@ public class RacerController {
 			place = Integer.parseInt(request.getParameter("place"));
 			score = Integer.parseInt(request.getParameter("score"));
 
-			racer = new Racer(raceId, userId, attend, totalTime, place);
-			racer.addRacerDB();
+			//racer = new Racer(raceId, userId, attend, totalTime, place);
+			//racer.addRacer();
 
 			request.setAttribute("racer", racer); // SETS THE ITEM IN THE
 													// SESSION
@@ -80,7 +80,7 @@ public class RacerController {
 		case (ADD_POINTS):
 			score = Integer.parseInt(request.getParameter("score"));
 
-			racer.updateRacerScoreDB(raceId, userId, score);
+			//racer.updateRacerScoreDB(raceId, userId, score);
 
 			dispatcher = request.getRequestDispatcher(address); // FORWARDS TO
 																// THE NEXT PAGE

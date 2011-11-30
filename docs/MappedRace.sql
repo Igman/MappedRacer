@@ -125,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `Racers` (
   `Attend` smallint(1) DEFAULT NULL,
   `TotalTime` float DEFAULT NULL,
   `Place` int(11) DEFAULT NULL,
+  `Score` int(11) DEFAULT '0',
   PRIMARY KEY (`RaceID`,`UserID`),
   KEY `UserID` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

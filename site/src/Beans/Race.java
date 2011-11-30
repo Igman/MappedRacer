@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /******************************************************
  * This is a model class that will set and get any    *
@@ -26,8 +28,7 @@ public class Race {
 	 * @throws SQLException 
 	 */
 	public Race () throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
+		c = Conn.getInstance().getConnection();
 	}
 	
 	/**
@@ -63,5 +64,22 @@ public class Race {
 		int raceID = rs.getInt(1);
 		
 		return raceID;
+	}
+	
+	public List<Integer> getRaces (int userId) throws SQLException {
+		PreparedStatement ps;
+		List<Integer> results = new ArrayList<Integer>();
+		
+		ps = c.prepareStatement("SELECT RaceId FROM Race where userId = ?");
+		ps.setInt(1, userId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			Integer temp = rs.getInt(1);
+			results.add(temp);
+		}
+		
+		return results;
 	}
 }
