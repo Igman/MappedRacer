@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>MappedRacer</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.6, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="YES">
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="creatingRace.js"></script>
+	<link rel="stylesheet" type="text/css" href="general.css">
+	<link rel="stylesheet" type="text/css" href="createRace.css">
+</head>
+<body onload="initialize()">
+	<div id="header"><img src="img/header.png"/></div>
+	<div id="header_title">Mapped Racer</div>
+	<div id="back_button_div"><img id="back_button" src="img/back-button.png" onclick="goback()"/></div>
+	<div id="back_button_title" onclick="goback()">Back</div>
+	<form>
+		<input id="raceName_text" type="text" placeholder="Race name"/>
+	</form>
+	<div id="map_canvas" style="width:274px; height:170px"></div>
+	<div id="add_final_destination"><img src="img/small_button.png" onclick="setType(1)"/>
+		<div class="buttons_map" id="add_final_destination_text" >Add Final<br>Destination</div>
+	</div>
+	<div id="add_positive_items"><img src="img/small_button.png" onclick="setType(2)"/>
+		<div class="buttons_map" id="add_positive_items_text" >Add<br>Positive Items</div>
+	</div>
+	<div id="add_negative_items"><img src="img/small_button.png" onclick="setType(3)"/>
+		<div class="buttons_map" id="add_negative_items_text" >Add<br>Negative Items</div>
+	</div>
+	<form>
+		<input id="addFriends" type="input" placeholder="Add Friends"/>
+		<div id="plus"><img src="img/button1.png" onclick="addUser()"/></div>
+		<div class="buttons_map" id="plus_text" onclick="addUser()">Add</div>
+		<div id="userList"></div>
+		<input id="date" type="date" value="Date"/>
+		<input id="time" type="time" value="Time"/>
+	</form>
+	<div id="create_race_button"><img src="img/big_button.png" onclick="validate()"/></div>
+	<div class="buttons_map" id="create_race_text" onclick="validate()">Create race</div>
+	<div id="footer">CPSC 410</div>
+</body>
+</html>

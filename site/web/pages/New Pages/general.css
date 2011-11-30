@@ -1,0 +1,78 @@
+body {
+    margin: 0px;
+    min-height: 356px;
+    font-family: Helvetica;
+    background-image: url(img/backgroundStripes.png);
+    background-repeat: repeat repeat;
+}
+
+#header {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    height: 44px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    -webkit-border-image: url(img/header.png) 0 1 0 1 stretch stretch;
+    margin-left: 0px;
+    width: auto;
+    margin-right: 0px;
+}
+
+#header_title{
+	position: fixed;
+	top:  3%;
+	left: 28.5%;
+	font-family: Helvetica;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
+	text-shadow: rgba(0, 0, 0, 0.589844) 0px -1px 0px;
+	font-size: 16pt;
+}
+
+#back_button {
+    -webkit-dashboard-region: dashboard-region(control rectangle);
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    top: 7px;
+    left: 5px;
+}
+
+#back_button_title{
+	position: fixed;
+	top: 5%;
+	left: 8.5%;
+	font-family: Helvetica;
+	font-weight: bold;
+	font-size: 12px;
+	color: rgb(255, 255, 255);
+	text-shadow: rgba(0, 0, 0, 0.589844) 0px -1px 0px;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;	
+}
+
+#footer {
+    position: relative;
+    -webkit-margin-top-collapse: separate;
+    -webkit-margin-bottom-collapse: separate;
+    margin-top: 20px;
+    margin-left: 128px;
+    color: rgb(76, 86, 108);
+    text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+    width: 156px;
+	font: 10pt Helvetica;
+}
+
+.buttons_map{
+	font-family: Helvetica;
+	font-weight: bold;
+	color: rgb(255, 255, 255);
+	text-shadow: rgba(0, 0, 0, 0.589844) 0px -1px 0px;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

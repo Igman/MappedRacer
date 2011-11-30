@@ -1,117 +1,76 @@
 package Beans;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 
-/**********************************************
- * Racers class that contains all attributes * a racer may contain and is mapped
- * to * a table in the database *
- **********************************************/
+/******************************************************
+ * This is a model class that will set and get any    *
+ * properties that have to do with the racer objects  *
+ * that will be stored in the database. A racer is a  *
+ * user who is associated with a race.				  *
+ ******************************************************/
 
 public class Racer {
-	private int raceId;
-	private int userId;
-	private boolean attend;
-	private Time totalTime;
-	private int place;
-
 	private Connection c;
-
-	public Racer(int raceId, int userId, boolean attend, Time totalTime,
-			int place) {
-		this.raceId = raceId;
-		this.userId = userId;
-		this.attend = attend;
-		this.totalTime = totalTime;
-		this.place = place;
-	}
-
-	public boolean addRacerDB() {
-		PreparedStatement ps;
-		boolean noError = true;
+	private User userModel;
+	
+	/**
+	 * This function is the constructor which will set up the connection
+	 * required to communicate with the DB.
+	 * 
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
+	 */
+	public Racer() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.jdbc.Driver");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/mappedrace", "test", "");
 		
-		try {
-			ps = c.prepareStatement("INSERT INTO Racer VALUES (?,?,?,?,?)");
-
-			ps.setInt(1, raceId);
-			ps.setInt(2, userId);
-			ps.setBoolean(3, attend);
-			ps.setTime(4, totalTime);
-			ps.setInt(5, place);
-			
-			int rowCount = ps.executeUpdate();
-			if (rowCount == 0)
-				noError = false;
-
-			c.commit();
-			ps.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return noError;
+		userModel = new User();
 	}
-
-	public void updateRacerScoreDB(int raceId, int userId, int score) {
+	
+	/**
+	 * This is a function for a method of adding racers by utilizing an
+	 * array of racers names.
+	 * 
+	 * @param racers		An array of  racers user names. 
+	 * @param raceID		The race ID that the racers are in.
+	 * @throws SQLException
+	 */
+	public void addRacers(String[] racers, int raceID) throws SQLException {
+		for (int k = 0; k < racers.length; k++) {
+			addRacer(racers[k], raceID);
+		}
+	}
+	
+	/**
+	 * This function adds a single racer to the database.
+	 * 
+	 * @param racers		The racer's user name. 
+	 * @param raceID		The race ID that the racer is in.
+	 * @throws SQLException
+	 */
+	public void addRacer(String racer, int raceID) throws SQLException {
+		//TODO: Is this where we should keep the default values for the racers?
 		PreparedStatement ps;
-		try {
-			ps = c.prepareStatement("UPDATE Racer SET score = ?, WHERE raceId = ?, userId = ?");
+		int userID = userModel.addUser(racer);
+		boolean attend = false;
+		Time totalTime = new Time(0);
+		int place = 0;
+		
+		ps = c.prepareStatement("INSERT INTO Racer VALUES (?,?,?,?,?)");
+		
+		ps.setInt(1, raceID);
+		ps.setInt(2, userID);
+		ps.setBoolean(3, attend);
+		ps.setTime(4, totalTime);
+		ps.setInt(5, place);
+		
+		ps.executeUpdate();
 
-			ps.setInt(2, raceId);
-			ps.setInt(3, userId);
-			ps.setInt(1, score);
-
-			int rowCount = ps.executeUpdate();
-			if (rowCount == 0)
-				// Throw Exception
-
-				c.commit();
-			ps.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public int getRaceId() {
-		return raceId;
-	}
-
-	public void setRaceId(int raceId) {
-		this.raceId = raceId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public boolean getAttend() {
-		return attend;
-	}
-
-	public void setAttend(boolean attend) {
-		this.attend = attend;
-	}
-
-	public Time getTotalTime() {
-		return totalTime;
-	}
-
-	public void setTotalTime(Time totalTime) {
-		this.totalTime = totalTime;
-	}
-
-	public int getPlace() {
-		return place;
-	}
-
-	public void setPlace(int place) {
-		this.place = place;
+		c.commit();
+		ps.close();
 	}
 }
