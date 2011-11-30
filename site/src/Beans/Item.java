@@ -40,9 +40,9 @@ public class Item {
 	 * @param items		An array of objects representing the items.
 	 * @throws SQLException
 	 */
-	public void addItems(Object[] items) throws SQLException {
+	public void addItems(ItemObj[] items, int raceID) throws SQLException {
 		for(int k = 0; k < items.length; k++) {
-			addItem((ItemObj) items[k]);
+			addItem( items[k], raceID);
 		}
 	}
 	
@@ -53,9 +53,9 @@ public class Item {
 	 * @param itemObj	A single object representing an item.
 	 * @throws SQLException
 	 */
-	public void addItem(Object itemObj) throws SQLException {
-		ItemObj item = (ItemObj) itemObj;
-		addItem(item.value, item.location, item.type);
+	public void addItem(ItemObj itemObj, int raceID) throws SQLException {
+		ItemObj item = itemObj;
+		addItem(item.getValue(), item.getLocation(), item.getType(), raceID);
 	}
 	
 	/**
@@ -67,8 +67,8 @@ public class Item {
 	 * @param type			The type of item. 1-destination 2-positive, 3-negative
 	 * @throws SQLException
 	 */
-	public void addItem(int value, String location, int type) throws SQLException {
-		addItem(value, location, type, true);
+	public void addItem(int value, String location, int type, int raceID) throws SQLException {
+		addItem(value, location, type, raceID, true);
 	}
 	
 	/**
@@ -82,15 +82,16 @@ public class Item {
 	 * @param active		Booleans as to whether item will be active or not.
 	 * @throws SQLException
 	 */
-	public void addItem(int value, String location, int type, boolean active) throws SQLException {
+	public void addItem(int value, String location, int type, int raceID, boolean active) throws SQLException {
 		PreparedStatement ps;
 		
-		ps = c.prepareStatement("INSERT INTO Item VALUES (?,?,?,?)");
+		ps = c.prepareStatement("INSERT INTO Item(TypeID,ValueWeight,Geolocation,Status, RaceID) VALUES (?,?,?,?,?)");
 		
 		ps.setInt(1, type);
 		ps.setInt(2, value);
 		ps.setString(3, location);
 		ps.setBoolean(4, active);
+		ps.setInt(5, raceID);
 		
 		ps.executeUpdate();
 		
@@ -99,14 +100,4 @@ public class Item {
 		
 	}
 	
-	/**
-	 * Class for the item object.
-	 * TODO: Is this the best way to pass an object as an array and have it
-	 * mapped to the one in the controller class...?
-	 */
-	private class ItemObj {
-		public String location;
-		public int type;
-		public int value;
-	}
 }

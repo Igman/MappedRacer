@@ -17,6 +17,7 @@ import Beans.Race;
 import Beans.User;
 import Beans.Racer;
 import Beans.Item;
+import Beans.ItemObj;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +33,7 @@ public class CreateRaceController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private static String HOME_JSP = "/Home.jsp";
+	private static String HOME_JSP = "/usr_home.html";
 	private static String ERROR_JSP = "/Create_race.jsp";
 
 	private Race raceModel;
@@ -84,28 +85,29 @@ public class CreateRaceController extends HttpServlet {
 			createRace(jsonObj);
 
 			forward = HOME_JSP;
-			response.setStatus(HttpServletResponse.SC_CREATED);
-
+			response.setStatus(HttpServletResponse.SC_OK);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
+			dispatcher.forward(request, response);
 		} catch (IOException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem when reading the JSON object.");
-			forward = ERROR_JSP;
+			//forward = ERROR_JSP;
 		} catch (JSONException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem with the JSON object.");
-			forward = ERROR_JSP;
+			//forward = ERROR_JSP;
 		} catch (ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem with the Date object.");
-			forward = ERROR_JSP;
+			//forward = ERROR_JSP;
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT,
 					"Problem occured with the SQL.");
-			forward = ERROR_JSP;
+			//forward = ERROR_JSP;
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
-		dispatcher.forward(request, response);
+		
 	}
 
 	/**
@@ -143,7 +145,9 @@ public class CreateRaceController extends HttpServlet {
 		while ((line = reader.readLine()) != null) {
 			buffer.append(line);
 		}
-
+		
+		System.out.println(buffer.toString());
+		
 		jsonObject = new JSONObject(buffer.toString());
 
 		return jsonObject;
@@ -179,7 +183,7 @@ public class CreateRaceController extends HttpServlet {
 		int raceID = raceModel.createRace(name, dateTime, creator);
 
 		// Adds the items in the race to the items DB.
-		itemModel.addItems(items);
+		itemModel.addItems(items, raceID);
 
 		// Adds the racers of the race to the racer DB.
 		racerModel.addRacers(racers, raceID);
@@ -202,9 +206,9 @@ public class CreateRaceController extends HttpServlet {
 			JSONObject item = itemsArray.getJSONObject(i);
 
 			itemList[i] = new ItemObj();
-			itemList[i].location = item.getString("location");
-			itemList[i].type = item.getInt("type");
-			itemList[i].value = item.getInt("value");
+			itemList[i].setLocation(item.getString("location"));
+			itemList[i].setType(Integer.parseInt(item.getString("type")));
+			itemList[i].setValue(Integer.parseInt(item.getString("value")));
 		}
 
 		return itemList;
@@ -249,14 +253,6 @@ public class CreateRaceController extends HttpServlet {
 		return date;
 	}
 
-	/**
-	 * Class for the item object. TODO: Is this the best way to pass an object
-	 * as an array and have it mapped to the model class...?
-	 */
-	private class ItemObj {
-		public String location;
-		public int type;
-		public int value;
-	}
+
 
 }
