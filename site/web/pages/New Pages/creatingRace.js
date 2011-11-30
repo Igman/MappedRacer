@@ -18,6 +18,7 @@ var positiveIcon = 2;
 var negativeIcon = 3;
 
 function setType(itemType){
+	alert(itemType);
 	type = itemType;
 }
 		
