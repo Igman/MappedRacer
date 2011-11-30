@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 /**
  * 
- * @author Masterfod
+ * @author Christiaan Fernando
  *
  */
 public class Item {
