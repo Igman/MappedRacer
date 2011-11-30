@@ -1,0 +1,181 @@
+#raceName_text {
+    font-family: HelveticaNeue;
+    font-size: 10pt;
+    -webkit-margin-top-collapse: separate;
+    -webkit-margin-bottom-collapse: separate;
+    position: relative;
+    display: block;
+    margin-left: 24.5px;
+    margin-top: 5px;
+    width: 256px;
+    border-top-left-radius: 9px 9px;
+    border-top-right-radius: 9px 9px;
+    border-bottom-left-radius: 9px 9px;
+    border-bottom-right-radius: 9px 9px;
+    border-color: rgba(0, 0, 0, 0.230469);
+    color: rgb(150, 150, 150);
+}
+
+#map_canvas {
+    position: relative;
+    -webkit-margin-top-collapse: separate;
+    -webkit-margin-bottom-collapse: separate;
+    margin-top: 10px;
+    margin-left: 23px;
+}
+
+#add_final_destination{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 10px;
+	margin-left: 23px;
+}
+
+#add_final_destination_text{
+	font-size: 5px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: -225px;
+	margin-top: -31px;
+}
+
+#add_positive_items{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -27px;
+	margin-left: 125px;
+}
+
+#add_positive_items_text{
+	font-size: 9px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: -125px;
+	margin-top: -31px;
+}
+
+#add_negative_items{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -27px;
+	margin-left: 228px;
+}
+
+#add_negative_items_text{
+	font-size: 9px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: -21px;
+	margin-top: -31px;
+}
+
+#addFriends {
+	font-family: HelveticaNeue;
+	font-size: 10pt;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+    margin-top: 20px;
+    margin-left: 24.5px;
+    width: 200px;
+    border-top-left-radius: 9px 9px;
+    border-top-right-radius: 9px 9px;
+    border-bottom-left-radius: 9px 9px;
+    border-bottom-right-radius: 9px 9px;
+    border-color: rgba(0, 0, 0, 0.230469);
+    color: rgb(150, 150, 150);
+}
+
+#plus{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -30px;
+	margin-left: 250px;
+}
+
+#plus_text{
+	font-size: 10px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: 210px;
+	margin-top: -26px;
+}
+
+
+#userList{
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: 25.5px;
+	margin-top: 5px;
+	color: rgb(0, 0, 0);
+	font: 12pt HelveticaNeue;
+}
+
+#date{
+	font-family: HelveticaNeue;
+	font-size: 10pt;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-top: 20px;
+	margin-left: 24.5px;
+	width: 110px;
+	border-top-left-radius: 9px 9px;
+	border-top-right-radius: 9px 9px;
+	border-bottom-left-radius: 9px 9px;
+	border-bottom-right-radius: 9px 9px;
+	border-color: rgba(0, 0, 0, 0.230469);
+	color: rgb(150, 150, 150);
+}
+
+#time{
+	font-family: HelveticaNeue;
+	font-size: 10pt;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-top: -30px;
+	margin-left: 185px;
+	width: 110px;
+	border-top-left-radius: 9px 9px;
+	border-top-right-radius: 9px 9px;
+	border-bottom-left-radius: 9px 9px;
+	border-bottom-right-radius: 9px 9px;
+	border-color: rgba(0, 0, 0, 0.230469);
+	color: rgb(150, 150, 150);
+}
+
+#create_race_button{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 20px;
+	margin-left: 23px;
+}
+
+#create_race_text{
+	font-size: 20px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: 0px;
+	margin-top: -32.5px;
+}
