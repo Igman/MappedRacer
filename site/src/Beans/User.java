@@ -34,12 +34,14 @@ public class User {
 	 * @return				The user's user ID.
 	 * @throws SQLException
 	 */
-	public int getUserID(String userName) throws SQLException {
+	public int getUserID(String userName) throws SQLException{
 		PreparedStatement ps;
 		ResultSet rs;
 		int userID = -1;
 		
-		ps = c.prepareStatement("SELECT uid FROM User WHERE uname = ?");
+		ps = c.prepareStatement("SELECT uid FROM Users WHERE uname = ?");
+		
+		ps.setString(1, userName);
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			userID = rs.getInt(1);
@@ -63,7 +65,7 @@ public class User {
 		if (userID == -1) {
 			PreparedStatement ps;
 			
-			ps = c.prepareStatement("INSERT INTO User(uname) VALUES (?)");
+			ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 			ps.setString(1, userName);		
 			
 			ps.executeUpdate();

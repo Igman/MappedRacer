@@ -98,8 +98,7 @@ DROP TABLE IF EXISTS `Race`;
 CREATE TABLE IF NOT EXISTS `Race` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) DEFAULT NULL,
-  `StartTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `StartDate` date DEFAULT NULL,
+  `Start` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `CreatorID` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `CreatorID` (`CreatorID`)
@@ -123,11 +122,12 @@ CREATE TABLE IF NOT EXISTS `Racers` (
   `RaceID` int(11) NOT NULL DEFAULT '0',
   `UserID` int(11) NOT NULL DEFAULT '0',
   `Attend` smallint(1) DEFAULT NULL,
-  `TotalTime` float DEFAULT NULL,
+  `TotalTime` time DEFAULT NULL,
   `Place` int(11) DEFAULT NULL,
   `Score` int(11) DEFAULT '0',
   PRIMARY KEY (`RaceID`,`UserID`),
-  KEY `UserID` (`UserID`)
+  KEY `UserID` (`UserID`),
+  KEY `RaceID` (`RaceID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

@@ -55,6 +55,7 @@ public class Conn {
 			}
 			
 			System.out.println ("Database connection established");
+			con.setAutoCommit(false);
 
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(Conn.class.getName());
