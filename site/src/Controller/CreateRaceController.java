@@ -33,9 +33,6 @@ public class CreateRaceController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private static String HOME_JSP = "/usr_home.html";
-	private static String ERROR_JSP = "/Create_race.jsp";
-
 	private Race raceModel;
 	private User userModel;
 	private Racer racerModel;
@@ -84,7 +81,6 @@ public class CreateRaceController extends HttpServlet {
 			// Adds the race to the database.
 			createRace(jsonObj);
 
-			forward = HOME_JSP;
 			response.setStatus(HttpServletResponse.SC_OK);
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
@@ -92,22 +88,16 @@ public class CreateRaceController extends HttpServlet {
 		} catch (IOException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem when reading the JSON object.");
-			//forward = ERROR_JSP;
 		} catch (JSONException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem with the JSON object.");
-			//forward = ERROR_JSP;
 		} catch (ParseException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Problem with the Date object.");
-			//forward = ERROR_JSP;
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT,
 					"Problem occured with the SQL.");
-			//forward = ERROR_JSP;
 		}
-
-		
 	}
 
 	/**
@@ -252,7 +242,4 @@ public class CreateRaceController extends HttpServlet {
 
 		return date;
 	}
-
-
-
 }
