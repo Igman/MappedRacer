@@ -1,0 +1,137 @@
+.roundSquare{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	padding:10px 40px; 
+	background:#FFFFFF;
+	border-radius:10px;
+	-moz-border-radius:25px;
+}
+
+#roundSquare_map{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 5px;
+	margin-left: 11px;
+}
+
+#checkin_button{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -245px;
+	margin-left: 23px;
+}
+
+#checkin_text{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -29px;
+	margin-left: 4.5px;
+}
+
+#map_canvas{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 15px;
+	margin-left: 23px;
+}
+
+#distanceToDestination{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 10px;
+	margin-left: 53px;
+}
+
+#roundSquare_position{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 20px;
+	margin-left: 11px;
+}
+
+#position{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -110px;
+	margin-left: 25px;
+}
+
+#roundSquare_tweet{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 110px;
+	margin-left: 11px;
+}
+
+#sendTweet{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -140px;
+	margin-left: 25px;
+}
+
+#tweet{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 10px;
+	margin-left: 25px;
+	width: 260px;
+	height: 50px;
+	border-top-left-radius: 9px 9px;
+	border-top-right-radius: 9px 9px;
+	border-bottom-left-radius: 9px 9px;
+	border-bottom-right-radius: 9px 9px;
+	border-color: rgba(0, 0, 0, 0.230469);
+	color: rgb(150, 150, 150);
+}
+
+#tweetButton{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 15px;
+	margin-left: 72px;
+}
+
+#tweetButton_text{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -29px;
+	margin-left: 7px;
+}
+
+#roundSquare_liveTweets{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 30px;
+	margin-left: 11px;
+}
+
+#liveTweets_text{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -80px;
+	margin-left: 25px;
+}
+
+##liveTweets{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 10px;
+	margin-left: 25px;
+}
