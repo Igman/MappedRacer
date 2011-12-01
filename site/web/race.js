@@ -13,6 +13,7 @@ var user;
 var itemManager = new Manager(40);
 var markerManager = new Manager(40);
 var userManager = new Manager(5);
+var checkinManager = new Manager(40);
 var positive = 'img/star.png';
 var negative = 'img/bomb.png';
 var goal = 'img/goal.png';
@@ -26,6 +27,7 @@ var negativeIcon = 3;
 var zoomOfMap = 10;
 var raceIdSent = false;
 var request;
+var markerToDelete;
 		
 function initialize() {
 	var myOptions = {
@@ -49,7 +51,7 @@ function getGeoLocation(){
 			currentLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);	//Get coordinates of user
 			//map.setCenter(currentLocation);																	//Center map to location
 					
-			addUserMarker(currentLocation);																		//Method to add a marker
+			getUserPinInformation(currentLocation);																//Method to add a marker
 								
 	}, function() {
 		handleNoGeolocation(browserSupportFlag);
@@ -72,30 +74,52 @@ function handleNoGeolocation(errorFlag) {
 	map.setCenter(currentLocation);
 }
 
-function addUserMarker(location){											
-	marker = new google.maps.Marker({										
-		position: location,													
-		map: map,																			
-	});
+function getUserPinInformation(location){
+	var picture = document.getElementById("addPhoto").value;
+	var message = document.getElementById("message").value;
+	var userLocation = location;
+	//var userid = 
+	//var raceid =
+	createJSON(picture,message,userLocation);
+}
+
+function updateUserMarkers(){
+	for(var i=0; i<checkinManager.getSize(); i++){	
 	
-	isItInsideRadius(location);
-	
-	setUserIcon(1);
-	
-	pic = document.getElementById("addPhoto").value;
-	msg = document.getElementById("message").value;
-	
-	if(pic.length > 0 || msg.length > 0)
-		addInfoWindow(pic,msg);
-	
-	var object = new Marker(location, '1', pic, msg);
-	
-	document.getElementById("addPhoto").value = "";
-	document.getElementById("message").value = "";
-	
-	google.maps.event.addListener(marker, 'click', function() {
-	  infowindow.open(map,marker);											//Evento to open infowindow while a marker is clicked
-	});
+		var location = checkinManager.getElementAt(i).location;
+		var userid = checkinManager.getElementAt(i).userid;
+		var innerid;
+											
+		marker = new google.maps.Marker({										
+			position: location,													
+			map: map,																			
+		});
+		
+		isItInsideRadius(location);
+		
+		for(var j=0; j<userManager.getSize(); j++){
+			if(checkin.getElementAt(i).userid == userManager.getElementsAt(j).id){
+				innerid = userManager.getElementAt(j).innerId;
+				break;
+			}
+		}
+		setUserIcon(innerid); //TODO
+		
+		pic = checkinManager.getElement(i).picture;
+		msg = checkinManager.getElement(i).message;
+		
+		if(pic.length > 0 || msg.length > 0)
+			addInfoWindow(pic,msg);
+		
+		//var object = new Marker(location, userid, pic, msg);
+		
+		//document.getElementById("addPhoto").value = "";
+		//document.getElementById("message").value = "";
+		
+		google.maps.event.addListener(marker, 'click', function() {
+		  infowindow.open(map,marker);											//Evento to open infowindow while a marker is clicked
+		});
+	}
 }
 
 function isItInsideRadius(location){
@@ -193,10 +217,19 @@ function Item(location, type, value){
 	this.value = value;
 }
 
-function User(id, username, score){
+function User(id, username, score, innerId){
 	this.id = id;
 	this.username = username;
 	this.score = score;
+	this.innerId = innerId;
+}
+
+function Checkin(location, msg, pic, userid, raceid){
+	this.location = location;
+	this.msg = msg;
+	this.pic = pic;
+	this.userid = userid;
+	this.raceid = raceid;
 }
 
 function updateMarkers(){
@@ -238,10 +271,11 @@ function addRadius(){
 }
 
 function deleteMarkerIcon(marker){
-	itemManager.getElementAt(marker).value = 0;
-	itemManager.removeElementAt(marker);					//Don't know if this is useful
-	removeAllMarkers();										//Or if this is useful
-	updateMarkers();
+	markerToDelete = itemManager.getElementAt(marker).location;
+	//itemManager.getElementAt(marker).value = 0;
+	//itemManager.removeElementAt(marker);						//Don't know if this is useful
+	//removeAllMarkers();										//Or if this is useful
+	//updateMarkers();
 }
 
 function removeAllMarkers(){
@@ -254,47 +288,30 @@ function removeAllMarkers(){
 	}
 }
 
-function createJSON(){
-	var items = [];
-	var users  = [];
-	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
+function createJSON(pic,msg,location){
+	var jsonString = '{"location": "'+location+'", "message": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "17", "markerToDelete": "'+markerToDelete+'"}';
 	
-	jsonObject.push({"name":document.getElementById("raceName_text")});
-	for(var i=0; i<im.getSize(); i++){
-		var x = im.getElementAt(i);
-		if(x.type == 0)
-			items.push({"location":x.location, "type":x.type, "value":'0'});
-		else if(x.type == 1)
-			items.push({"location":x.location, "type":x.type, "value":'250'});
-		else if(x.type == 3)
-			items.push({"location":x.location, "type":x.type, "value":'-250'});
-	}
-	jsonObject.push({"items":items});
-	for(var i=0; i<userArray.length; i++){
-		if(i==0)
-			users.push({"username":'@ssalazars'});
-		else
-			users.push({"username":userArray[i]});
-	}
-	jsonObject.push({"racers":users});
-	jsonObject.push({"dateTime":dateTime});
-	
-	send();
+	send(jsonString);
 }
 
-function send(){
+function send(jsonString){
 	var request = new XMLHttpRequest();
-	var newRace = JSON.stringify(jsonObject);
-	var url = "CreateRaceController?";
+	var checkin = JSON.stringify(jsonString);
+	var url = "CreateRaceController";
 	request.onreadystatechange = handleResponse;
 	request.open("POST",url,true);
-	request.send(newRace);
+	request.send(checkin);
 }
 
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4)){
-		var jsonString = request.responseText;
-		receiveJSON(jsonString);
+		if(raceIdSent){
+			var jsonString = request.responseText;
+			receiveJSON(jsonString);
+			raceIdSent = false;
+		}else{
+			reDirect("race.html");
+		}
 	}
 	else
 		alert(request.status);
@@ -323,12 +340,17 @@ function receiveJSON(jsonString){
 		itemManager.addElement(itemObject);
 	}
 	for(var i=0; i<jsonObject.racers.length; i++){
-		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score);
+		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score, i+1);
 		userManager.addElement(userObject);
+	}
+	for(var i=0; i<jsonObject.checkin.length; i++){
+		var checkinObject = new Checkin(jsonObject.checkin[i].location,jsonObject.checkin[i].msg,jsonObject.checkin[i].pic,jsonObject.checkin[i].userid,jsonObject.checkin[i].raceid);
+		checkinManager.addElement(checkinObject);
 	}
 	
 	updateMarkers();
 	updatePositions();
+	updateUserMarkers();
 }
 
 function updatePositions(){
