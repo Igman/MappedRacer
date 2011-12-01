@@ -24,7 +24,7 @@ public class TweetController extends HttpServlet{
         postTweet(text, twitter);
 	}
 
-	private void postTweet(String text, Twitter twitter)
+	public static void postTweet(String text, Twitter twitter)
 			throws ServletException {
 		try {
             twitter.updateStatus(text);

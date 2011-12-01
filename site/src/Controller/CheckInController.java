@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import twitter4j.Twitter;
 import Beans.CheckIn;
-import Beans.ItemObj;
 
 /**
  * 
@@ -49,7 +48,7 @@ public class CheckInController extends HttpServlet {
 			JSONObject jsonObj = getJSON(request.getReader());
 
 			// Adds the race to the database.
-			createCheckIn(jsonObj);
+			createCheckIn(jsonObj, request);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 
@@ -103,8 +102,8 @@ public class CheckInController extends HttpServlet {
 		return jsonObject;
 	}
 
-	private void createCheckIn(JSONObject json) throws ParseException,
-			JSONException, SQLException {
+	private void createCheckIn(JSONObject json, HttpServletRequest request) throws ParseException,
+			JSONException, SQLException, ServletException{
 		CheckIn checkInModel = new CheckIn();
 
 		int userId = json.getInt("userId");
@@ -112,7 +111,10 @@ public class CheckInController extends HttpServlet {
 		String picture = json.getString("picture");
 		String comment = json.getString("comment");
 		String location = json.getString("location");
-
+		if(json.getBoolean("postTweet") == true){
+			Twitter twitter = (Twitter) request.getAttribute("twitter");
+			TweetController.postTweet(comment, twitter);
+		}
 		// Starts adding things to the DB.
 		checkInModel.addCheckIn(userId, raceId, picture, comment, location);
 

@@ -34,3 +34,5 @@ site/src/Controller/RaceController.class
 site/.classpath
 
 site/.project
+
+site/src/Controller/CheckInController.class
