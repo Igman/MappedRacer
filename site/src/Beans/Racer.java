@@ -44,10 +44,12 @@ public class Racer {
 	 *            The race ID that the racers are in.
 	 * @throws SQLException
 	 */
-	public void addRacers(String[] racers, int raceID) throws SQLException {
+	public boolean addRacers(String[] racers, int raceID) throws SQLException {
+		boolean success = false;
 		for (int k = 0; k < racers.length; k++) {
 			addRacer(racers[k], raceID);
 		}
+		return success;
 	}
 
 	/**
@@ -59,27 +61,31 @@ public class Racer {
 	 *            The race ID that the racer is in.
 	 * @throws SQLException
 	 */
-	public void addRacer(String racer, int raceID) throws SQLException {
-		// TODO: Is this where we should keep the default values for the racers?
+	public void addRacer(String racer, int raceID){
 		PreparedStatement ps;
 		// If user exists, get user ID
 		// Else, create user, then get user ID
+		
+		try {
 		int userID = userModel.addUser(racer);
 		boolean attend = false;
-		Time totalTime = new Time(0);
-		int place = 0;
 
-		ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend, totalTime) VALUES (?,?,?,?)");
+		ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend) VALUES (?,?,?)");
 
 		ps.setInt(1, raceID);
 		ps.setInt(2, userID);
 		ps.setBoolean(3, attend);
-		ps.setTime(4, totalTime);
 
-		ps.executeUpdate();
+		if (ps.executeUpdate() != 1)
+			//throw InsertException ("Failed to insert racer");
 
 		c.commit();
 		ps.close();
+		}
+		catch(SQLException e) {
+			
+		}
+		
 	}
 
 	/**
@@ -109,11 +115,11 @@ public class Racer {
 		List<RacerObj> results = new ArrayList<RacerObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.name FROM Racers r LEFT JOIN (Users u) ON (r.userid = u.uid) WHERE r.id = ?");
+		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ?");
 		ps.setInt(1, raceId);
-		
+
 		ResultSet rs = ps.executeQuery();
-		
+
 		while (rs.next()) {
 			RacerObj racerObj = new RacerObj();
 			racerObj.setAttend(rs.getBoolean(1));
@@ -121,10 +127,10 @@ public class Racer {
 			racerObj.setUserId(rs.getInt(3));
 			racerObj.setUserName(rs.getString(4));
 			racerObj.setRaceId(raceId);
-			
+
 			results.add(racerObj);
 		}
-		
+
 		return results;
 	}
 

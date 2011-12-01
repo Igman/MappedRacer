@@ -9,6 +9,7 @@ public class ItemObj {
 	private int type;
 	private int value;
 	private int raceId;
+	private boolean status;
 	
 	public String getLocation() {
 		return location;
@@ -33,5 +34,11 @@ public class ItemObj {
 	}
 	public void setRaceId(int raceId) {
 		this.raceId = raceId;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 }

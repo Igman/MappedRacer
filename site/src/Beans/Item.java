@@ -124,21 +124,24 @@ public class Item {
 	
 	public List<ItemObj> getItemsObj(int raceId) throws SQLException {
 		List<ItemObj> results = new ArrayList<ItemObj>();
-		
-		List<Integer> items = getItemsInt(raceId);
-		Iterator<Integer> itr = items.iterator();
-		while (itr.hasNext()) {
-			int item = itr.next();
-			
-			ItemObj temp = new ItemObj();
-			temp.setLocation(getLocation(item));
-			temp.setType(getType(item));
-			temp.setValue(getValue(item));
-			temp.setRaceId(getRaceId(item));
-			
-			results.add(temp);
+		PreparedStatement ps;
+
+		ps = c.prepareStatement("SELECT (typeid, status, valueweight, geolocation) FROM Items WHERE raceid = ?");
+		ps.setInt(1, raceId);
+
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			ItemObj itemObj = new ItemObj();
+			itemObj.setType(rs.getInt(1));
+			itemObj.setStatus(rs.getBoolean(2));
+			itemObj.setValue(rs.getInt(3));
+			itemObj.setLocation(rs.getString(4));
+			itemObj.setRaceId(raceId);
+
+			results.add(itemObj);
 		}
-		
+
 		return results;
 	}
 	

@@ -43,8 +43,8 @@ public class CheckInController {
 		comment = request.getParameter("comment");
 		location = request.getParameter("location");
 
-		checkIn = new CheckIn(raceId, picUrl, comment, location);
-		checkIn.addCheckInDB();
+		//checkIn = new CheckIn(raceId, picUrl, comment, location);
+		//checkIn.addCheckInDB();
 
 		request.setAttribute("checkin", checkIn); // SETS THE ITEM IN THE
 													// SESSION

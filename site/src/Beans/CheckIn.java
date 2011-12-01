@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**********************************************
  * Race class that contains all attributes * a race may contain and is mapped to
@@ -11,24 +14,14 @@ import java.sql.SQLException;
  **********************************************/
 
 public class CheckIn {
-	private int id;
-	private int raceId;
-	private String picture;
-	private String comment;
-	private String geoLocation;
+		private Connection c;
 
-	private Connection c;
-
-	public CheckIn(int raceId, String picture, String comment,
-			String geoLocation) {
-		this.raceId = raceId;
-		this.picture = picture;
-		this.comment = comment;
-		this.geoLocation = geoLocation;
-		// There is no int, since this variable is auto-incremented in the DB
+	public CheckIn() {
+		c = Conn.getInstance().getConnection();
 	}
 
-	public void addCheckInDB() {
+	public void addCheckIn(int raceId, String picture, String comment,
+			String geoLocation) {
 		PreparedStatement ps;
 		try {
 			ps = c.prepareStatement("INSERT INTO CheckIn VALUES (?,?,?,?,?)");
@@ -46,70 +39,149 @@ public class CheckIn {
 		}
 	}
 
-	public CheckIn getCheckInDB(int id) {
+	public List<Integer> getCheckInsInt(int raceId) throws SQLException {
 		PreparedStatement ps;
-		ResultSet rs;
-		CheckIn result = null;
+		List<Integer> results = new ArrayList<Integer>();
+		
+		ps = c.prepareStatement("SELECT ID FROM CheckIn WHERE raceId = ?");
+		ps.setInt(1, raceId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			Integer temp = rs.getInt(1);
+			results.add(temp);
+		}
+		
+		return results;
+	}
 
-		try {
-			ps = c.prepareStatement("SELECT * FROM CheckIn WHERE id = ?");
-			ps.setInt(1, id);
+	public List<CheckInObj> getItemsObj(int raceId) throws SQLException {
+		List<CheckInObj> results = new ArrayList<CheckInObj>();
+		PreparedStatement ps;
 
-			rs = ps.executeQuery();
+		ps = c.prepareStatement("SELECT (id, pic, comment, geolocation) FROM CheckIn WHERE raceid = ?");
+		ps.setInt(1, raceId);
 
-			while (rs.next()) {
-				result = new CheckIn(Integer.parseInt(rs.getString(2)),
-						rs.getString(3), rs.getString(4), rs.getString(5));
-				result.setId(Integer.parseInt(rs.getString(1)));
-			}
+		ResultSet rs = ps.executeQuery();
 
-			c.commit();
-			ps.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while (rs.next()) {
+			CheckInObj checkInObj = new CheckInObj();
+			checkInObj.setID(rs.getInt(1));
+			checkInObj.setPic(rs.getString(2));
+			checkInObj.setComment(rs.getString(3));
+			checkInObj.setLocation(rs.getString(4));
+			checkInObj.setRaceID(raceId);
+
+			results.add(checkInObj);
 		}
 
+		return results;
+	}
+	
+	public int getRaceId(int checkInId) throws SQLException {
+		PreparedStatement ps;
+		int result = -1;
+		
+		ps = c.prepareStatement("SELECT raceId FROM CheckIn WHERE ID = ?");
+		ps.setInt(1, checkInId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getInt(1);
+		}
+		
 		return result;
 	}
+	
+	public String getPic(int checkInId) throws SQLException {
+		PreparedStatement ps;
+		String result = "";
+		
+		ps = c.prepareStatement("SELECT picture FROM CheckIn WHERE ID = ?");
+		ps.setInt(1, checkInId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		return result;
+	}	
 
-	public int getId() {
-		return id;
+	public void setPic(int checkInId, String pic) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE Checkin SET picture = ? WHERE ID = ?");
+		ps.setString(1, pic);
+		ps.setInt(2, checkInId);
+		
+		//throw error if fail
+		int rows = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	public String getComment(int checkInId) throws SQLException {
+		PreparedStatement ps;
+		String result = "";
+		
+		ps = c.prepareStatement("SELECT comment FROM CheckIn WHERE ID = ?");
+		ps.setInt(1, checkInId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		return result;
+	}	
 
-	public int getRaceId() {
-		return raceId;
+	public void setComment(int checkInId, String comment) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE CheckIn SET comment = ? WHERE ID = ?");
+		ps.setString(1, comment);
+		ps.setInt(2, checkInId);
+		
+		//throw error if fail
+		int rows = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
 	}
+	
+	public String getLocation(int checkInId) throws SQLException {
+		PreparedStatement ps;
+		String result = "";
+		
+		ps = c.prepareStatement("SELECT geolocation FROM CheckIn WHERE ID = ?");
+		ps.setInt(1, checkInId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		return result;
+	}	
 
-	public void setRaceId(int raceId) {
-		this.raceId = raceId;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	public String getGeoLocation() {
-		return geoLocation;
-	}
-
-	public void setGeoLocation(String geoLocation) {
-		this.geoLocation = geoLocation;
+	public void setLocation(int checkInId, String location) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE CheckIn SET location = ? WHERE ID = ?");
+		ps.setString(1, location);
+		ps.setInt(2, checkInId);
+		
+		//throw error if fail
+		int rows = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
 	}
 }
