@@ -61,31 +61,30 @@ public class Racer {
 	 *            The race ID that the racer is in.
 	 * @throws SQLException
 	 */
-	public void addRacer(String racer, int raceID){
+	public void addRacer(String racer, int raceID) {
 		PreparedStatement ps;
 		// If user exists, get user ID
 		// Else, create user, then get user ID
-		
+
 		try {
-		int userID = userModel.addUser(racer);
-		boolean attend = false;
+			int userID = userModel.addUser(racer);
+			boolean attend = false;
 
-		ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend) VALUES (?,?,?)");
+			ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend) VALUES (?,?,?)");
 
-		ps.setInt(1, raceID);
-		ps.setInt(2, userID);
-		ps.setBoolean(3, attend);
+			ps.setInt(1, raceID);
+			ps.setInt(2, userID);
+			ps.setBoolean(3, attend);
 
-		if (ps.executeUpdate() != 1)
-			//throw InsertException ("Failed to insert racer");
+			if (ps.executeUpdate() != 1)
+				// throw InsertException ("Failed to insert racer");
 
-		c.commit();
-		ps.close();
+				c.commit();
+			ps.close();
+		} catch (SQLException e) {
+
 		}
-		catch(SQLException e) {
-			
-		}
-		
+
 	}
 
 	/**

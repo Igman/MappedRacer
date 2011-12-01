@@ -2,6 +2,7 @@ package Beans;
 
 public class CheckInObj {
 	private int ID;
+	private int userID;
 	private int raceID;
 	private String pic;
 	private String comment;
@@ -36,5 +37,11 @@ public class CheckInObj {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 }

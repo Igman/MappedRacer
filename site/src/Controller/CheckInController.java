@@ -1,29 +1,35 @@
 package Controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import Beans.CheckIn;
+import Beans.ItemObj;
 
 /**
  * 
  * @author Christiaan Fernando
- *
+ * 
  */
-public class CheckInController {
-	int checkinId;
-	int raceId;
-	String picUrl;
-	String comment;
-	String location;
+public class CheckInController extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	CheckIn checkIn;
-	private String address = ""; //TODO Change me
+	private String address = ""; // TODO Change me
 
 	/**
 	 * 
@@ -33,28 +39,83 @@ public class CheckInController {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-			 {
-		
-		raceId = Integer.parseInt(request.getParameter("raceId"));
-		checkinId = Integer.parseInt(request.getParameter("checkinId"));
-		picUrl = request.getParameter("picUrl");
-		comment = request.getParameter("comment");
-		location = request.getParameter("location");
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-		//checkIn = new CheckIn(raceId, picUrl, comment, location);
-		//checkIn.addCheckInDB();
+		String forward = "";
 
-		request.setAttribute("checkin", checkIn); // SETS THE ITEM IN THE
-													// SESSION
+		try {
+			// Creates the JSON Object from the request.
+			JSONObject jsonObj = getJSON(request.getReader());
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher(address); // FORWARDS
-																				// TO
-																				// THE
-																				// NEXT
-																				// PAGE
-		dispatcher.forward(request, response);
+			// Adds the race to the database.
+			createCheckIn(jsonObj);
+
+			response.setStatus(HttpServletResponse.SC_OK);
+
+			RequestDispatcher dispatcher = request
+					.getRequestDispatcher(forward);
+			dispatcher.forward(request, response);
+		} catch (IOException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Problem when reading the JSON object.");
+		} catch (JSONException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Problem with the JSON object.");
+		} catch (ParseException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Problem with the Date object.");
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT,
+					"Problem occured with the SQL.");
+		}
+	}
+
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+	/**
+	 * This function takes in a reader and tries to read a JSON Object out of
+	 * it.
+	 * 
+	 * @param reader
+	 *            predefined object that should have JSON object in it.
+	 * @return The json object is successfully parsed.
+	 * @throws IOException
+	 * @throws JSONException
+	 */
+	private JSONObject getJSON(BufferedReader reader) throws IOException,
+			JSONException {
+		StringBuffer buffer = new StringBuffer();
+		String line = null;
+		JSONObject jsonObject;
+
+		while ((line = reader.readLine()) != null) {
+			buffer.append(line);
+		}
+
+		System.out.println(buffer.toString());
+
+		jsonObject = new JSONObject(buffer.toString());
+
+		return jsonObject;
+	}
+
+	private void createCheckIn(JSONObject json) throws ParseException,
+			JSONException, SQLException {
+		CheckIn checkInModel = new CheckIn();
+
+		int userId = json.getInt("userId");
+		int raceId = json.getInt("raceId");
+		String picture = json.getString("picture");
+		String comment = json.getString("comment");
+		String location = json.getString("location");
+
+		// Starts adding things to the DB.
+		checkInModel.addCheckIn(userId, raceId, picture, comment, location);
+
 	}
 
 }

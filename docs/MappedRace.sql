@@ -25,11 +25,13 @@ DROP TABLE IF EXISTS `CheckIn`;
 CREATE TABLE IF NOT EXISTS `CheckIn` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `RaceID` int(11) DEFAULT NULL,
+  `UserID` int(11) DEFAULT NULL,
   `Picture` varchar(255) DEFAULT NULL,
   `Comment` varchar(255) DEFAULT NULL,
   `GeoLocation` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `RaceID` (`RaceID`)
+  KEY `RaceID` (`RaceID`),
+  KEY `UserID` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
