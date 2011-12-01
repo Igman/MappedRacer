@@ -26,3 +26,5 @@ site/.DS_Store
 site/src/.DS_Store
 
 */.DS_Store
+
+deploy
