@@ -8,6 +8,7 @@ var jsonObject = [];
 var map;
 var marker;
 var circle;
+var request;
 var finalDestinationMarker = false;
 var string = "";
 var type = 0;
@@ -16,6 +17,8 @@ var zoomOfMap = 10;
 var goalIcon = 1;
 var positiveIcon = 2;
 var negativeIcon = 3;
+var jsonString;
+var countUsers = 0;
 
 function setType(itemType){
 	alert(itemType);
@@ -118,31 +121,50 @@ function Marker(location, type, value){
 //		alert(im.getElementAt(i).location + "     " + im.getElementAt(i).type);
 //}
 
-function goback(){
-	history.go(-1);
-}
-
 function validate(){
 	var total = 0;
 	var raceName = document.getElementById("raceName_text");
 	var date = document.getElementById("date");
 	var time = document.getElementById("time");
+	var raceNameError = document.getElementById("raceNameError");
+	var friendsError = document.getElementById("friendsError");
+	var dateTimeError = document.getElementById("dateTimeError");
+	var mapError = document.getElementById("mapError");
 	
-	if(raceName.value.length > 0)
+	if(raceName.value.length > 0){
 		total++;
-	if(userArray.length > 0)
+		raceNameError.innerHTML = "";
+	}else
+		raceNameError.innerHTML = "Missing race name";
+		
+	if(userArray.length > 0){
 		total++;
-	if(date.value.length > 0)
+		friendsError.innerHTML = "";
+	}else
+		friendsError.innerHTML = "At least add 1 racer";
+		
+	if(date.value.length > 4){
 		total++;
-	if(time.value.length > 0)
+		dateTimeError.innerHTML = "";
+	}else
+		dateTimeError.innerHTML = "Missing date or time";
+		
+	if(time.value.length > 4){
 		total++;
+		dateTimeError.innerHTML = "";
+	}else
+		dateTimeError.innerHTML = "Missing date or time";
 		
 	for(var i=0; i<im.getSize(); i++){
 		if(im.getElementAt(i).type == 1){
 			total++;
+			mapError.innerHTML = "";
 			break;
 		}
 	}
+	
+	if(im.getSize() == 0)
+		mapError.innerHTML = "Add at least a final destination";
 	
 	if(total == 5)
 		createJSON();
@@ -150,10 +172,12 @@ function validate(){
 
 function addUser(){
 	var username = document.getElementById("addFriends").value;
-	if (username[0] == "@"){
+	if (username[0] == "@" && countUsers < 4){
 		userArray.push(username);
-		for(var i=0; i<userArray.length; i++)
-			string += userArray[i] + "<br>";	
+		countUsers++;
+		for(var i=0; i<userArray.length; i++){
+			string += userArray[i] + "<br>";
+		}
 		document.getElementById("userList").innerHTML = string;
 		string = "";
 		document.getElementById("addFriends").value = "";
@@ -161,37 +185,80 @@ function addUser(){
 }
 
 function createJSON(){
-	var items = [];
-	var users  = [];
+//	var items = [];
+//	var users  = [];
+//	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
+//	
+//	jsonObject.push({"name":document.getElementById("raceName_text")});
+//	
+//	for(var i=0; i<im.getSize(); i++){
+//		var x = im.getElementAt(i);
+//		if(x.type == 1){
+//			items.push({"location":x.location, "type":x.type, "value":'0'});
+//		}
+//		else if(x.type == 2){
+//			items.push({"location":x.location, "type":x.type, "value":'250'});
+//		}
+//		else if(x.type == 3){
+//			items.push({"location":x.location, "type":x.type, "value":'-250'});
+//		}
+//	}
+//	jsonObject.push({"items":items});
+//	for(var i=0; i<userArray.length; i++){
+//		if(i==0){
+//			users.push({"username":'@ssalazars'});
+//		}
+//		else{
+//			users.push({"username":userArray[i]});
+//		}
+//	}
+//	jsonObject.push({"racers":users});
+//	jsonObject.push({"dateTime":dateTime});
+	
+//	jsonObject = {
+//		name: document.getElementById("raceName_text").value,
+//		items: [{location: "(12345,67890)", type: "1", value:"0"
+//		}],
+//		racers: [{name: "@ssalazars"}],
+//		dateTime: dateTime
+//	};
+	
+	var itemString = '';
+	var racersString = '';
 	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
 	
-	jsonObject.push({"name":document.getElementById("raceName_text")});
 	for(var i=0; i<im.getSize(); i++){
 		var x = im.getElementAt(i);
-		if(x.type == 0)
-			items.push({"location":x.location, "type":x.type, "value":'0'});
-		else if(x.type == 1)
-			items.push({"location":x.location, "type":x.type, "value":'250'});
-		else if(x.type == 3)
-			items.push({"location":x.location, "type":x.type, "value":'-250'});
+		if(x.type == 1){
+			itemString+='{"location": "' + x.location + '", "type": "' + x.type + '", "value": "0"}, ';
+		}
+		else if(x.type == 2){
+			itemString+='{"location": "' + x.location + '", "type": "' + x.type + '", "value": "250"}, ';
+		}
+		else if(x.type == 3){
+			itemString+='{"location": "' + x.location + '", "type": "' + x.type + '", "value": "-250"}, ';
+		}
 	}
-	jsonObject.push({"items":items});
+	
+	itemString = itemString.substring(0,itemString.length-2);
+	
+	racersString += '{"name": "@ssalazars"}, ';					//TODO it should be usname gotten from a session variable
 	for(var i=0; i<userArray.length; i++){
-		if(i==0)
-			users.push({"username":'@ssalazars'});
-		else
-			users.push({"username":userArray[i]});
+		racersString+='{"name": "' + userArray[i]+'"}, ';
 	}
-	jsonObject.push({"racers":users});
-	jsonObject.push({"dateTime":dateTime});
+	
+	racersString = racersString.substring(0,racersString.length-2);
+		
+	jsonString = '{"name": "'+document.getElementById('raceName_text').value + '", "dateTime": "' + dateTime + '", "items": [' + itemString + '], "racers": [' + racersString + ']}';
 	
 	send();
 }
 
 function send(){
-	var request = new XMLHttpRequest();
-	var newRace = JSON.stringify(jsonObject);
-	var url = "CreateRaceController?";
+	//var newRace = JSON.stringify(jsonString);
+	var newRace = jsonString;
+	var url = "CreateRaceController";
+	request = new XMLHttpRequest();
 	request.onreadystatechange = handleResponse;
 	request.open("POST",url,true);
 	request.send(newRace);
@@ -199,11 +266,7 @@ function send(){
 
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4))
-		alert(":D");
+		redirect(usr_home.html);
 	else
-		alert(request.status);
-}
-
-function reDirect(url){
-	window.location=url;
+		alert("There was an error with the application, please restart the app. Error: request.status");
 }
