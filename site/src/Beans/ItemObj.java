@@ -5,12 +5,20 @@ package Beans;
  * as an array and have it mapped to the model class...?
  */
 public class ItemObj {
+	private int itemId;
 	private String location;
 	private int type;
 	private int value;
 	private int raceId;
 	private boolean status;
 	
+	
+	public int getItemId() {
+		return itemId;
+	}
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
 	public String getLocation() {
 		return location;
 	}

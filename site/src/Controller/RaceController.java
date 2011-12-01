@@ -143,7 +143,7 @@ public class RaceController extends HttpServlet {
 		while (iterator.hasNext()) {
 			temp = iterator.next();
 			
-			json.append("{type:\""+temp.getType()+"\", location:\""+temp.getLocation()+"\", value:\""+temp.getValue() + "\"},");
+			json.append("{id:\""+temp.getItemId()+"\", type:\""+temp.getType()+"\", location:\""+temp.getLocation()+"\", value:\""+temp.getValue() + "\"},");
 		}
 		// replace last character with ]
 		json.setCharAt( json.length()-1,']');

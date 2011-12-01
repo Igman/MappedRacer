@@ -27,7 +27,7 @@ var negativeIcon = 3;
 var zoomOfMap = 10;
 var raceIdSent = false;
 var request;
-var markerToDelete;
+var markerToDelete = -1;
 		
 function initialize() {
 	var myOptions = {
@@ -38,7 +38,7 @@ function initialize() {
   
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	
-	sendRaceId(17);
+	sendRaceId(1);
 }
 
 function getGeoLocation(){
@@ -98,15 +98,15 @@ function updateUserMarkers(){
 		isItInsideRadius(location);
 		
 		for(var j=0; j<userManager.getSize(); j++){
-			if(checkin.getElementAt(i).userid == userManager.getElementsAt(j).id){
+			if(userid == userManager.getElementAt(j).id){
 				innerid = userManager.getElementAt(j).innerId;
 				break;
 			}
 		}
 		setUserIcon(innerid); //TODO
 		
-		pic = checkinManager.getElement(i).picture;
-		msg = checkinManager.getElement(i).message;
+		pic = checkinManager.getElementAt(i).pic;
+		msg = checkinManager.getElementAt(i).msg;
 		
 		if(pic.length > 0 || msg.length > 0)
 			addInfoWindow(pic,msg);
@@ -211,7 +211,8 @@ function Marker(location, user, picture, message){
 	this.message = message;
 }
 
-function Item(location, type, value){
+function Item(id,location, type, value){
+	this.id = id;
 	this.location = location;
 	this.type = type;
 	this.value = value;
@@ -224,12 +225,11 @@ function User(id, username, score, innerId){
 	this.innerId = innerId;
 }
 
-function Checkin(location, msg, pic, userid, raceid){
+function Checkin(location, msg, pic, userid){
 	this.location = location;
 	this.msg = msg;
 	this.pic = pic;
 	this.userid = userid;
-	this.raceid = raceid;
 }
 
 function updateMarkers(){
@@ -271,7 +271,7 @@ function addRadius(){
 }
 
 function deleteMarkerIcon(marker){
-	markerToDelete = itemManager.getElementAt(marker).location;
+	markerToDelete = itemManager.getElementAt(marker).id;
 	//itemManager.getElementAt(marker).value = 0;
 	//itemManager.removeElementAt(marker);						//Don't know if this is useful
 	//removeAllMarkers();										//Or if this is useful
@@ -289,27 +289,32 @@ function removeAllMarkers(){
 }
 
 function createJSON(pic,msg,location){
-	var jsonString = '{"location": "'+location+'", "message": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "17", "markerToDelete": "'+markerToDelete+'"}';
-	
+	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "1", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
 	send(jsonString);
 }
 
 function send(jsonString){
-	var request = new XMLHttpRequest();
-	var checkin = JSON.stringify(jsonString);
-	var url = "CreateRaceController";
+	request = new XMLHttpRequest();
+	var checkin = jsonString;
+	var url = "CheckInController";
 	request.onreadystatechange = handleResponse;
 	request.open("POST",url,true);
 	request.send(checkin);
 }
 
 function handleResponse(){
+	alert("1");
 	if((request.status == 200)&&(request.readyState == 4)){
+		alert("21");
+		alert(raceIdSent);
 		if(raceIdSent){
+			alert("2.5");
+			alert(raceIdSent);
+			raceIdSent = false;
 			var jsonString = request.responseText;
 			receiveJSON(jsonString);
-			raceIdSent = false;
 		}else{
+			alert("3");
 			reDirect("race.html");
 		}
 	}
@@ -329,14 +334,21 @@ function sendRaceId(id){
 
 function receiveJSON(jsonString){
 	var jsonObject = eval('('+jsonString+')');
+	var locationString;
+	var lat;
+	var lng;
+	var position;
+	
 	for(var i=0; i<jsonObject.items.length; i++){
-		var locationString = jsonObject.items[i].location;
-		var lat = locationString.substring(1,locationString.indexOf(","));
-		var lng = locationString.substring(locationString.indexOf(",")+2,locationString.length-1);
+		
+		locationString = jsonObject.items[i].location;
+		lat = locationString.substring(1,locationString.indexOf(","));
+		lng = locationString.substring(locationString.indexOf(",")+2,locationString.length-1);
 		lat = parseFloat(lat);
 		lng = parseFloat(lng);
-		var position = new google.maps.LatLng(lat,lng);
-		var itemObject = new Item(position,jsonObject.items[i].type,jsonObject.items[i].value);
+		position = new google.maps.LatLng(lat,lng);
+		
+		var itemObject = new Item(jsonObject.items[i].id,position,jsonObject.items[i].type,jsonObject.items[i].value);
 		itemManager.addElement(itemObject);
 	}
 	for(var i=0; i<jsonObject.racers.length; i++){
@@ -344,7 +356,14 @@ function receiveJSON(jsonString){
 		userManager.addElement(userObject);
 	}
 	for(var i=0; i<jsonObject.checkin.length; i++){
-		var checkinObject = new Checkin(jsonObject.checkin[i].location,jsonObject.checkin[i].msg,jsonObject.checkin[i].pic,jsonObject.checkin[i].userid,jsonObject.checkin[i].raceid);
+		locationString = jsonObject.checkin[i].location;
+		lat = locationString.substring(1,locationString.indexOf(","));
+		lng = locationString.substring(locationString.indexOf(",")+2,locationString.length-1);
+		lat = parseFloat(lat);
+		lng = parseFloat(lng);
+		position = new google.maps.LatLng(lat,lng);
+		
+		var checkinObject = new Checkin(position,jsonObject.checkin[i].comment,jsonObject.checkin[i].picture,jsonObject.checkin[i].userID);
 		checkinManager.addElement(checkinObject);
 	}
 	

@@ -89,7 +89,7 @@ public class Item {
 	public void addItem(int value, String location, int type, int raceID, boolean active) throws SQLException {
 		PreparedStatement ps;
 		
-		ps = c.prepareStatement("INSERT INTO Item(TypeID,ValueWeight,Geolocation,Status, RaceID) VALUES (?,?,?,?,?)");
+		ps = c.prepareStatement("INSERT INTO Item (TypeID,ValueWeight,Geolocation,Status, RaceID) VALUES (?,?,?,?,?)");
 		
 		ps.setInt(1, type);
 		ps.setInt(2, value);
@@ -126,17 +126,18 @@ public class Item {
 		List<ItemObj> results = new ArrayList<ItemObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT (typeid, status, valueweight, geolocation) FROM Items WHERE raceid = ?");
+		ps = c.prepareStatement("SELECT id, typeid, status, valueweight, geolocation FROM Item WHERE raceid = ?");
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
 			ItemObj itemObj = new ItemObj();
-			itemObj.setType(rs.getInt(1));
-			itemObj.setStatus(rs.getBoolean(2));
-			itemObj.setValue(rs.getInt(3));
-			itemObj.setLocation(rs.getString(4));
+			itemObj.setItemId(rs.getInt(1));
+			itemObj.setType(rs.getInt(2));
+			itemObj.setStatus(rs.getBoolean(3));
+			itemObj.setValue(rs.getInt(4));
+			itemObj.setLocation(rs.getString(5));
 			itemObj.setRaceId(raceId);
 
 			results.add(itemObj);
@@ -238,4 +239,17 @@ public class Item {
 		
 		return result;
 	}
+
+	public void setItemValue(int itemID, int status) throws SQLException {
+		PreparedStatement ps;
+		ps = c.prepareStatement("UPDATE Item SET status=? WHERE ID=?");
+		ps.setInt(1, status);
+		ps.setInt(2, itemID);
+		
+		ResultSet rs = ps.executeQuery();
+		c.commit();
+		ps.close();
+	}
+
+	
 }

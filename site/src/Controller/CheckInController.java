@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import twitter4j.Twitter;
 import Beans.CheckIn;
+import Beans.Item;
 
 /**
  * 
@@ -29,7 +30,23 @@ public class CheckInController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private String address = ""; // TODO Change me
-
+	private CheckIn checkInModel;
+	private Item itemModel;
+	
+	public CheckInController() {
+		 
+		try {
+			checkInModel = new CheckIn();
+			itemModel = new Item();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * @param request
@@ -104,19 +121,22 @@ public class CheckInController extends HttpServlet {
 
 	private void createCheckIn(JSONObject json, HttpServletRequest request) throws ParseException,
 			JSONException, SQLException, ServletException{
-		CheckIn checkInModel = new CheckIn();
 
-		int userId = json.getInt("userId");
-		int raceId = json.getInt("raceId");
+		int userId = Integer.parseInt(json.getString("userId"));
+		int raceId = Integer.parseInt(json.getString("raceId"));
 		String picture = json.getString("picture");
 		String comment = json.getString("comment");
 		String location = json.getString("location");
-		if(json.getBoolean("postTweet") == true){
+		if(json.getString("postTweet") == "true"){
 			Twitter twitter = (Twitter) request.getAttribute("twitter");
 			TweetController.postTweet(comment, twitter);
 		}
+		int markerToDelete = Integer.parseInt(json.getString("markerToDelete"));
 		// Starts adding things to the DB.
 		checkInModel.addCheckIn(userId, raceId, picture, comment, location);
+		
+		if(markerToDelete != -1)
+			itemModel.setItemValue(markerToDelete, 0);
 
 	}
 

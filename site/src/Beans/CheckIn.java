@@ -30,7 +30,8 @@ public class CheckIn {
 			ps.setString(3, picture);
 			ps.setString(4, comment);
 			ps.setString(5, geoLocation);
-
+			
+			ps.executeUpdate();
 			c.commit();
 			ps.close();
 		} catch (SQLException e) {
