@@ -46,7 +46,7 @@ public class CheckIn {
 				checkInObj.getLocation());
 	}
 
-	public List<Integer> getCheckInsInt(int raceId) throws SQLException {
+	public List<Integer> getCheckInIDs(int raceId) throws SQLException {
 		PreparedStatement ps;
 		List<Integer> results = new ArrayList<Integer>();
 
@@ -63,7 +63,7 @@ public class CheckIn {
 		return results;
 	}
 
-	public List<CheckInObj> getItemsObj(int raceId) throws SQLException {
+	public List<CheckInObj> getCheckInObjects(int raceId) throws SQLException {
 		List<CheckInObj> results = new ArrayList<CheckInObj>();
 		PreparedStatement ps;
 

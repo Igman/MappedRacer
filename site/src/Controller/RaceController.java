@@ -6,15 +6,21 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+
+import Beans.CheckIn;
+import Beans.CheckInObj;
 import Beans.Item;
 import Beans.ItemObj;
 import Beans.Racer;
 import Beans.RacerObj;
+import Beans.User;
 
 /**
  * Servlet implementation class RaceController
@@ -23,6 +29,7 @@ public class RaceController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private Racer racerModel;
     private Item itemModel;
+    private CheckIn checkInModel;
     
     
     /**
@@ -34,6 +41,8 @@ public class RaceController extends HttpServlet {
         try {
 			racerModel = new Racer();
 			itemModel = new Item();
+			checkInModel = new CheckIn();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -56,11 +65,20 @@ public class RaceController extends HttpServlet {
 		
 		try {
 			json += "{";
+			
 			// Adds items to JSON
 			json += getJSONItems(raceID);
+			
 			json += ",";
+			
 			// Adds racers to JSON
 			json += getJSONRacers(raceID);
+			
+			json += ",";
+			
+			// Adds the check ins to JSON
+			json += getJSONCheckIn(raceID);
+			
 			json += "}";
 			
 			System.out.println(json);
@@ -71,6 +89,24 @@ public class RaceController extends HttpServlet {
 		}finally {
 			out.close();
 		}		
+	}
+
+	private String getJSONCheckIn(int raceID) throws SQLException {
+		List<CheckInObj> checkIns = checkInModel.getCheckInObjects(raceID);
+		Iterator<CheckInObj> iterator = checkIns.iterator();
+		
+		StringBuffer json = new StringBuffer("checkin:[");
+		CheckInObj temp;
+		
+		while (iterator.hasNext()) {
+			temp = iterator.next();
+			
+			json.append("{userID:\""+temp.getUserID()+"\", location:\""+temp.getLocation()+"\", comment:\""+temp.getComment()+"\", picture:\""+temp.getPic()+ "\"},");
+		}
+		// replace last character with ]
+		json.setCharAt( json.length()-1,']');
+        
+		return json.toString();
 	}
 
 	// Score uname uiD of those attending raceID
