@@ -2,14 +2,21 @@ package Tests;
 
 import static org.junit.Assert.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class RacerTest {
 
+	private Connection c;
 	@Before
 	public void setUp() throws Exception {
+		PreparedStatement ps;
+		
+		
 	}
 
 	@After
@@ -27,12 +34,37 @@ public class RacerTest {
 	}
 
 	@Test
-	public final void testUpdateScore() {
+	public final void testGetRacersInt() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testGetRacersObj() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testGetAttend() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testGetTotalTime() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSetTotalTime() {
 		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
 	public final void testGetScore() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	@Test
+	public final void testSetScore() {
 		fail("Not yet implemented"); // TODO
 	}
 
