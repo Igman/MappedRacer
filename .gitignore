@@ -28,3 +28,9 @@ site/src/.DS_Store
 */.DS_Store
 
 deploy
+
+site/src/Controller/RaceController.class
+
+site/.classpath
+
+site/.project
