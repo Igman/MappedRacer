@@ -8,6 +8,7 @@ public class ItemObj {
 	private String location;
 	private int type;
 	private int value;
+	private int raceId;
 	
 	public String getLocation() {
 		return location;
@@ -27,5 +28,10 @@ public class ItemObj {
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
+	public int getRaceId() {
+		return raceId;
+	}
+	public void setRaceId(int raceId) {
+		this.raceId = raceId;
+	}
 }

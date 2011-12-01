@@ -70,27 +70,4 @@ public class Race {
 		ps.close();
 		return raceID;
 	}
-	
-	/**
-	 * 
-	 * @param raceId
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<Integer> getRacers(int raceId) throws SQLException {
-		PreparedStatement ps;
-		List<Integer> results = new ArrayList<Integer>();
-		
-		ps = c.prepareStatement("SELECT userId FROM Racers WHERE raceId = ?");
-		ps.setInt(1, raceId);
-		
-		ResultSet rs = ps.executeQuery();
-		
-		while (rs.next()) {
-			Integer temp = rs.getInt(1);
-			results.add(temp);
-		}
-		
-		return results;
-	}
 }

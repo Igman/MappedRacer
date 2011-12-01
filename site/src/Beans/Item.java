@@ -3,7 +3,11 @@ package Beans;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 
@@ -93,11 +97,142 @@ public class Item {
 		ps.setBoolean(4, active);
 		ps.setInt(5, raceID);
 		
-		ps.executeUpdate();
+		//throw error if fail
+		int rows = ps.executeUpdate();
 		
 		c.commit();
 		ps.close();
 		
 	}
 	
+	public List<Integer> getItemsInt(int raceId) throws SQLException {
+		PreparedStatement ps;
+		List<Integer> results = new ArrayList<Integer>();
+		
+		ps = c.prepareStatement("SELECT ID FROM Item WHERE raceId = ?");
+		ps.setInt(1, raceId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			Integer temp = rs.getInt(1);
+			results.add(temp);
+		}
+		
+		return results;
+	}
+	
+	public List<ItemObj> getItemsObj(int raceId) throws SQLException {
+		List<ItemObj> results = new ArrayList<ItemObj>();
+		
+		List<Integer> items = getItemsInt(raceId);
+		Iterator<Integer> itr = items.iterator();
+		while (itr.hasNext()) {
+			int item = itr.next();
+			
+			ItemObj temp = new ItemObj();
+			temp.setLocation(getLocation(item));
+			temp.setType(getType(item));
+			temp.setValue(getValue(item));
+			temp.setRaceId(getRaceId(item));
+			
+			results.add(temp);
+		}
+		
+		return results;
+	}
+	
+	public int getType(int itemId) throws SQLException {
+		PreparedStatement ps;
+		int result = -1;
+		
+		ps = c.prepareStatement("SELECT TypeID FROM Item WHERE ID = ?");
+		ps.setInt(1, itemId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getInt(1);
+		}
+		
+		return result;
+	}
+	
+	public boolean getStatus(int itemId) throws SQLException {
+		PreparedStatement ps;
+		boolean result = false;
+		
+		ps = c.prepareStatement("SELECT Status FROM Item WHERE ID = ?");
+		ps.setInt(1, itemId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getBoolean(1);
+		}
+		
+		return result;
+	}
+	
+	public void setStatus(int itemId, boolean status) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE Item SET status = ? WHERE ID = ?");
+		ps.setBoolean(1, status);
+		ps.setInt(2, itemId);
+		
+		//throw error if fail
+		int rows = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
+	}
+	
+	public int getValue(int itemId) throws SQLException {
+		PreparedStatement ps;
+		int result = -1;
+		
+		ps = c.prepareStatement("SELECT ValueWeight FROM Item WHERE ID = ?");
+		ps.setInt(1, itemId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getInt(1);
+		}
+		
+		return result;
+	}
+	
+	public String getLocation(int itemId) throws SQLException {
+		PreparedStatement ps;
+		String result = "";
+		
+		ps = c.prepareStatement("SELECT Geolocation FROM Item WHERE ID = ?");
+		ps.setInt(1, itemId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		return result;
+	}
+	
+	public int getRaceId(int itemId) throws SQLException {
+		PreparedStatement ps;
+		int result = -1;
+		
+		ps = c.prepareStatement("SELECT RaceId FROM Item WHERE ID = ?");
+		ps.setInt(1, itemId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getInt(1);
+		}
+		
+		return result;
+	}
 }

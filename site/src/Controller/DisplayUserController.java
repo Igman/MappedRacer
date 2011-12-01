@@ -19,6 +19,7 @@ import Beans.User;
  */
 public class DisplayUserController {
 	private int userId;
+	private int raceId;
 	private User user;
 	
 	private String address = "";	//TODO Change me

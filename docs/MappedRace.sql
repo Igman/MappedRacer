@@ -123,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `Racers` (
   `UserID` int(11) NOT NULL DEFAULT '0',
   `Attend` smallint(1) DEFAULT NULL,
   `TotalTime` time DEFAULT NULL,
-  `Place` int(11) DEFAULT NULL,
   `Score` int(11) DEFAULT '0',
   PRIMARY KEY (`RaceID`,`UserID`),
   KEY `UserID` (`UserID`),
