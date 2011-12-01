@@ -41,9 +41,13 @@
 	      <fileset dir="${src.dir}" excludes="**/*.java"/>
 	    </copy>
 	</target>
-	
-	<target name="package" depends="clean,prepare,compile">
-		<jar jarfile="MappedRacer.war" basedir="${deploy.dir}"/>
-	</target>
+
+    <target name="package" depends="clean,prepare,compile">
+		<war destfile="${war.name}" webxml="deploy/WEB-INF/web.xml">
+            <fileset dir="deploy"/>
+            <lib dir="deploy/WEB-INF/lib"/>
+            <classes dir="deploy/WEB-INF/classes"/>
+        </war>
+    </target>
 
 </project>
