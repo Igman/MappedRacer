@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**********************************************
@@ -24,7 +23,7 @@ public class CheckIn {
 			String comment, String geoLocation) {
 		PreparedStatement ps;
 		try {
-			ps = c.prepareStatement("INSERT (userid, raceid, picture, comment, geolocation) INTO CheckIn VALUES (?,?,?,?,?)");
+			ps = c.prepareStatement("INSERT INTO CheckIn(userid, raceid, picture, comment, geolocation) VALUES (?,?,?,?,?)");
 
 			ps.setInt(1, userId);
 			ps.setInt(2, raceId);
@@ -67,7 +66,7 @@ public class CheckIn {
 		List<CheckInObj> results = new ArrayList<CheckInObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT (id, userid, pic, comment, geolocation) FROM CheckIn WHERE raceid = ?");
+		ps = c.prepareStatement("SELECT id, userid, picture, comment, geolocation FROM CheckIn WHERE raceid = ?");
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();

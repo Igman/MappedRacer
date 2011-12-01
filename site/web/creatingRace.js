@@ -266,7 +266,7 @@ function send(){
 
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4))
-		redirect(usr_home.html);
+		reDirect("usr_home.html");
 	else
-		alert("There was an error with the application, please restart the app. Error: request.status");
+		alert("There was an error with the application, please restart the app. Error: "+request.status);
 }

@@ -103,9 +103,14 @@ public class RaceController extends HttpServlet {
 			
 			json.append("{userID:\""+temp.getUserID()+"\", location:\""+temp.getLocation()+"\", comment:\""+temp.getComment()+"\", picture:\""+temp.getPic()+ "\"},");
 		}
-		// replace last character with ]
-		json.setCharAt( json.length()-1,']');
-        
+		
+		if(checkIns.isEmpty()){
+			json.append("{}]");
+		}else{
+			// replace last character with ]
+			json.setCharAt( json.length()-1,']');
+		}
+		
 		return json.toString();
 	}
 
