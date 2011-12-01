@@ -11,6 +11,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import Exceptions.InsertException;
+
 /******************************************************
  * This is a model class that will set and get any * properties that have to do
  * with the racer objects * that will be stored in the database. A racer is a *
@@ -42,9 +44,10 @@ public class Racer {
 	 *            An array of racers user names.
 	 * @param raceID
 	 *            The race ID that the racers are in.
+	 * @throws InsertException 
 	 * @throws SQLException
 	 */
-	public boolean addRacers(String[] racers, int raceID) throws SQLException {
+	public boolean addRacers(String[] racers, int raceID) throws InsertException {
 		boolean success = false;
 		for (int k = 0; k < racers.length; k++) {
 			addRacer(racers[k], raceID);
@@ -59,9 +62,10 @@ public class Racer {
 	 *            The racer's user name.
 	 * @param raceID
 	 *            The race ID that the racer is in.
+	 * @throws InsertException 
 	 * @throws SQLException
 	 */
-	public void addRacer(String racer, int raceID) {
+	public void addRacer(String racer, int raceID) throws InsertException {
 		PreparedStatement ps;
 		// If user exists, get user ID
 		// Else, create user, then get user ID
@@ -77,12 +81,12 @@ public class Racer {
 			ps.setBoolean(3, attend);
 
 			if (ps.executeUpdate() != 1)
-				// throw InsertException ("Failed to insert racer");
+				throw new InsertException ("Failed to insert racer.");
 
 				c.commit();
 			ps.close();
 		} catch (SQLException e) {
-
+				throw new InsertException ("Database error on racer insertion.");
 		}
 
 	}

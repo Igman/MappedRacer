@@ -18,6 +18,7 @@ import Beans.User;
 import Beans.Racer;
 import Beans.Item;
 import Beans.ItemObj;
+import Exceptions.InsertException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,6 +98,9 @@ public class CreateRaceController extends HttpServlet {
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT,
 					"Problem occured with the SQL.");
+		} catch (InsertException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT,
+					"Problem inserting into database. Reason: " + e.getMessage());
 		}
 	}
 
@@ -152,9 +156,10 @@ public class CreateRaceController extends HttpServlet {
 	 * @throws ParseException
 	 * @throws JSONException
 	 * @throws SQLException
+	 * @throws InsertException 
 	 */
 	private void createRace(JSONObject json) throws ParseException,
-			JSONException, SQLException {
+			JSONException, SQLException, InsertException {
 		String name = json.getString("name");
 
 		Calendar dateTime = advDateParse(json.getString("dateTime"));
