@@ -107,19 +107,24 @@ public class Racer {
 
 	public List<RacerObj> getRacersObj(int raceId) throws SQLException {
 		List<RacerObj> results = new ArrayList<RacerObj>();
+		PreparedStatement ps;
 
-		List<Integer> racers = getRacersInt(raceId);
-		Iterator<Integer> itr = racers.iterator();
-		while (itr.hasNext()) {
-			int racer = itr.next();
-
-			RacerObj temp = new RacerObj();
-			temp.setAttend(getAttend(raceId, racer));
-			temp.setTotalTime(getTotalTime(raceId, racer));
-			temp.setScore(getScore(raceId, racer));
-
-			results.add(temp);
+		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.name FROM Racers r LEFT JOIN (Users u) ON (r.userid = u.uid) WHERE r.id = ?");
+		ps.setInt(1, raceId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			RacerObj racerObj = new RacerObj();
+			racerObj.setAttend(rs.getBoolean(1));
+			racerObj.setScore(rs.getInt(2));
+			racerObj.setUserId(rs.getInt(3));
+			racerObj.setUserName(rs.getString(4));
+			racerObj.setRaceId(raceId);
+			
+			results.add(racerObj);
 		}
+		
 		return results;
 	}
 
@@ -138,39 +143,6 @@ public class Racer {
 		}
 
 		return result;
-	}
-
-	public Time getTotalTime(int raceId, int userId) throws SQLException {
-		PreparedStatement ps;
-		Time result = new Time(0);
-
-		ps = c.prepareStatement("SELECT TotalTime FROM Racers WHERE RaceId = ? AND UserId = ?");
-		ps.setInt(1, raceId);
-		ps.setInt(2, userId);
-
-		ResultSet rs = ps.executeQuery();
-
-		while (rs.next()) {
-			result = rs.getTime(1);
-		}
-
-		return result;
-	}
-
-	public void setTotalTime(int raceId, int userId, Time totalTime)
-			throws SQLException {
-		PreparedStatement ps;
-
-		ps = c.prepareStatement("UPDATE Racers SET TotalTime = ? WHERE raceID = ? AND userID = ?");
-
-		ps.setTime(1, totalTime);
-		ps.setInt(2, raceId);
-		ps.setInt(3, userId);
-
-		ps.executeUpdate();
-
-		c.commit();
-		ps.close();
 	}
 
 	public int getScore(int userID, int raceID) throws SQLException {

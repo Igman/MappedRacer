@@ -9,14 +9,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class RacerTest {
+import Beans.Conn;
 
+public class RacerTest {
 	private Connection c;
+	
+	
 	@Before
 	public void setUp() throws Exception {
+		c = Conn.getInstance().getConnection();
+		
 		PreparedStatement ps;
 		
-		
+		ps = c.prepareStatement(sql)
 	}
 
 	@After
