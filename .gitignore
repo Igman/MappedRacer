@@ -36,3 +36,5 @@ site/.classpath
 site/.project
 
 site/src/Controller/CheckInController.class
+
+MappedRacer.war
