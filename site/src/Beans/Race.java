@@ -55,7 +55,7 @@ public class Race {
 		ps.setTimestamp(2, new java.sql.Timestamp(dateTime.getTimeInMillis()));
 		ps.setInt(3, creator);
 
-		//rowCount should be 1
+		//rowCount should be 1. Throw error otherwise
 		int rowCount = ps.executeUpdate();
 
 		// Retrieves the race id of the created race.
@@ -70,21 +70,27 @@ public class Race {
 		ps.close();
 		return raceID;
 	}
-
-	public List<Integer> getRaces(int userId) throws SQLException {
+	
+	/**
+	 * 
+	 * @param raceId
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Integer> getRacers(int raceId) throws SQLException {
 		PreparedStatement ps;
 		List<Integer> results = new ArrayList<Integer>();
-
-		ps = c.prepareStatement("SELECT RaceId FROM Race where userId = ?");
-		ps.setInt(1, userId);
-
+		
+		ps = c.prepareStatement("SELECT userId FROM Racers WHERE raceId = ?");
+		ps.setInt(1, raceId);
+		
 		ResultSet rs = ps.executeQuery();
-
+		
 		while (rs.next()) {
 			Integer temp = rs.getInt(1);
 			results.add(temp);
 		}
-
+		
 		return results;
 	}
 }

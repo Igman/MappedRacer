@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Beans.Race;
+import Beans.User;
 
 /**
  * 
@@ -18,8 +19,7 @@ import Beans.Race;
  */
 public class DisplayUserController {
 	private int userId;
-	private int raceId;
-	private Race race;
+	private User user;
 	
 	private String address = "";	//TODO Change me
 	
@@ -36,7 +36,7 @@ public class DisplayUserController {
 		raceId = Integer.parseInt(request.getParameter("raceId"));
 		userId = Integer.parseInt(request.getParameter("userId"));
 		
-		List<Integer> lsRace = race.getRaces(userId);
+		List<Integer> lsRace = user.getRaces(userId);
 		
 		request.setAttribute("lsRace", lsRace);
 		
