@@ -24,6 +24,7 @@ var goalIcon = 1;
 var positiveIcon = 2;
 var negativeIcon = 3;
 var zoomOfMap = 10;
+var sendRaceId = false;
 		
 function initialize() {
 	var myOptions = {
@@ -34,7 +35,7 @@ function initialize() {
   
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	
-	fillMapWithMarkers();
+	sendRaceId(17);
 }
 
 function getGeoLocation(){
@@ -198,36 +199,36 @@ function User(id, innerId){
 
 function fillMapWithMarkers(){
 	//Fill map with Markers and Items
-	var position;
-	var position2;
-	var position3;
-	var position4;
-	var position5;
-	var position6;
-	var position7;
-
-	position = new google.maps.LatLng(49.26303695241871, -123.23941507131957);
-	var marker1 = new Item(position,'1','1');
-	itemManager.addElement(marker1);
-	position2 = new google.maps.LatLng(49.29887162686631, -123.1447008961083);
-	var marker2 = new Item(position2,'2','1');
-	itemManager.addElement(marker2);
-	position3 = new google.maps.LatLng(49.240627056995336, -123.14744747813955);
-	var marker3 = new Item(position3,'2','1');
-	itemManager.addElement(marker3);
-	position4 = new google.maps.LatLng(49.24286850433255, -123.02110470470205);
-	var marker4 = new Item(position4,'2','1');
-	itemManager.addElement(marker4);
-	position5 = new google.maps.LatLng(49.24757521259346, -123.10524024755858);
-	var marker5 = new Item(position5,'3','1');
-	itemManager.addElement(marker5);
-	position6 = new google.maps.LatLng(49.261244535147405, -123.1941393726708)
-	var marker6 = new Item(position6,'3','1');
-	itemManager.addElement(marker6);
-	position7 = new google.maps.LatLng(49.289282139759524, -123.01006893810049);
-	var marker7 = new Item(position7,'3','1');
-	itemManager.addElement(marker7);
-
+		var position;
+		var position2;
+		var position3;
+		var position4;
+		var position5;
+		var position6;
+		var position7;
+	
+		position = new google.maps.LatLng(49.26303695241871, -123.23941507131957);
+		var marker1 = new Item(position,'1','1');
+		itemManager.addElement(marker1);
+		position2 = new google.maps.LatLng(49.29887162686631, -123.1447008961083);
+		var marker2 = new Item(position2,'2','1');
+		itemManager.addElement(marker2);
+		position3 = new google.maps.LatLng(49.240627056995336, -123.14744747813955);
+		var marker3 = new Item(position3,'2','1');
+		itemManager.addElement(marker3);
+		position4 = new google.maps.LatLng(49.24286850433255, -123.02110470470205);
+		var marker4 = new Item(position4,'2','1');
+		itemManager.addElement(marker4);
+		position5 = new google.maps.LatLng(49.24757521259346, -123.10524024755858);
+		var marker5 = new Item(position5,'3','1');
+		itemManager.addElement(marker5);
+		position6 = new google.maps.LatLng(49.261244535147405, -123.1941393726708)
+		var marker6 = new Item(position6,'3','1');
+		itemManager.addElement(marker6);
+		position7 = new google.maps.LatLng(49.289282139759524, -123.01006893810049);
+		var marker7 = new Item(position7,'3','1');
+		itemManager.addElement(marker7);
+	
 	updateMarkers();
 }
 
@@ -325,15 +326,26 @@ function send(){
 
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4))
-		alert(":D");
+		alert("came back");
+		if(sendRaceId){
+			receiveJSON(request.responseText);
+			sendRaceId = false;
+		}
 	else
 		alert(request.status);
 }
 
-function reDirect(url){
-	window.location = url;
+function sendRaceId(id){
+	sendRaceId = true;
+	var request = new XMLHttpRequest();
+	var raceID = id;
+	var url = "RaceController?race_id="+raceID;
+	request.onreadystatechange = handleResponse;
+	request.open("GET",url,true);
+	request.send(null);
 }
 
-function goback(){
-	history.go(-1);
+function receiveJSON(jsonObject){
+	var jsonString = eval(jsonObject);
+	alert("received");
 }

@@ -179,3 +179,14 @@
 	margin-left: 0px;
 	margin-top: -32.5px;
 }
+
+.error{
+	color: #ff2929;
+	font-size: 12px;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: 25px;
+	margin-top: 5px;
+}

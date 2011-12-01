@@ -7,6 +7,7 @@
 	<meta name="apple-mobile-web-app-capable" content="YES">
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript" src="creatingRace.js"></script>
+	<script type="text/javascript" src="general.js"></script>
 	<link rel="stylesheet" type="text/css" href="general.css">
 	<link rel="stylesheet" type="text/css" href="createRace.css">
 </head>
@@ -18,6 +19,7 @@
 	<form>
 		<input id="raceName_text" type="text" placeholder="Race name"/>
 	</form>
+	<div class="error" id="raceNameError"></div>
 	<div id="map_canvas" style="width:274px; height:170px"></div>
 	<div id="add_final_destination"><img src="img/small_button.png" onclick="setType(1)"/>
 		<div class="buttons_map" id="add_final_destination_text" >Add Final<br>Destination</div>
@@ -28,14 +30,17 @@
 	<div id="add_negative_items"><img src="img/small_button.png" onclick="setType(3)"/>
 		<div class="buttons_map" id="add_negative_items_text" >Add<br>Negative Items</div>
 	</div>
+	<div class="error" id="mapError"></div>
 	<form>
 		<input id="addFriends" type="input" placeholder="Add Friends"/>
 		<div id="plus"><img src="img/button1.png" onclick="addUser()"/></div>
 		<div class="buttons_map" id="plus_text" onclick="addUser()">Add</div>
+		<div class="error" id="friendsError"></div>
 		<div id="userList"></div>
 		<input id="date" type="date" value="Date"/>
 		<input id="time" type="time" value="Time"/>
 	</form>
+	<div class="error" id="dateTimeError"></div>
 	<div id="create_race_button"><img src="img/big_button.png" onclick="validate()"/></div>
 	<div class="buttons_map" id="create_race_text" onclick="validate()">Create race</div>
 	<div id="footer">CPSC 410</div>
