@@ -24,7 +24,8 @@ var goalIcon = 1;
 var positiveIcon = 2;
 var negativeIcon = 3;
 var zoomOfMap = 10;
-var sendRaceId = false;
+var raceIdSent = false;
+var request;
 		
 function initialize() {
 	var myOptions = {
@@ -192,44 +193,10 @@ function Item(location, type, value){
 	this.value = value;
 }
 
-function User(id, innerId){
+function User(id, username, score){
 	this.id = id;
-	this.innerId = innerId;
-}
-
-function fillMapWithMarkers(){
-	//Fill map with Markers and Items
-		var position;
-		var position2;
-		var position3;
-		var position4;
-		var position5;
-		var position6;
-		var position7;
-	
-		position = new google.maps.LatLng(49.26303695241871, -123.23941507131957);
-		var marker1 = new Item(position,'1','1');
-		itemManager.addElement(marker1);
-		position2 = new google.maps.LatLng(49.29887162686631, -123.1447008961083);
-		var marker2 = new Item(position2,'2','1');
-		itemManager.addElement(marker2);
-		position3 = new google.maps.LatLng(49.240627056995336, -123.14744747813955);
-		var marker3 = new Item(position3,'2','1');
-		itemManager.addElement(marker3);
-		position4 = new google.maps.LatLng(49.24286850433255, -123.02110470470205);
-		var marker4 = new Item(position4,'2','1');
-		itemManager.addElement(marker4);
-		position5 = new google.maps.LatLng(49.24757521259346, -123.10524024755858);
-		var marker5 = new Item(position5,'3','1');
-		itemManager.addElement(marker5);
-		position6 = new google.maps.LatLng(49.261244535147405, -123.1941393726708)
-		var marker6 = new Item(position6,'3','1');
-		itemManager.addElement(marker6);
-		position7 = new google.maps.LatLng(49.289282139759524, -123.01006893810049);
-		var marker7 = new Item(position7,'3','1');
-		itemManager.addElement(marker7);
-	
-	updateMarkers();
+	this.username = username;
+	this.score = score;
 }
 
 function updateMarkers(){
@@ -325,19 +292,17 @@ function send(){
 }
 
 function handleResponse(){
-	if((request.status == 200)&&(request.readyState == 4))
-		alert("came back");
-		if(sendRaceId){
-			receiveJSON(request.responseText);
-			sendRaceId = false;
-		}
+	if((request.status == 200)&&(request.readyState == 4)){
+		var jsonString = request.responseText;
+		receiveJSON(jsonString);
+	}
 	else
 		alert(request.status);
 }
 
 function sendRaceId(id){
-	sendRaceId = true;
-	var request = new XMLHttpRequest();
+	raceIdSent = true;
+	request = new XMLHttpRequest();
 	var raceID = id;
 	var url = "RaceController?race_id="+raceID;
 	request.onreadystatechange = handleResponse;
@@ -345,7 +310,29 @@ function sendRaceId(id){
 	request.send(null);
 }
 
-function receiveJSON(jsonObject){
-	var jsonString = eval(jsonObject);
-	alert("received");
+function receiveJSON(jsonString){
+	var jsonObject = eval('('+jsonString+')');
+	for(var i=0; i<jsonObject.items.length; i++){
+		var locationString = jsonObject.items[i].location;
+		var lat = locationString.substring(1,locationString.indexOf(","));
+		var lng = locationString.substring(locationString.indexOf(",")+2,locationString.length-1);
+		lat = parseFloat(lat);
+		lng = parseFloat(lng);
+		var position = new google.maps.LatLng(lat,lng);
+		var itemObject = new Item(position,jsonObject.items[i].type,jsonObject.items[i].value);
+		itemManager.addElement(itemObject);
+	}
+	for(var i=0; i<jsonObject.racers.length; i++){
+		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score);
+		userManager.addElement(userObject);
+	}
+	
+	updateMarkers();
+	updatePositions();
+}
+
+function updatePositions(){
+	var positionsDiv = document.getElementById("racersPosition");
+	for(var i=0; i<userManager.getSize(); i++)
+		positionsDiv.innerHTML += userManager.getElementAt(i).username + "          " + userManager.getElementAt(i).score + "<br>";
 }

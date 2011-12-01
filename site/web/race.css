@@ -54,6 +54,7 @@
 	-webkit-margin-bottom-collapse: separate;
 	margin-top: 20px;
 	margin-left: 11px;
+	z-index: -1;
 }
 
 #position{
@@ -61,6 +62,14 @@
 	-webkit-margin-top-collapse: separate;
 	-webkit-margin-bottom-collapse: separate;
 	margin-top: -110px;
+	margin-left: 25px;
+}
+
+#racersPosition{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 18px;
 	margin-left: 25px;
 }
 
