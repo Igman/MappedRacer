@@ -39,11 +39,6 @@
 }
 
 #raceList{
-	position: relative;
-	-webkit-margin-top-collapse: separate;
-	-webkit-margin-bottom-collapse: separate;
-	/*margin-top: 20px;*/
-	margin-left: -27px;
 	position: fixed;
 	left: 7%;
 	top: 25%;
