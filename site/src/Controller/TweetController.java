@@ -18,6 +18,7 @@ import twitter4j.QueryResult;
 import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import Beans.Racer;
 
 public class TweetController extends HttpServlet{
 	
@@ -37,22 +38,6 @@ public class TweetController extends HttpServlet{
         }
 	}
 	
-	public static String search(Collection<String> userNames, Twitter twitter) throws ServletException{
-		StringBuilder queryString = new StringBuilder();
-		for(String userName : userNames){
-			queryString.append("from:" + userName + " OR ");
-		}
-		queryString.replace(queryString.lastIndexOf("O"), queryString.length(), "");
-		QueryResult results = null;
-		try {
-			results = twitter.search(new Query(queryString.toString()));
-		} catch (TwitterException e) {
-            throw new ServletException(e); 
-		}
-		for (Tweet tweet : results.getTweets()) {
-	        System.out.println(tweet.getFromUser() + ":" + tweet.getText());
-	    }
-		return results.toString();
-	}
+
 
 }
