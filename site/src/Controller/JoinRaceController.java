@@ -17,7 +17,7 @@ public class JoinRaceController extends HttpServlet {
 		String raceId = request.getParameter("raceId");
 		try {
 			Racer racer = new Racer();
-			racer.addRacer(twitter.getScreenName(), Integer.parseInt(raceId));
+			racer.setAttend(raceId, request.getSession().getAttribute("userId"), true);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} 
