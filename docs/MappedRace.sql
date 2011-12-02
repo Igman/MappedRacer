@@ -148,9 +148,6 @@ DROP TABLE IF EXISTS `Users`;
 CREATE TABLE IF NOT EXISTS `Users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `uname` varchar(50) DEFAULT NULL,
-  `passcode` varchar(50) DEFAULT NULL,
-  `oauth_token` varchar(90) DEFAULT NULL,
-  `oauth_token_secret` varchar(90) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `uname` (`uname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
