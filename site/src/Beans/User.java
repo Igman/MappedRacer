@@ -51,6 +51,31 @@ public class User {
 
 		return userID;
 	}
+	
+	/**
+	 * This function is used to get a user's name. If it is "" then that means the
+	 * user ID was not found in the DB.
+	 * 
+	 * @param userID
+	 *            The user's user id.
+	 * @return The user's user name.
+	 * @throws SQLException
+	 */
+	public String getUserName(int userId) throws SQLException {
+		PreparedStatement ps;
+		ResultSet rs;
+		String userName = "";
+
+		ps = c.prepareStatement("SELECT uname FROM Users WHERE uid = ?");
+
+		ps.setInt(1, userId);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			userName = rs.getString(1);
+		}
+
+		return userName;
+	}
 
 	/**
 	 * This function is used to add a user to the database. It first checks if
