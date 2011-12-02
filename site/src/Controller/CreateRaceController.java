@@ -24,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import twitter4j.Twitter;
+import twitter4j.internal.http.HttpRequest;
+
 /******************************************************
  * This is a controller class that is responsible for * setting up the race for
  * a user. It calls the model * to ensure that the database is updated
@@ -80,7 +83,7 @@ public class CreateRaceController extends HttpServlet {
 			JSONObject jsonObj = getJSON(request.getReader());
 
 			// Adds the race to the database.
-			createRace(jsonObj);
+			createRace(jsonObj, request);
 
 			response.setStatus(HttpServletResponse.SC_OK);
 			
@@ -153,12 +156,13 @@ public class CreateRaceController extends HttpServlet {
 	 * 
 	 * @param json
 	 *            This is the JSON object containing everything.
+	 * @param request 
 	 * @throws ParseException
 	 * @throws JSONException
 	 * @throws SQLException
 	 * @throws InsertException 
 	 */
-	private void createRace(JSONObject json) throws ParseException,
+	private void createRace(JSONObject json, HttpServletRequest request) throws ParseException,
 			JSONException, SQLException, InsertException {
 		String name = json.getString("name");
 
@@ -181,6 +185,7 @@ public class CreateRaceController extends HttpServlet {
 		itemModel.addItems(items, raceID);
 
 		// Adds the racers of the race to the racer DB.
+		sendInvites(racers, raceID, request);
 		racerModel.addRacers(racers, raceID);
 
 	}
@@ -246,5 +251,18 @@ public class CreateRaceController extends HttpServlet {
 		date.setTime(formatter.parse(dateStr));
 
 		return date;
+	}
+	
+	private void sendInvites(String[] racers, int raceID, HttpServletRequest request){
+		Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");
+		String invite = "%USER% Join my awesome race at http://ec2-50-112-43-245.us-west-2.compute.amazonaws.com:8080/MappedRacer/joinRace?raceId=" + raceID;
+		for(String racer : racers){
+			String userInvite = invite.replaceAll("%USER%", racer);
+			try {
+				TweetController.postTweet(userInvite, twitter);
+			} catch (ServletException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
