@@ -23,6 +23,7 @@ import Beans.CheckIn;
 import Beans.Item;
 import Beans.Race;
 import Beans.RaceObj;
+import Beans.Racer;
 import Beans.RacerObj;
 
 public class ViewHistoryController {
@@ -33,11 +34,13 @@ public class ViewHistoryController {
 
 	private String address = ""; // TODO Change me
 	private Race raceModel;
+	private Racer racerModel;
 	
 	public ViewHistoryController() {
 		 
 		try {
 			raceModel = new Race();
+			racerModel = new Racer();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,7 +101,7 @@ public class ViewHistoryController {
 		while (iterator.hasNext()) {
 			temp = iterator.next();
 			
-			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() + "\", score:\""+ temp.getScore() + "\"},");
+			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() +"\", rank:\""+racerModel.getRacerRank(userID, temp.getId()) +"\", score:\""+ temp.getScore() + "\"},");
 		}
 		if(races.isEmpty()){
 			json.append("]");

@@ -299,4 +299,22 @@ public class Racer {
 		}
 		return username.toLowerCase();
 	}
+	
+	public int getRacerRank(int userID, int raceID) throws SQLException{
+		PreparedStatement ps;
+		int rank = -1;
+
+		ps = c.prepareStatement("SELECT (SELECT count(*) FROM racers r2 WHERE r2.score < r.score AND r2.raceID = ?) + 1 AS rank FROM racers r WHERE r.raceid = ? AND userid = ?");
+		ps.setInt(1, raceID);
+		ps.setInt(2, raceID);
+		ps.setInt(3, userID);
+
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			rank = rs.getInt(1);
+		}
+
+		return rank;
+	}
 }
