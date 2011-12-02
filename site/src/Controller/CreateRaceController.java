@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import Beans.Race;
 import Beans.User;
@@ -176,17 +177,21 @@ public class CreateRaceController extends HttpServlet {
 		userModel.addUsers(racers);
 
 		// Creator is always the first racers in the list.
-		int creator = userModel.getUserID(racers[0]);
+		//int creator = userModel.getUserID(racers[0]);
+		HttpSession session = request.getSession();
+		int creatorID = (Integer) session.getAttribute("userid");
+		String creatorName = userModel.getUserName(creatorID);
 
 		// Creates the new race in the race DB.
-		int raceID = raceModel.createRace(name, dateTime, creator);
+		int raceID = raceModel.createRace(name, dateTime, creatorID);
 
 		// Adds the items in the race to the items DB.
 		itemModel.addItems(items, raceID);
 
 		// Adds the racers of the race to the racer DB.
-		sendInvites(racers, raceID, request);
+		sendInvites(racers, raceID, request);				//TODO dont have to add to user table because they will dumbly be added right away
 		racerModel.addRacers(racers, raceID);
+		racerModel.addRacer(creatorName, raceID);				
 
 	}
 

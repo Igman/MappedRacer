@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import Beans.Race;
 import Beans.RaceObj;
@@ -46,7 +47,9 @@ public class PreRaceController extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         // Gets the race ID from the request
-		int userID = Integer.parseInt(request.getParameter("user_id"));	
+		//int userID = Integer.parseInt(request.getParameter("user_id"));	
+        HttpSession session = request.getSession();
+		int userID = (Integer) session.getAttribute("userid");
 		
 		try {
 			// Adds list of races to JSON
