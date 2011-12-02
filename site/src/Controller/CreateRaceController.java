@@ -268,8 +268,7 @@ public class CreateRaceController extends HttpServlet {
 			HttpServletRequest request) {
 		Twitter twitter = (Twitter) request.getSession()
 				.getAttribute("twitter");
-		String invite = "%USER% Join my awesome race at"
-				+ request.getContextPath() + "/MappedRacer/joinRace?raceId="
+		String invite = "%USER% Join my awesome race at http://ec2-50-112-43-245.us-west-2.compute.amazonaws.com:8080/MappedRacer/joinRace?raceId="
 				+ raceID;
 		for (String racer : racers) {
 			String userInvite = invite.replaceAll("%USER%", racer);

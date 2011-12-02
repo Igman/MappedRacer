@@ -34,7 +34,7 @@ public class TwitterCallbackController extends HttpServlet {
 		}catch (TwitterException e) {
             throw new ServletException(e);
         }
-        response.sendRedirect(request.getContextPath() + "/usr_home.html");
+        response.sendRedirect(request.getContextPath() + "/usr_home.jsp");
 	}
 
 	private void setupUser(AccessToken accessToken, HttpSession session) {
