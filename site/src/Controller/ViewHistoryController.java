@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ import Beans.RaceObj;
 import Beans.Racer;
 import Beans.RacerObj;
 
-public class ViewHistoryController {
+public class ViewHistoryController extends HttpServlet{
 	/**
 	 * 
 	 */
@@ -37,7 +38,7 @@ public class ViewHistoryController {
 	private Racer racerModel;
 	
 	public ViewHistoryController() {
-		 
+		 super();
 		try {
 			raceModel = new Race();
 			racerModel = new Racer();

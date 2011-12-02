@@ -140,7 +140,7 @@ public class CheckInController extends HttpServlet {
 		String picture = json.getString("picture");
 		String comment = json.getString("comment");
 		String location = json.getString("location");
-		System.out.println(json.getString("postTweet"));
+		
 		if(json.getString("postTweet").equals("true")){
 			Twitter twitter = (Twitter) session.getAttribute("twitter");
 			TweetController.postTweet(comment + " " + picture, twitter);

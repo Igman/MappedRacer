@@ -58,7 +58,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>searchTweets</servlet-name>
-        <url-pattern>/serachTweets</url-pattern>
+        <url-pattern>/searchTweets</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>joinRace</servlet-name>
@@ -103,6 +103,14 @@
      <servlet-mapping>
        <servlet-name>PreRaceController</servlet-name>
        <url-pattern>/PreRaceController</url-pattern>
+     </servlet-mapping>
+	<servlet>
+        <servlet-name>ViewHistoryController</servlet-name>
+        <servlet-class>Controller.ViewHistoryController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+       <servlet-name>ViewHistoryController</servlet-name>
+       <url-pattern>/ViewHistoryController</url-pattern>
      </servlet-mapping>
     <!-- <error-page>
            <exception-type>twitter4j.TwitterException</exception-type>

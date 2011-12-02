@@ -21,7 +21,6 @@ var jsonString;
 var countUsers = 0;
 
 function setType(itemType){
-	alert(itemType);
 	type = itemType;
 }
 		

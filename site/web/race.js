@@ -30,6 +30,9 @@ var request;
 var markerToDelete = -1;
 var raceID;
 var numberOfUsers = 0;
+var itIsRace = false;
+var liveTweets = false;
+var tweetManager = new Manager(40);
 		
 function initialize() {
 	var myOptions = {
@@ -43,6 +46,7 @@ function initialize() {
 	var url = document.location.href;
 	var temp = url.substring(url.indexOf('?')+8, url.length);
 	raceID = parseInt(temp);
+	
 	sendRaceId(raceID);
 }
 
@@ -133,10 +137,13 @@ function isItInsideRadius(location){
 	for(var i=0; i<itemManager.getSize(); i++){
 		var item = itemManager.getElementAt(i);
 		distance = google.maps.geometry.spherical.computeDistanceBetween(location,item.location);
-
+		
+		if(itemManager.getElementAt(i).type == 1 && itIsRace)
+			document.getElementById("distanceToDestination").innerHTML = "Distance to destination: "+distance+"km";
+		
 		if(distance < sizeOfRadius){
 			deleteMarkerIcon(itemManager.getElementAt(i));
-		}
+		}				
 		
 		//if(distance < sizeOfRadius && item.type == 1)
 		//	alert("finalDestinationChecked");
@@ -277,7 +284,6 @@ function addRadius(){
 
 function deleteMarkerIcon(marker){
 	markerToDelete = marker.id;
-	alert("item id: " +marker.id);
 	//marker.value = 0;
 	//itemManager.removeElementAt(marker);						//Don't know if this is useful
 	//removeAllMarkers();										//Or if this is useful
@@ -314,7 +320,7 @@ function handleResponse(){
 		if(raceIdSent){
 			raceIdSent = false;
 			var jsonString = request.responseText;
-			receiveJSON(jsonString);
+			receiveJSON(jsonString)
 		}else{
 			markerToDelete = -1;
 			reDirect("race.html?raceId="+raceID.toString());
@@ -375,6 +381,7 @@ function receiveJSON(jsonString){
 	updateUserMarkers();
 	
 	if(getURL() > 0){
+		itIsRace = true;
 		updatePositions();
 	}
 }
@@ -382,7 +389,7 @@ function receiveJSON(jsonString){
 function updatePositions(){
 	var positionsDiv = document.getElementById("racersPosition");
 	var squareDiv = document.getElementsByTagName("div");
-	var sizePerUser = 60;
+	var sizePerUser = 32;
 	for(var i=0; i<squareDiv.length; i++){
 		if(squareDiv[i].id == "roundSquare_position")
 			squareDiv[i].style.height = sizePerUser * numberOfUsers + 'px';
@@ -390,6 +397,8 @@ function updatePositions(){
 	
 	for(var i=0; i<userManager.getSize(); i++)
 		positionsDiv.innerHTML += userManager.getElementAt(i).username + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + userManager.getElementAt(i).score + "<br>";
+	
+	//getLiveTweets();
 }
 
 function getURL(){
@@ -400,3 +409,53 @@ function getURL(){
 function checkinClicked(){
 	window.location = "checkin.html?raceId="+raceID.toString();
 }
+
+//function getLiveTweets(){
+//	liveTweets = true;
+//	request = new XMLHttpRequest();
+//	var url = "searchTweets?raceId="+raceID;
+//	
+//	request.onreadystatechange = handleResponseTweets;
+//	request.open("GET",url,true);
+//	
+//	request.send(null);
+//}
+//
+//function handleResponseTweets(){
+//	if((request.status == 200)&&(request.readyState == 4)){
+//		
+//		var jsonString = request.responseText;
+//		displayLiveTweets(jsonString);
+//	}
+//	
+//}
+//
+//function displayLiveTweets(jsonString){
+//	
+//	var jsonObject = JSON.stringify(jsonString);
+//	var jo = eval(jsonObject);
+//	
+//	for(var i=0; i<jsonObject.QueryResultJSONImpl.length; i++){
+//
+//		for(var j=0; j<jsonObject.tweets[i].TweetJSONImpl.length; j++){
+//
+//			var tweet = jsonObject.tweets[i].TweetJSONImpl[j].text;
+//			var user = jsonObject.tweets[i].TweetJSONImpl[j].fromUser;
+//		}		
+//		var tweetObject = new Tweet(tweet, user);
+//		tweetManager.addElement(tweetObject);
+//	}
+//	
+//	showTweets();
+//}
+//
+//function Tweet(tweet,user){
+//	this.tweet = tweet;
+//	this.user = user;
+//}
+//function showTweets(){
+//	var temp = document.getElementById("liveTweets");
+//	
+//	for(var i=0; i<tweetManager.getSize(); i++)
+//		temp.innerHTML += tweetManager.getElementAt(i).user + "<br>" + tweetManager.getElementAt(i).tweet;
+//}

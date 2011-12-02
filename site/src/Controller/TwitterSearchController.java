@@ -29,6 +29,7 @@ public class TwitterSearchController extends HttpServlet {
 		try {
 			responseString = getRaceTweets(Integer.parseInt(raceId), twitter);
 			PrintWriter out = response.getWriter();
+			System.out.println(responseString);
 			out.println(responseString);
 		} catch (NumberFormatException e) {
 			throw new ServletException(e);
@@ -48,7 +49,7 @@ public class TwitterSearchController extends HttpServlet {
 		List<RacerObj> racers = racerController.getRacersObj(raceId);
 		Collection<String> userIds = new HashSet();
 		for(RacerObj racer : racers){
-			userIds.add(racer.getUserName());
+			userIds.add(racer.getUserName().replace("@",""));
 		}
 		return search(userIds, twitter);
 	}
@@ -61,7 +62,10 @@ public class TwitterSearchController extends HttpServlet {
 		queryString.replace(queryString.lastIndexOf("O"), queryString.length(), "");
 		QueryResult results = null;
 		try {
-			results = twitter.search(new Query(queryString.toString()));
+			Query query = new Query(queryString.toString());
+			query.setRpp(3);
+			query.setPage(1);
+			results = twitter.search(query);
 		} catch (TwitterException e) {
             throw new ServletException(e); 
 		}

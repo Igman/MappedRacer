@@ -122,7 +122,7 @@ public class Race {
 			raceObj.setName(rs.getString(2));
 			raceObj.setStart(rs.getTimestamp(3));
 			raceObj.setCreatorId(rs.getInt(4));
-
+			raceObj.setScore(rs.getInt(5));
 			results.add(raceObj);
 		}
 
