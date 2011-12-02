@@ -410,6 +410,7 @@ function checkinClicked(){
 	window.location = "checkin.html?raceId="+raceID.toString();
 }
 
+<<<<<<< HEAD
 //function getLiveTweets(){
 //	liveTweets = true;
 //	request = new XMLHttpRequest();
@@ -459,3 +460,13 @@ function checkinClicked(){
 //	for(var i=0; i<tweetManager.getSize(); i++)
 //		temp.innerHTML += tweetManager.getElementAt(i).user + "<br>" + tweetManager.getElementAt(i).tweet;
 //}
+=======
+function sendTweet(){
+	request = new XMLHttpRequest();
+	var msg = document.getElementById("tweet").value;
+	var url = "tweet?text="+msg;
+	request.onreadystatechange = handleResponse;
+	request.open("GET",url,true);
+	request.send(null);	
+}
+>>>>>>> 601681cfc20f6ca8766bf53b6bef28e53d099de6
