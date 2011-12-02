@@ -13,6 +13,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,9 @@ public class ViewHistoryController {
 		String forward = "";
 		
 		// Gets the race ID from the request
-		int userID = Integer.parseInt(request.getParameter("user_id"));	
+		//int userID = Integer.parseInt(request.getParameter("user_id"));	
+		HttpSession session = request.getSession();
+		int userID = (Integer) session.getAttribute("userid");
 
 		try {
 			// Adds the check ins to JSON

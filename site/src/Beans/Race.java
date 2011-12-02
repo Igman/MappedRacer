@@ -51,7 +51,8 @@ public class Race {
 		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
 
 		ps.setString(1, name);
-		ps.setTimestamp(2, new java.sql.Timestamp(dateTime.getTimeInMillis()));
+		java.sql.Timestamp temp = new java.sql.Timestamp(dateTime.getTimeInMillis());
+		ps.setTimestamp(2, temp);
 		ps.setInt(3, creator);
 
 		// rowCount should be 1. Throw error otherwise

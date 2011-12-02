@@ -242,7 +242,7 @@ function createJSON(){
 	
 	itemString = itemString.substring(0,itemString.length-2);
 	
-	racersString += '{"name": "@ssalazars"}, ';					//TODO it should be usname gotten from a session variable
+	//racersString += '{"name": ""}, ';					//TODO it should be usname gotten from a session variable
 	for(var i=0; i<userArray.length; i++){
 		racersString+='{"name": "' + userArray[i]+'"}, ';
 	}
