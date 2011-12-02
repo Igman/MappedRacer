@@ -127,8 +127,12 @@ public class RaceController extends HttpServlet {
 			
 			json.append("{userID:\""+temp.getUserId()+"\", username:\""+temp.getUserName()+"\", score:\""+temp.getScore()+ "\"},");
 		}
-		// replace last character with ]
-		json.setCharAt( json.length()-1,']');
+		if(racers.isEmpty()){
+			json.append("]");
+		}else{
+			// replace last character with ]
+			json.setCharAt( json.length()-1,']');
+		}
         
 		return json.toString();
 	}
@@ -145,8 +149,12 @@ public class RaceController extends HttpServlet {
 			
 			json.append("{id:\""+temp.getItemId()+"\", type:\""+temp.getType()+"\", location:\""+temp.getLocation()+"\", value:\""+temp.getValue() + "\"},");
 		}
-		// replace last character with ]
-		json.setCharAt( json.length()-1,']');
+		if(items.isEmpty()){
+			json.append("]");
+		}else{
+			// replace last character with ]
+			json.setCharAt( json.length()-1,']');
+		}
         
         
 		return json.toString();

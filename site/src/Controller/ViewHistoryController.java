@@ -59,40 +59,24 @@ public class ViewHistoryController {
 
 		PrintWriter out = response.getWriter();
 		String forward = "";
+		
+		// Gets the race ID from the request
+		int userID = Integer.parseInt(request.getParameter("user_id"));	
 
 		try {
-			//Get user id from request
-			int userID = Integer.parseInt(request.getParameter("user_id"));	
+			// Adds the check ins to JSON
+			String json =  getJSONRaces(userID);
 			
-			// Create JSON object
-			String json = "";
-			
-			try {
-				json += "{";
-			
-				// Adds the check ins to JSON
-				json += getJSONRaces(userID);
-				
-				json += "}";
-				
-				System.out.println(json);
-				out.println(json);
-			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_CONFLICT,
-				"Problem occured with the SQL.");
-			}finally {
-				out.close();
-			}		
+			System.out.println(json);
+			out.println(json);
+		} catch (SQLException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT,
+			"Problem occured with the SQL.");
+		}finally {
+			out.close();
+		}		
 
-			response.setStatus(HttpServletResponse.SC_OK);
 
-			RequestDispatcher dispatcher = request
-					.getRequestDispatcher(forward);
-			dispatcher.forward(request, response);
-		} catch (IOException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Problem when reading the JSON object.");
-		}
 	}
 
 	protected void doPost(HttpServletRequest request,
@@ -101,20 +85,26 @@ public class ViewHistoryController {
 	}
 	
 	private String getJSONRaces(int userID) throws SQLException {
-		List<RaceObj> races = raceModel.getRacesObj(userID);
+		List<RaceObj> races = raceModel.getRacesObj(userID, true);
 		
 		Iterator<RaceObj> iterator = races.iterator();
 		
-		StringBuffer json = new StringBuffer("racers:[");
+		StringBuffer json = new StringBuffer("{races:[");
 		RaceObj temp;
 		
 		while (iterator.hasNext()) {
 			temp = iterator.next();
 			
-			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() + "\", time:\""+ temp.getScore() + "\"},");
+			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() + "\", score:\""+ temp.getScore() + "\"},");
 		}
-		// replace last character with ]
-		json.setCharAt( json.length()-1,']');
+		if(races.isEmpty()){
+			json.append("]");
+		}else{
+			// replace last character with ]
+			json.setCharAt( json.length()-1,']');
+		}
+		
+		json.append("}");
         
 		return json.toString();
 	}
