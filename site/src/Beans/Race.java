@@ -91,7 +91,7 @@ public class Race {
 
 			raceObj.setId(rs.getInt(1));
 			raceObj.setName(rs.getString(2));
-			raceObj.setStart(rs.getTime(3));
+			raceObj.setStart(rs.getTimestamp(3));
 			raceObj.setCreatorId(rs.getInt(4));
 
 			results.add(raceObj);
