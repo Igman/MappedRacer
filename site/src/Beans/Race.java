@@ -50,12 +50,11 @@ public class Race {
 		// Adds the new race to the database
 		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
 
-		
 		ps.setString(1, name);
 		ps.setTimestamp(2, new java.sql.Timestamp(dateTime.getTimeInMillis()));
 		ps.setInt(3, creator);
 
-		//rowCount should be 1. Throw error otherwise
+		// rowCount should be 1. Throw error otherwise
 		int rowCount = ps.executeUpdate();
 
 		// Retrieves the race id of the created race.
@@ -70,7 +69,7 @@ public class Race {
 		ps.close();
 		return raceID;
 	}
-	
+
 	/**
 	 * 
 	 * @param userId
@@ -81,14 +80,14 @@ public class Race {
 		List<RaceObj> results = new ArrayList<RaceObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT (id, name, start, creatorid) FROM Race WHERE userid = ?");
+		ps = c.prepareStatement("SELECT r.id, r.name, r.start, r.creatorid, s.score FROM Race r LEFT JOIN Racers s ON (r.id = s.raceid) WHERE userid = ? ORDER BY start DESC");
 		ps.setInt(1, userId);
 
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
 			RaceObj raceObj = new RaceObj();
-			
+
 			raceObj.setId(rs.getInt(1));
 			raceObj.setName(rs.getString(2));
 			raceObj.setStart(rs.getTime(3));

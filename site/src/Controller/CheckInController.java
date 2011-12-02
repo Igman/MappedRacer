@@ -64,7 +64,7 @@ public class CheckInController extends HttpServlet {
 			// Creates the JSON Object from the request.
 			JSONObject jsonObj = getJSON(request.getReader());
 
-			// Adds the race to the database.
+			// Adds the checkin to the database.
 			createCheckIn(jsonObj, request);
 
 			response.setStatus(HttpServletResponse.SC_OK);
