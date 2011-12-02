@@ -76,12 +76,13 @@ public class Race {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<RaceObj> getRacesObj(int userId) throws SQLException {
+	public List<RaceObj> getRacesObj(int userId, boolean isFinished) throws SQLException {
 		List<RaceObj> results = new ArrayList<RaceObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT r.id, r.name, r.start, r.creatorid, s.score FROM Race r LEFT JOIN Racers s ON (r.id = s.raceid) WHERE userid = ? ORDER BY start DESC");
+		ps = c.prepareStatement("SELECT r.id, r.name, r.start, r.creatorid, rs.score FROM Race r LEFT JOIN Racers rs ON (r.id = rs.raceID) WHERE userID = ? AND rs.attend = 1 AND r.finished = ? ORDER BY r.start DESC");
 		ps.setInt(1, userId);
+		ps.setBoolean(2, isFinished);
 
 		ResultSet rs = ps.executeQuery();
 
