@@ -21,5 +21,6 @@ public class JoinRaceController extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} 
+		response.sendRedirect(request.getContextPath() + "/usr_home.html");
 	}
 }
