@@ -39,12 +39,14 @@ public class RacerTest {
 		Time time = new Time(Calendar.getInstance().getTimeInMillis());
 		
 		ps = c.prepareStatement("DELETE FROM Racers WHERE 1 = 1");
-		ps.addBatch();
+		ps.executeUpdate();
 		ps = c.prepareStatement("DELETE FROM Users WHERE 1 = 1");
-		ps.addBatch();
+		ps.executeUpdate();
 		ps = c.prepareStatement("DELETE FROM Race WHERE 1 = 1");
-		ps.addBatch();
-		ps.executeBatch();
+		ps.executeUpdate();
+		
+		c.commit();
+		
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 		ps.setString(1, "Bob");
 		userId1 = ps.executeUpdate();
@@ -59,7 +61,7 @@ public class RacerTest {
 		
 		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
 		ps.setString(1, "Race From Hell");
-		ps.setTime(2, time);
+		ps.setString(2, "20:23");
 		ps.setInt(3, userId1);
 		System.out.println(ps.toString());
 		raceID = ps.executeUpdate();
@@ -70,18 +72,18 @@ public class RacerTest {
 
 	@After
 	public void tearDown() throws Exception {
-//		PreparedStatement ps;
-//		int row;
-//		
-//		ps = c.prepareStatement("DELETE * FROM Racer");
-//		row = ps.executeUpdate();
-//		ps = c.prepareStatement("DELETE * FROM User");
-//		row = ps.executeUpdate();
-//		ps = c.prepareStatement("DELETE * FROM Race");
-//		row = ps.executeUpdate();
-//		
-//		c.commit();
-//		ps.close();
+		PreparedStatement ps;
+		int row;
+		
+		ps = c.prepareStatement("DELETE * FROM Racer");
+		row = ps.executeUpdate();
+		ps = c.prepareStatement("DELETE * FROM User");
+		row = ps.executeUpdate();
+		ps = c.prepareStatement("DELETE * FROM Race");
+		row = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
 	}
 
 	@Test
@@ -111,8 +113,11 @@ public class RacerTest {
 		try {
 			ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'David'");
 			ps.executeUpdate();
-			racer.addRacer("David", raceID);
 			
+			c.commit();
+			ps.close();
+			
+			racer.addRacer("David", raceID);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (InsertException e) {

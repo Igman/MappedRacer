@@ -194,6 +194,32 @@ public class Racer {
 
 		return result;
 	}
+	
+	/** 
+	 * Setter method for the attend status of a racer.
+	 * 
+	 * @param raceId
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean setAttend(int raceId, int userId, boolean attend) throws SQLException {
+		PreparedStatement ps;
+		boolean result = false;
+
+		ps = c.prepareStatement("UPDATE Racers SET Attend = ? WHERE RaceId = ? AND UserId = ?");
+		ps.setBoolean(1, attend);
+		ps.setInt(2, raceId);
+		ps.setInt(3, userId);
+
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			result = rs.getBoolean(1);
+		}
+
+		return result;
+	}
 
 	/**
 	 * Getter method for the score of a racer.
