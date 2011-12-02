@@ -17,7 +17,7 @@ public class JoinRaceController extends HttpServlet {
 		String raceId = request.getParameter("raceId");
 		try {
 			Racer racer = new Racer();
-			racer.setAttend(Integer.parseInt(raceId),(Integer)request.getSession().getAttribute("userId"), true);
+			racer.setAttend(Integer.parseInt(raceId),(Integer)request.getSession().getAttribute("userid"), true);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} 
