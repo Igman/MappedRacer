@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -34,23 +35,33 @@ public class RacerTest {
 		c = Conn.getInstance().getConnection();
 		
 		PreparedStatement ps;
-		int row;
 		racer = new Racer();
+		Time time = new Time(Calendar.getInstance().getTimeInMillis());
 		
-		ps = c.prepareStatement("DELETE * FROM Racer");
+		ps = c.prepareStatement("DELETE FROM Racers WHERE 1 = 1");
 		ps.addBatch();
-		ps = c.prepareStatement("DELETE * FROM User");
+		ps = c.prepareStatement("DELETE FROM Users WHERE 1 = 1");
 		ps.addBatch();
-		ps = c.prepareStatement("DELETE * FROM Race");
+		ps = c.prepareStatement("DELETE FROM Race WHERE 1 = 1");
 		ps.addBatch();
 		ps.executeBatch();
-		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'Bob'");
+		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
+		ps.setString(1, "Bob");
 		userId1 = ps.executeUpdate();
-		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'Alice'");
+		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
+		ps.setString(1, "Alice");
 		userId2 = ps.executeUpdate();
-		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'Charles'");
+		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
+		ps.setString(1, "Charles");
 		userId3 = ps.executeUpdate();
-		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES ('Race From Hell'," + Calendar.getInstance().getTimeInMillis() + "," + row + ")");
+		
+		c.commit();
+		
+		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
+		ps.setString(1, "Race From Hell");
+		ps.setTime(2, time);
+		ps.setInt(3, userId1);
+		System.out.println(ps.toString());
 		raceID = ps.executeUpdate();
 		
 		c.commit();
