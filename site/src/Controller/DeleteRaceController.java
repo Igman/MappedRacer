@@ -40,8 +40,7 @@ public class DeleteRaceController extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		int raceId = Integer.parseInt((String) request.getSession()
-					.getAttribute("raceId"));
+		int raceId = Integer.parseInt((String) request.getAttribute("raceId"));
 		
 		try {
 			raceModel.deleteRace(raceId);

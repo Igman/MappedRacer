@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +20,9 @@ import org.json.JSONObject;
 import twitter4j.Twitter;
 import Beans.CheckIn;
 import Beans.Item;
+import Beans.Race;
+import Beans.Racer;
+import Beans.RacerObj;
 
 /**
  * 
@@ -33,12 +38,14 @@ public class CheckInController extends HttpServlet {
 	private String address = ""; // TODO Change me
 	private CheckIn checkInModel;
 	private Item itemModel;
-	
+	private Racer racerModel;
+
 	public CheckInController() {
-		 
+
 		try {
 			checkInModel = new CheckIn();
 			itemModel = new Item();
+			racerModel = new Racer();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,7 +54,7 @@ public class CheckInController extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param request
@@ -120,25 +127,47 @@ public class CheckInController extends HttpServlet {
 		return jsonObject;
 	}
 
-	private void createCheckIn(JSONObject json, HttpServletRequest request) throws ParseException,
-			JSONException, SQLException, ServletException{
+	private void createCheckIn(JSONObject json, HttpServletRequest request)
+			throws ParseException, JSONException, SQLException,
+			ServletException {
 
-		//int userId = Integer.parseInt(json.getString("userId"));
+		// int userId = Integer.parseInt(json.getString("userId"));
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userid");
 		int raceId = Integer.parseInt(json.getString("raceId"));
 		String picture = json.getString("picture");
 		String comment = json.getString("comment");
 		String location = json.getString("location");
-		if(json.getString("postTweet") == "true"){
+		if (json.getString("postTweet") == "true") {
 			Twitter twitter = (Twitter) request.getAttribute("twitter");
 			TweetController.postTweet(comment, twitter);
 		}
 		int markerToDelete = Integer.parseInt(json.getString("markerToDelete"));
 		// Starts adding things to the DB.
 		checkInModel.addCheckIn(userId, raceId, picture, comment, location);
-		
-		if(markerToDelete != -1)
+
+		int score = itemModel.getValue(markerToDelete);
+		switch (itemModel.getType(markerToDelete)) {
+		case 1:
+			// do finish line
+			break;
+		case 3:
+			List<RacerObj> racers = racerModel.getRacersObj(raceId);
+			Iterator<RacerObj> iter = racers.iterator();
+			while (iter.hasNext()) {
+				racerModel.updateScore(iter.next().getUserId(), raceId, score);
+			}
+			score *= -score;
+			//fall through
+		case 2:
+			racerModel.updateScore(userId, raceId, score);
+			break;
+		default:
+			// you should not be here
+			break;
+		}
+
+		if (markerToDelete != -1)
 			itemModel.setItemValue(markerToDelete, 0);
 
 	}

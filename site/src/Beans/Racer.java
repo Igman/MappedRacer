@@ -100,8 +100,6 @@ public class Racer {
 		}
 
 	}
-	
-	
 
 	/**
 	 * Get a list of racer IDs for the given race.
@@ -173,7 +171,7 @@ public class Racer {
 		return results;
 	}
 
-	/** 
+	/**
 	 * Getter method for the attend status of a racer.
 	 * 
 	 * @param raceId
@@ -197,7 +195,7 @@ public class Racer {
 
 		return result;
 	}
-	
+
 	/**
 	 * Setter method for the attend status of a racer.
 	 * 
@@ -206,16 +204,17 @@ public class Racer {
 	 * @param attend
 	 * @throws SQLException
 	 */
-	public void setAttend(int raceId, int userId, boolean attend) throws SQLException {
+	public void setAttend(int raceId, int userId, boolean attend)
+			throws SQLException {
 		PreparedStatement ps;
-		
+
 		ps = c.prepareStatement("UPDATE Racers SET Attend = ? WHERE RaceId = ? AND UserId = ?");
 		ps.setBoolean(1, attend);
 		ps.setInt(2, raceId);
 		ps.setInt(3, userId);
-		
+
 		ps.executeUpdate();
-		
+
 		c.commit();
 		ps.close();
 	}
@@ -267,7 +266,33 @@ public class Racer {
 		c.commit();
 		ps.close();
 	}
-	
+
+	/**
+	 * Update method for the score of a racer
+	 * 
+	 * This method adds score to the racer's total score.
+	 * 
+	 * @param userID
+	 * @param raceID
+	 * @param score
+	 * @throws SQLException
+	 */
+	public void updateScore(int userID, int raceID, int score)
+			throws SQLException {
+		PreparedStatement ps;
+
+		ps = c.prepareStatement("UPDATE Racers SET score = score + ? WHERE userID = ? AND raceID = ?");
+
+		ps.setInt(1, score);
+		ps.setInt(2, userID);
+		ps.setInt(3, raceID);
+
+		ps.executeUpdate();
+
+		c.commit();
+		ps.close();
+	}
+
 	private String PrepString(String username) {
 		if (!username.startsWith("@")) {
 			username = "@" + username;
