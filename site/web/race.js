@@ -400,3 +400,12 @@ function getURL(){
 function checkinClicked(){
 	window.location = "checkin.html?raceId="+raceID.toString();
 }
+
+function sendTweet(){
+	request = new XMLHttpRequest();
+	var msg = document.getElementById("tweet").value;
+	var url = "tweet?text="+msg;
+	request.onreadystatechange = handleResponse;
+	request.open("GET",url,true);
+	request.send(null);	
+}
