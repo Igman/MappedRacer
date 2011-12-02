@@ -1,12 +1,13 @@
 package Beans;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 
 public class RaceObj {
 	private int id;
 	private int creatorId;
 	private String name;
-	private Time start;
+	private Timestamp start;
 	//Used for the ViewHistory Controller
 	private int score;
 	public int getId() {
@@ -27,11 +28,11 @@ public class RaceObj {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Time getStart() {
+	public Timestamp getStart() {
 		return start;
 	}
-	public void setStart(Time start) {
-		this.start = start;
+	public void setStart(Timestamp timestamp) {
+		this.start = timestamp;
 	}
 	public int getScore() {
 		return score;

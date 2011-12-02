@@ -87,8 +87,9 @@ public class CreateRaceController extends HttpServlet {
 			createRace(jsonObj, request);
 
 			response.setStatus(HttpServletResponse.SC_OK);
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher(forward);
+
+			RequestDispatcher dispatcher = request
+					.getRequestDispatcher(forward);
 			dispatcher.forward(request, response);
 		} catch (IOException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -103,8 +104,10 @@ public class CreateRaceController extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_CONFLICT,
 					"Problem occured with the SQL.");
 		} catch (InsertException e) {
-			response.sendError(HttpServletResponse.SC_CONFLICT,
-					"Problem inserting into database. Reason: " + e.getMessage());
+			response.sendError(
+					HttpServletResponse.SC_CONFLICT,
+					"Problem inserting into database. Reason: "
+							+ e.getMessage());
 		}
 	}
 
@@ -143,9 +146,9 @@ public class CreateRaceController extends HttpServlet {
 		while ((line = reader.readLine()) != null) {
 			buffer.append(line);
 		}
-		
+
 		System.out.println(buffer.toString());
-		
+
 		jsonObject = new JSONObject(buffer.toString());
 
 		return jsonObject;
@@ -157,14 +160,14 @@ public class CreateRaceController extends HttpServlet {
 	 * 
 	 * @param json
 	 *            This is the JSON object containing everything.
-	 * @param request 
+	 * @param request
 	 * @throws ParseException
 	 * @throws JSONException
 	 * @throws SQLException
-	 * @throws InsertException 
+	 * @throws InsertException
 	 */
-	private void createRace(JSONObject json, HttpServletRequest request) throws ParseException,
-			JSONException, SQLException, InsertException {
+	private void createRace(JSONObject json, HttpServletRequest request)
+			throws ParseException, JSONException, SQLException, InsertException {
 		String name = json.getString("name");
 
 		Calendar dateTime = advDateParse(json.getString("dateTime"));
@@ -177,7 +180,7 @@ public class CreateRaceController extends HttpServlet {
 		userModel.addUsers(racers);
 
 		// Creator is always the first racers in the list.
-		//int creator = userModel.getUserID(racers[0]);
+		// int creator = userModel.getUserID(racers[0]);
 		HttpSession session = request.getSession();
 		int creatorID = (Integer) session.getAttribute("userid");
 		String creatorName = userModel.getUserName(creatorID);
@@ -189,7 +192,9 @@ public class CreateRaceController extends HttpServlet {
 		itemModel.addItems(items, raceID);
 
 		// Adds the racers of the race to the racer DB.
-		sendInvites(racers, raceID, request);				//TODO dont have to add to user table because they will dumbly be added right away
+		sendInvites(racers, raceID, request); // TODO dont have to add to user
+												// table because they will
+												// dumbly be added right away
 		racerModel.addRacers(racers, raceID);
 		racerModel.addRacer(creatorName, raceID);
 		racerModel.setAttend(raceID, creatorID, true);
@@ -258,11 +263,15 @@ public class CreateRaceController extends HttpServlet {
 
 		return date;
 	}
-	
-	private void sendInvites(String[] racers, int raceID, HttpServletRequest request){
-		Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");
-		String invite = "%USER% Join my awesome race at" + request.getContextPath() + "/MappedRacer/joinRace?raceId=" + raceID;
-		for(String racer : racers){
+
+	private void sendInvites(String[] racers, int raceID,
+			HttpServletRequest request) {
+		Twitter twitter = (Twitter) request.getSession()
+				.getAttribute("twitter");
+		String invite = "%USER% Join my awesome race at"
+				+ request.getContextPath() + "/MappedRacer/joinRace?raceId="
+				+ raceID;
+		for (String racer : racers) {
 			String userInvite = invite.replaceAll("%USER%", racer);
 			try {
 				TweetController.postTweet(userInvite, twitter);
