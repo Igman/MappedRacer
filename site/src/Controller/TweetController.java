@@ -6,12 +6,16 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
@@ -31,6 +35,24 @@ public class TweetController extends HttpServlet{
         } catch (TwitterException e) {
             throw new ServletException(e);
         }
+	}
+	
+	public static String search(Collection<String> userNames, Twitter twitter) throws ServletException{
+		StringBuilder queryString = new StringBuilder();
+		for(String userName : userNames){
+			queryString.append("from:" + userName + " OR ");
+		}
+		queryString.replace(queryString.lastIndexOf("O"), queryString.length(), "");
+		QueryResult results = null;
+		try {
+			results = twitter.search(new Query(queryString.toString()));
+		} catch (TwitterException e) {
+            throw new ServletException(e); 
+		}
+		for (Tweet tweet : results.getTweets()) {
+	        System.out.println(tweet.getFromUser() + ":" + tweet.getText());
+	    }
+		return results.toString();
 	}
 
 }
