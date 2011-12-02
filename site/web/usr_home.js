@@ -2,7 +2,7 @@ var raceManager = new Manager(40);
 var request;
 var sendOnce = true;
 var sendRaceId = false;
-var sizePerRace = 100;
+var sizePerRace = 110;
 var numberOfRaces = 1;
 
 function sizeOfSquare(){
@@ -100,7 +100,7 @@ function fillRaces(){
 	var i;
 
 	for(i=0; i<raceManager.getSize(); i++){
-		objectDiv.innerHTML+= "<div onclick=raceClicked('"+raceManager.getElementAt(i).raceId+"')>"+raceManager.getElementAt(i).name + "<br><br></div>";
+		objectDiv.innerHTML+= "<div onclick=raceClicked('"+raceManager.getElementAt(i).raceId+"')>"+raceManager.getElementAt(i).name + "<br><br><br></div>";
 	}
 	numberOfRaces = i;
 	sizeOfSquare('raceList');

@@ -6,21 +6,11 @@
 	color: #acacac;
 }
 
-#raceList{
-	position: relative;
-	-webkit-margin-top-collapse: separate;
-	-webkit-margin-bottom-collapse: separate;
-	margin-top: 30px;
-	margin-left: 25px;
-	font: bold 20px Helvetica;
-	z-index:2;
-}
-
 #roundSquare_races{
 	position: relative;
 	-webkit-margin-top-collapse: separate;
 	-webkit-margin-bottom-collapse: separate;
-	margin-top: -20px;
+	margin-top: 20px;
 	margin-left: 11px;
 	z-index: -1;
 }
@@ -46,6 +36,16 @@
 	margin-top: -48px;
 	color: rgba(82, 82, 82, 0.71);
 	font: bold 25px Helvetica;
+}
+
+#raceList{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	/*margin-top: 20px;*/
+	margin-left: -27px;
+	font: bold 23px Helvetica;
+	z-index:2;
 }
 
 #newRace{
