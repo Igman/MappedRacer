@@ -70,6 +70,34 @@ public class Race {
 		ps.close();
 		return raceID;
 	}
+	
+	/**
+	 * 
+	 * @param raceId
+	 * @param creatorId
+	 * @return
+	 * @throws SQLException
+	 */
+	public RaceObj getRace(int raceId, int creatorId)
+			throws SQLException {
+		PreparedStatement ps;
+		RaceObj raceObj = new RaceObj();
+
+		ps = c.prepareStatement("SELECT name, start FROM race WHERE ID = ? AND creator = ?");
+		ps.setInt(1, raceId);
+		ps.setInt(2, creatorId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			raceObj.setName(rs.getString(1));
+			raceObj.setStart(rs.getTimestamp(2));
+		}
+		
+		raceObj.setCreatorId(creatorId);
+		raceObj.setId(raceId);
+		return raceObj;
+	}
 
 	/**
 	 * 
@@ -99,5 +127,22 @@ public class Race {
 		}
 
 		return results;
+	}
+	
+
+	public String getName(int raceId) throws SQLException {
+		PreparedStatement ps;
+		String result = "";
+		
+		ps = c.prepareStatement("SELECT name FROM Race WHERE ID = ?");
+		ps.setInt(1, raceId);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		while (rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		return result;
 	}
 }
