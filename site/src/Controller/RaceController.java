@@ -105,7 +105,7 @@ public class RaceController extends HttpServlet {
 		}
 		
 		if(checkIns.isEmpty()){
-			json.append("{}]");
+			json.append("]");
 		}else{
 			// replace last character with ]
 			json.setCharAt( json.length()-1,']');

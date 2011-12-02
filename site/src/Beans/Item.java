@@ -126,7 +126,7 @@ public class Item {
 		List<ItemObj> results = new ArrayList<ItemObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT id, typeid, status, valueweight, geolocation FROM Item WHERE raceid = ?");
+		ps = c.prepareStatement("SELECT id, typeid, status, valueweight, geolocation FROM Item WHERE raceid = ? AND status=1");
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();
@@ -246,7 +246,7 @@ public class Item {
 		ps.setInt(1, status);
 		ps.setInt(2, itemID);
 		
-		ResultSet rs = ps.executeQuery();
+		ps.executeUpdate();
 		c.commit();
 		ps.close();
 	}

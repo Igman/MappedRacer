@@ -37,8 +37,7 @@ function initialize() {
 	};
   
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-	
-	sendRaceId(1);
+	sendRaceId(9);
 }
 
 function getGeoLocation(){
@@ -128,9 +127,9 @@ function isItInsideRadius(location){
 	for(var i=0; i<itemManager.getSize(); i++){
 		var item = itemManager.getElementAt(i);
 		distance = google.maps.geometry.spherical.computeDistanceBetween(location,item.location);
-				
+
 		if(distance < sizeOfRadius){
-			deleteMarkerIcon(i);
+			deleteMarkerIcon(itemManager.getElementAt(i));
 		}
 		
 		if(distance < sizeOfRadius && item.type == 1)
@@ -271,8 +270,9 @@ function addRadius(){
 }
 
 function deleteMarkerIcon(marker){
-	markerToDelete = itemManager.getElementAt(marker).id;
-	//itemManager.getElementAt(marker).value = 0;
+	markerToDelete = marker.id;
+	alert("item id" +marker.id);
+	//marker.value = 0;
 	//itemManager.removeElementAt(marker);						//Don't know if this is useful
 	//removeAllMarkers();										//Or if this is useful
 	//updateMarkers();
@@ -289,7 +289,8 @@ function removeAllMarkers(){
 }
 
 function createJSON(pic,msg,location){
-	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "1", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
+	updateUserMarkers();
+	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "9", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
 	send(jsonString);
 }
 
@@ -303,23 +304,18 @@ function send(jsonString){
 }
 
 function handleResponse(){
-	alert("1");
 	if((request.status == 200)&&(request.readyState == 4)){
-		alert("21");
-		alert(raceIdSent);
 		if(raceIdSent){
-			alert("2.5");
-			alert(raceIdSent);
-			raceIdSent = false;
+			raceIdSent = false;+
+			alert();
 			var jsonString = request.responseText;
 			receiveJSON(jsonString);
 		}else{
-			alert("3");
 			reDirect("race.html");
 		}
 	}
-	else
-		alert(request.status);
+	//else
+	//	alert(request.status);
 }
 
 function sendRaceId(id){
@@ -355,6 +351,7 @@ function receiveJSON(jsonString){
 		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score, i+1);
 		userManager.addElement(userObject);
 	}
+	alert("Checkin Length:"+jsonObject.checkin.length);
 	for(var i=0; i<jsonObject.checkin.length; i++){
 		locationString = jsonObject.checkin[i].location;
 		lat = locationString.substring(1,locationString.indexOf(","));
@@ -368,7 +365,7 @@ function receiveJSON(jsonString){
 	}
 	
 	updateMarkers();
-	updatePositions();
+	//updatePositions();
 	updateUserMarkers();
 }
 
