@@ -129,6 +129,17 @@ public class Race {
 		return results;
 	}
 	
+	public void deleteRace(int raceId) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("DELETE * FROM Race WHERE id = ?");
+		ps.setInt(1, raceId);
+		
+		ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
+	}
 
 	public String getName(int raceId) throws SQLException {
 		PreparedStatement ps;
