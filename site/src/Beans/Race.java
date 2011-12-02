@@ -48,7 +48,7 @@ public class Race {
 		PreparedStatement ps;
 
 		// Adds the new race to the database
-		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
+		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID,FINISHED) VALUES (?,?,?,0)");
 
 		ps.setString(1, name);
 		java.sql.Timestamp temp = new java.sql.Timestamp(dateTime.getTimeInMillis());

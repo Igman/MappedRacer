@@ -130,9 +130,10 @@ public class CheckInController extends HttpServlet {
 		String picture = json.getString("picture");
 		String comment = json.getString("comment");
 		String location = json.getString("location");
-		if(json.getString("postTweet") == "true"){
-			Twitter twitter = (Twitter) request.getAttribute("twitter");
-			TweetController.postTweet(comment, twitter);
+		System.out.println(json.getString("postTweet"));
+		if(json.getString("postTweet").equals("true")){
+			Twitter twitter = (Twitter) session.getAttribute("twitter");
+			TweetController.postTweet(comment + " " + picture, twitter);
 		}
 		int markerToDelete = Integer.parseInt(json.getString("markerToDelete"));
 		// Starts adding things to the DB.

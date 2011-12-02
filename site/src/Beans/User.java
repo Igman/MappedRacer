@@ -88,16 +88,17 @@ public class User {
 	 * @throws SQLException
 	 */
 	public int addUser(String userName) throws SQLException {
-		int userID = getUserID(PrepString(userName));
+		String uname = PrepString(userName);
+		int userID = getUserID(uname);
 
 		if (userID == -1) {
 			PreparedStatement ps;
 
 			ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
-			ps.setString(1, userName);
+			ps.setString(1, uname);
 
 			ps.executeUpdate();
-			userID = getUserID(userName);
+			userID = getUserID(uname);
 
 			c.commit();
 		}

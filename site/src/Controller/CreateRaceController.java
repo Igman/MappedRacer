@@ -191,7 +191,8 @@ public class CreateRaceController extends HttpServlet {
 		// Adds the racers of the race to the racer DB.
 		sendInvites(racers, raceID, request);				//TODO dont have to add to user table because they will dumbly be added right away
 		racerModel.addRacers(racers, raceID);
-		racerModel.addRacer(creatorName, raceID);				
+		racerModel.addRacer(creatorName, raceID);
+		racerModel.setAttend(raceID, creatorID, true);
 
 	}
 

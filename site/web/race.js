@@ -28,6 +28,7 @@ var zoomOfMap = 10;
 var raceIdSent = false;
 var request;
 var markerToDelete = -1;
+var raceID;
 		
 function initialize() {
 	var myOptions = {
@@ -37,7 +38,11 @@ function initialize() {
 	};
   
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-	sendRaceId(9);
+	
+	var url = document.location.href;
+	var temp = url.substring(url.indexOf('?')+8, url.length);
+	raceID = parseInt(temp);
+	sendRaceId(raceID);
 }
 
 function getGeoLocation(){
@@ -132,8 +137,8 @@ function isItInsideRadius(location){
 			deleteMarkerIcon(itemManager.getElementAt(i));
 		}
 		
-		if(distance < sizeOfRadius && item.type == 1)
-			alert("finalDestinationChecked");
+		//if(distance < sizeOfRadius && item.type == 1)
+		//	alert("finalDestinationChecked");
 			//document.getElementById("distanceToDestination").innerHTML = 0 + "";
 	}
 	
@@ -271,7 +276,7 @@ function addRadius(){
 
 function deleteMarkerIcon(marker){
 	markerToDelete = marker.id;
-	alert("item id" +marker.id);
+	alert("item id: " +marker.id);
 	//marker.value = 0;
 	//itemManager.removeElementAt(marker);						//Don't know if this is useful
 	//removeAllMarkers();										//Or if this is useful
@@ -290,7 +295,7 @@ function removeAllMarkers(){
 
 function createJSON(pic,msg,location){
 	updateUserMarkers();
-	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "userId": "1", "raceId": "9", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
+	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "raceId": "'+raceID+'", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
 	send(jsonString);
 }
 
@@ -306,12 +311,12 @@ function send(jsonString){
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4)){
 		if(raceIdSent){
-			raceIdSent = false;+
-			alert();
+			raceIdSent = false;
 			var jsonString = request.responseText;
 			receiveJSON(jsonString);
 		}else{
-			reDirect("race.html");
+			markerToDelete = -1;
+			reDirect("race.html?raceId="+raceID.toString());
 		}
 	}
 	//else
@@ -351,7 +356,6 @@ function receiveJSON(jsonString){
 		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score, i+1);
 		userManager.addElement(userObject);
 	}
-	alert("Checkin Length:"+jsonObject.checkin.length);
 	for(var i=0; i<jsonObject.checkin.length; i++){
 		locationString = jsonObject.checkin[i].location;
 		lat = locationString.substring(1,locationString.indexOf(","));
@@ -368,7 +372,6 @@ function receiveJSON(jsonString){
 	updateUserMarkers();
 	
 	if(getURL() > 0){
-		alert();
 		updatePositions();
 	}
 }
@@ -378,17 +381,20 @@ function updatePositions(){
 	var squareDiv = document.getElementsByTagName("div");
 	var sizePerUser = 60;
 	var numberOfUsers = 5;
-	alert(squareDiv.length);
 	for(var i=0; i<squareDiv.length; i++){
 		if(squareDiv[i].id == "roundSquare_position")
 			squareDiv[i].style.height = sizePerUser * numberOfUsers + 'px';
 	}
 	
 	for(var i=0; i<userManager.getSize(); i++)
-		positionsDiv.innerHTML += userManager.getElementAt(i).username + "          " + userManager.getElementAt(i).score + "<br>";
+		positionsDiv.innerHTML += userManager.getElementAt(i).username + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + userManager.getElementAt(i).score + "<br>";
 }
 
 function getURL(){
 	var url = window.location + "";
 	return(url.indexOf("race.html"));
+}
+
+function checkinClicked(){
+	window.location = "checkin.html?raceId="+raceID.toString();
 }

@@ -5,18 +5,22 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.6, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="YES">
+	<script type="text/javascript" src="usr_home.js"></script>
 	<script type="text/javascript" src="general.js"></script>
 	<link rel="stylesheet" type="text/css" href="general.css"/>
 	<link rel="stylesheet" type="text/css" href="usr_home.css"/>
 </head>
-<body onload="sizeOfSquare('roundSquare_races')">
+<body onload="sizeOfSquare()">
 	<div id="header"><img src="img/header.png"/></div>
 	<div id="header_title">Mapped Racer</div>
 	<div id="back_button_div"><img id="back_button" src="img/back-button.png" onclick="goback()"/></div>
 	<div id="back_button_title" onclick="goback()">Back</div>
+	<div id="raceList" onclick="raceClicked()"></div>
 	<div class="roundSquare" id="roundSquare_races" style="width:220px; height: 60px;"></div>
-	<div id="square" style="width:220px; height: 50px;"></div>
-	<div id="pastRaces">Past races &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></div>
+	<div onclick="reDirect('pastRaces.html')">
+		<div id="square" style="width:220px; height: 50px;"></div>
+		<div id="pastRaces">Past races &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></div>
+	</div>
 	<div id="newRace"><img src="img/big_button.png" /></div>
 	<div id="newRace_text" onclick="reDirect('createRace.html')">New Race</div>
 	<div id="logout"><a href="">Logout</a></div>
