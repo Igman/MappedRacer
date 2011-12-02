@@ -39,6 +39,7 @@ public class CheckInController extends HttpServlet {
 	private CheckIn checkInModel;
 	private Item itemModel;
 	private Racer racerModel;
+	private Race raceModel;
 
 	public CheckInController() {
 
@@ -46,6 +47,7 @@ public class CheckInController extends HttpServlet {
 			checkInModel = new CheckIn();
 			itemModel = new Item();
 			racerModel = new Racer();
+			raceModel = new Race();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,6 +153,8 @@ public class CheckInController extends HttpServlet {
 		switch (itemModel.getType(markerToDelete)) {
 		case 1:
 			// do finish line
+			raceModel.setFinished(raceId, true);
+			racerModel.updateScore(userId, raceId, 1000);
 			break;
 		case 3:
 			List<RacerObj> racers = racerModel.getRacersObj(raceId);

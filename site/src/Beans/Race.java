@@ -156,4 +156,18 @@ public class Race {
 		
 		return result;
 	}
+	
+	public void setFinished(int raceId, boolean status) throws SQLException {
+		PreparedStatement ps;
+		
+		ps = c.prepareStatement("UPDATE Race SET finished = ? WHERE ID = ?");
+		ps.setBoolean(1, status);
+		ps.setInt(2, raceId);
+		
+		//throw error if fail
+		int rows = ps.executeUpdate();
+		
+		c.commit();
+		ps.close();
+	}
 }
