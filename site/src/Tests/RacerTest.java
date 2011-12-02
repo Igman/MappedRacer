@@ -38,11 +38,12 @@ public class RacerTest {
 		racer = new Racer();
 		
 		ps = c.prepareStatement("DELETE * FROM Racer");
-		row = ps.executeUpdate();
+		ps.addBatch();
 		ps = c.prepareStatement("DELETE * FROM User");
-		row = ps.executeUpdate();
+		ps.addBatch();
 		ps = c.prepareStatement("DELETE * FROM Race");
-		row = ps.executeUpdate();
+		ps.addBatch();
+		ps.executeBatch();
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'Bob'");
 		userId1 = ps.executeUpdate();
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'Alice'");
