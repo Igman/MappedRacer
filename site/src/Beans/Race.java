@@ -70,4 +70,33 @@ public class Race {
 		ps.close();
 		return raceID;
 	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<RaceObj> getRacesObj(int userId) throws SQLException {
+		List<RaceObj> results = new ArrayList<RaceObj>();
+		PreparedStatement ps;
+
+		ps = c.prepareStatement("SELECT (id, name, start, creatorid) FROM Race WHERE userid = ?");
+		ps.setInt(1, userId);
+
+		ResultSet rs = ps.executeQuery();
+
+		while (rs.next()) {
+			RaceObj raceObj = new RaceObj();
+			
+			raceObj.setId(rs.getInt(1));
+			raceObj.setName(rs.getString(2));
+			raceObj.setStart(rs.getTime(3));
+			raceObj.setCreatorId(rs.getInt(4));
+
+			results.add(raceObj);
+		}
+
+		return results;
+	}
 }

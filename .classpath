@@ -5,6 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="site/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="site/lib/json-org.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Masterfod/workspace/MappedRacer/site/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="site/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="site/lib/twitter4j-core-2.2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
