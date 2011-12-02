@@ -365,12 +365,30 @@ function receiveJSON(jsonString){
 	}
 	
 	updateMarkers();
-	//updatePositions();
 	updateUserMarkers();
+	
+	if(getURL() > 0){
+		alert();
+		updatePositions();
+	}
 }
 
 function updatePositions(){
 	var positionsDiv = document.getElementById("racersPosition");
+	var squareDiv = document.getElementsByTagName("div");
+	var sizePerUser = 60;
+	var numberOfUsers = 5;
+	alert(squareDiv.length);
+	for(var i=0; i<squareDiv.length; i++){
+		if(squareDiv[i].id == "roundSquare_position")
+			squareDiv[i].style.height = sizePerUser * numberOfUsers + 'px';
+	}
+	
 	for(var i=0; i<userManager.getSize(); i++)
 		positionsDiv.innerHTML += userManager.getElementAt(i).username + "          " + userManager.getElementAt(i).score + "<br>";
+}
+
+function getURL(){
+	var url = window.location + "";
+	return(url.indexOf("race.html"));
 }

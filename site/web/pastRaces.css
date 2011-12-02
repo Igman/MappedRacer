@@ -1,0 +1,18 @@
+.roundSquare{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	padding:10px 40px; 
+	background:#FFFFFF;
+	border-radius:10px;
+	-moz-border-radius:25px;
+	color: #acacac;
+}
+
+#roundSquare_races{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: 20px;
+	margin-left: 11px;
+}

@@ -1,7 +1,4 @@
 .roundSquare{
-	position: relative;
-	-webkit-margin-top-collapse: separate;
-	-webkit-margin-bottom-collapse: separate;
 	padding:10px 40px; 
 	background:#FFFFFF;
 	border-radius:10px;
@@ -17,11 +14,34 @@
 	margin-left: 11px;
 }
 
+#square{
+	position: relative;
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	margin-top: -75px;
+	margin-left: 11px;
+	padding:10px 40px; 
+	border-radius:1px;
+	-moz-border-radius:5px;
+	background-color: rgba(179, 184, 82, 0.2);
+}
+
+#pastRaces{
+	-webkit-margin-top-collapse: separate;
+	-webkit-margin-bottom-collapse: separate;
+	position: relative;
+	display: block;
+	margin-left: 23px;
+	margin-top: -48px;
+	color: rgba(82, 82, 82, 0.71);
+	font: bold 25px Helvetica;
+}
+
 #newRace{
 	position: relative;
 	-webkit-margin-top-collapse: separate;
 	-webkit-margin-bottom-collapse: separate;
-	margin-top: 10px;
+	margin-top: 35px;
 	margin-left: 23px;
 }
 
