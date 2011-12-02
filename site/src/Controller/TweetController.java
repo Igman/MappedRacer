@@ -6,14 +6,19 @@
 package Controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import twitter4j.Query;
+import twitter4j.QueryResult;
+import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import Beans.Racer;
 
 public class TweetController extends HttpServlet{
 	
@@ -32,5 +37,7 @@ public class TweetController extends HttpServlet{
             throw new ServletException(e);
         }
 	}
+	
+
 
 }
