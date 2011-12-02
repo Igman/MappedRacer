@@ -152,7 +152,7 @@ public class Racer {
 		List<RacerObj> results = new ArrayList<RacerObj>();
 		PreparedStatement ps;
 
-		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ?");
+		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ? ORDER BY score DESC");
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();
