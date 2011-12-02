@@ -29,6 +29,7 @@ var raceIdSent = false;
 var request;
 var markerToDelete = -1;
 var raceID;
+var numberOfUsers = 0;
 		
 function initialize() {
 	var myOptions = {
@@ -355,7 +356,9 @@ function receiveJSON(jsonString){
 	for(var i=0; i<jsonObject.racers.length; i++){
 		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score, i+1);
 		userManager.addElement(userObject);
+		numberOfUsers++;
 	}
+	
 	for(var i=0; i<jsonObject.checkin.length; i++){
 		locationString = jsonObject.checkin[i].location;
 		lat = locationString.substring(1,locationString.indexOf(","));
@@ -380,7 +383,6 @@ function updatePositions(){
 	var positionsDiv = document.getElementById("racersPosition");
 	var squareDiv = document.getElementsByTagName("div");
 	var sizePerUser = 60;
-	var numberOfUsers = 5;
 	for(var i=0; i<squareDiv.length; i++){
 		if(squareDiv[i].id == "roundSquare_position")
 			squareDiv[i].style.height = sizePerUser * numberOfUsers + 'px';
