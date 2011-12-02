@@ -3,6 +3,7 @@ package Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,12 +81,14 @@ public class PreRaceController extends HttpServlet {
 		Iterator<RaceObj> iterator = races.iterator();
 		StringBuffer json = new StringBuffer("{races:[");
 		
+		 final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		
 		RaceObj temp;
 		
 		while (iterator.hasNext()) {
 			temp = iterator.next();
 			
-			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() + "\", score:\""+ temp.getScore() + "\"},");
+			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ sdf.format((java.util.Date) temp.getStart()) + "\", score:\""+ temp.getScore() + "\"},");
 		}
 		if(races.isEmpty()){
 			json.append("]");
