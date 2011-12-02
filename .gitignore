@@ -37,8 +37,8 @@ site/.project
 
 site/src/Controller/CheckInController.class
 
-MappedRacer.war
-
 site/src/Controller/LogoutController.class
 
 MappedRacer.war
+
+site/src/Controller/TwitterCallbackController.class
