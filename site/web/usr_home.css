@@ -44,6 +44,9 @@
 	-webkit-margin-bottom-collapse: separate;
 	/*margin-top: 20px;*/
 	margin-left: -27px;
+	position: fixed;
+	left: 7%;
+	top: 25%;
 	font: bold 23px Helvetica;
 	z-index:2;
 }

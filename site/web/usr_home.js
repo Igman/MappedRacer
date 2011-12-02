@@ -3,6 +3,7 @@ var request;
 var sendOnce = true;
 var sendRaceId = false;
 var sizePerRace = 110;
+var sizePerRace = 105;
 var numberOfRaces = 1;
 
 function sizeOfSquare(){
