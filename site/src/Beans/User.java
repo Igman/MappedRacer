@@ -43,7 +43,7 @@ public class User {
 
 		ps = c.prepareStatement("SELECT uid FROM Users WHERE uname = ?");
 
-		ps.setString(1, userName);
+		ps.setString(1, PrepString(userName));
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			userID = rs.getInt(1);
@@ -88,7 +88,7 @@ public class User {
 	 * @throws SQLException
 	 */
 	public int addUser(String userName) throws SQLException {
-		int userID = getUserID(userName);
+		int userID = getUserID(PrepString(userName));
 
 		if (userID == -1) {
 			PreparedStatement ps;
@@ -141,5 +141,12 @@ public class User {
 		}
 
 		return results;
+	}
+	
+	private String PrepString(String username) {
+		if (!username.startsWith("@")) {
+			username = "@" + username;
+		}
+		return username.toLowerCase();
 	}
 }

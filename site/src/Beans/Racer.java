@@ -74,13 +74,14 @@ public class Racer {
 	 * @throws InsertException
 	 * @throws SQLException
 	 */
-	public void addRacer(String racer, int raceID) throws InsertException {
+	public void addRacer(String username, int raceID) throws InsertException {
 		PreparedStatement ps;
 		// If user exists, get user ID
 		// Else, create user, then get user ID
 
 		try {
-			int userID = userModel.addUser(racer);
+			username = PrepString(username);
+			int userID = userModel.addUser(username);
 			boolean attend = false;
 
 			ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend) VALUES (?,?,?)");
@@ -263,5 +264,12 @@ public class Racer {
 
 		c.commit();
 		ps.close();
+	}
+	
+	private String PrepString(String username) {
+		if (!username.startsWith("@")) {
+			username = "@" + username;
+		}
+		return username.toLowerCase();
 	}
 }
