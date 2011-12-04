@@ -1,3 +1,12 @@
+/*********************************************************************
+ * This Javascript class manages everything relevant from a race	 *
+ * held by different users. It loads the information stored in the DB*
+ * from the race, such as the final destination, positive and 		 *
+ * negative items.It also manages the check-in function, which 		 *
+ * locates a user in its current position, and stores this info		 *
+ * in the DB in order to be displayed in the map for other users.	 *
+ *********************************************************************/
+
 var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
 var ubc = new google.maps.LatLng(49.263261,-123.253899);
 var currentLocation;
@@ -33,7 +42,16 @@ var numberOfUsers = 0;
 var itIsRace = false;
 var liveTweets = false;
 var tweetManager = new Manager(40);
-		
+
+/*********************************************************************
+ * Initial method called when createRace.html is loaded. The 		 *
+ * functionality of this method is to set the basic options Google 	 *
+ * Maps uses, such as the zoom and the way it is presented (ROADMAP) *
+ * as well as the zoom. It also identifies in which page the user is *
+ * in, in order to perform specific functions. It sends to the server*
+ * the race ID, for it to return all the information needed to 		 *
+ * display the information											 *
+ *********************************************************************/		
 function initialize() {
 	var myOptions = {
     	zoom: zoomOfMap,
@@ -50,6 +68,11 @@ function initialize() {
 	sendRaceId(raceID);
 }
 
+/*********************************************************************
+ * Method from Google Maps API, that allow if the browser allows it  *
+ * to track a user's geolocation. It a user's geolocation is found 	 *
+ * getUsersPinInformation() method is called						 *
+ *********************************************************************/
 function getGeoLocation(){
 	//Try W3C Geolocation (Preferred)
 	if(navigator.geolocation) {
@@ -72,6 +95,10 @@ function getGeoLocation(){
 	}
 }
 
+/*********************************************************************
+ * Method for handling an error in geolocation. New York is displayed*
+ * in the map.														 *
+ *********************************************************************/
 function handleNoGeolocation(errorFlag) {
 	if (errorFlag == true) {
 		alert("Geolocation service failed.");
@@ -83,6 +110,10 @@ function handleNoGeolocation(errorFlag) {
 	map.setCenter(currentLocation);
 }
 
+/*********************************************************************
+ * Text entered in the check-in text boxes is retrieved in order to	 *
+ * create a JSON object and send that information to the server		 *
+ *********************************************************************/
 function getUserPinInformation(location){
 	var picture = document.getElementById("addPhoto").value;
 	var message = document.getElementById("message").value;
@@ -92,6 +123,10 @@ function getUserPinInformation(location){
 	createJSON(picture,message,userLocation);
 }
 
+/*********************************************************************
+ * This method takes the information the server sent and display all *
+ * the information from the items, and user's checkins' in the map.	 *
+ *********************************************************************/
 function updateUserMarkers(){
 	for(var i=0; i<checkinManager.getSize(); i++){	
 	
@@ -131,6 +166,9 @@ function updateUserMarkers(){
 	}
 }
 
+/*********************************************************************
+ * Method to check if a user check-in inside a determined radius	 *
+ *********************************************************************/
 function isItInsideRadius(location){
 	var distance;
 	
@@ -153,6 +191,11 @@ function isItInsideRadius(location){
 	//document.getElementById("distanceToDestination").innerHTML = distance + "";
 }
 
+/*********************************************************************
+ * If a user check-in with a pic url or a message, the dropped pin 	 *
+ * will contain an info window, which will display the information	 *
+ * the user entered in.												 *
+ *********************************************************************/
 function addInfoWindow(pic, msg){
 	contentString = '<div><img src="'+pic+'"/></br>'+msg+'</div>';									
 			
@@ -161,6 +204,9 @@ function addInfoWindow(pic, msg){
 	});
 }
 
+/*********************************************************************
+ * A different color is assigned to each racer in the race			 *
+ *********************************************************************/
 function setUserIcon(id){
 	if(id == 1)
 		marker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue-dot.png');
@@ -172,6 +218,12 @@ function setUserIcon(id){
 		marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png');
 }
 
+/*********************************************************************
+ * This is a class created in order to manage every other class into *
+ * a dynamic array. It contains basic methods such as getting the 	 *
+ * size of the array, adding and getting an element, and finally 	 *
+ * resizing the array.												 *
+ *********************************************************************/
 function Manager(){
 	this.markerArray = new Array(40);
 	this.size = 0;
@@ -216,6 +268,10 @@ function Manager(){
 	}
 }
 
+/*********************************************************************
+ * Marker class. It contains the variables necessary to get values	 *
+ * from the marker dropped and store them in the DB 				 *
+ *********************************************************************/
 function Marker(location, user, picture, message){
 	this.location = location;
 	this.user = user;
@@ -223,6 +279,11 @@ function Marker(location, user, picture, message){
 	this.message = message;
 }
 
+/*********************************************************************
+ * Item class. It contains the variables necessary to get values	 *
+ * from the items (final destination, positive and negative) and 	 *
+ * display them on the map											 *
+ *********************************************************************/
 function Item(id,location, type, value){
 	this.id = id;
 	this.location = location;
@@ -230,6 +291,9 @@ function Item(id,location, type, value){
 	this.value = value;
 }
 
+/*********************************************************************
+ * User class. 														 *
+ *********************************************************************/
 function User(id, username, score, innerId){
 	this.id = id;
 	this.username = username;
@@ -237,6 +301,10 @@ function User(id, username, score, innerId){
 	this.innerId = innerId;
 }
 
+/*********************************************************************
+ * Checkin class. It contains the variables necessary to get values	 *
+ * from the user checkin-in pin dropped and store them in the DB 	 *
+ *********************************************************************/
 function Checkin(location, msg, pic, userid){
 	this.location = location;
 	this.msg = msg;
@@ -244,12 +312,19 @@ function Checkin(location, msg, pic, userid){
 	this.userid = userid;
 }
 
+/*********************************************************************
+ * updateMarkers calls iteratively all the items stored in the 		 *
+ * itemManager array and adds them to the map					 	 *
+ *********************************************************************/
 function updateMarkers(){
 	for(var i=0; i<itemManager.getSize(); i++){
 		addIconMarker(itemManager.getElementAt(i).location, itemManager.getElementAt(i).type);
 	}
 }
 
+/*********************************************************************
+ * AddIconMarker creates and item object and displays it on the map	 *
+ *********************************************************************/
 function addIconMarker(location,type){
 	markerItem = new google.maps.Marker({									
 		position: location,													
@@ -261,6 +336,10 @@ function addIconMarker(location,type){
 	addRadius();
 }
 
+/*********************************************************************
+ * SetIcon checks which type of marker was set and based on this info*
+ * adds the image to the marker that is dropped on the map.			 *
+ *********************************************************************/
 function setMarkerIcon(type){
 	if(type == goalIcon)
 		markerItem.setIcon(goal);
@@ -270,6 +349,12 @@ function setMarkerIcon(type){
 		markerItem.setIcon(negative);
 }
 
+/*********************************************************************
+ * AddRadius creates a circle object inside the Google Map. This 	 *
+ * object contains attributes such as adding the radius of it. 250mt *
+ * is the radius decided to allow users to check-in inside a marker  *
+ * for the system to recognize them.								 *
+ *********************************************************************/
 function addRadius(){
 	circle = new google.maps.Circle({
 	  map: map,
@@ -282,6 +367,10 @@ function addRadius(){
 	circlesArray.push(circle);
 }
 
+/*********************************************************************
+ * This method sets to delete the marker where the user has 		 *
+ * checked-in on.													 *
+ *********************************************************************/
 function deleteMarkerIcon(marker){
 	markerToDelete = marker.id;
 	//marker.value = 0;
@@ -290,7 +379,7 @@ function deleteMarkerIcon(marker){
 	//updateMarkers();
 }
 
-function removeAllMarkers(){
+/*function removeAllMarkers(){
 	if (markersArray) {
 		for (i in markersArray) {
 	    	markersArray[i].setMap(null);
@@ -298,14 +387,23 @@ function removeAllMarkers(){
 	    }
 	    	markersArray.length = 0;
 	}
-}
+}*/
 
+/*********************************************************************
+ * createJSON() is the method in charge of in formatting all the	 *
+ * information gotten and send it to the server as a JSON object.	 *
+ *********************************************************************/
 function createJSON(pic,msg,location){
 	updateUserMarkers();
 	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "raceId": "'+raceID+'", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
 	send(jsonString);
 }
 
+/*********************************************************************
+ * Method that sends the JSON object to server. Creates an 			 *
+ * XMLHttpRequest, sends it to the server as POST, and handles the 	 *
+ * response from the server.										 *
+ *********************************************************************/
 function send(jsonString){
 	request = new XMLHttpRequest();
 	var checkin = jsonString;
@@ -315,6 +413,10 @@ function send(jsonString){
 	request.send(checkin);
 }
 
+/*********************************************************************
+ * Method for handling the server's response. It can be if we are 	 *
+ * filling up the map or removing an item from the map				 *
+ *********************************************************************/
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4)){
 		if(raceIdSent){
@@ -330,6 +432,11 @@ function handleResponse(){
 	//	alert(request.status);
 }
 
+/*********************************************************************
+ * Method that sends the raceId to server. Creates an 			 	 *
+ * XMLHttpRequest, sends it to the server as GET, and handles the 	 *
+ * response from the server.										 *
+ *********************************************************************/
 function sendRaceId(id){
 	raceIdSent = true;
 	request = new XMLHttpRequest();
@@ -340,6 +447,12 @@ function sendRaceId(id){
 	request.send(null);
 }
 
+/*********************************************************************
+ * This method receives the JSON object sent by the server and		 *
+ * manipulates the information, in this case, setting into different *
+ * arrays the information gotten from the server to display on the	 *
+ * map																 *
+ *********************************************************************/
 function receiveJSON(jsonString){
 	var jsonObject = eval('('+jsonString+')');
 	var locationString;
@@ -386,6 +499,10 @@ function receiveJSON(jsonString){
 	}
 }
 
+/*********************************************************************
+ * This method updates the position depending on their points on the *
+ * race on a div in the race.html page								 *
+ *********************************************************************/
 function updatePositions(){
 	var positionsDiv = document.getElementById("racersPosition");
 	var squareDiv = document.getElementsByTagName("div");
@@ -401,16 +518,22 @@ function updatePositions(){
 	//getLiveTweets();
 }
 
+/*********************************************************************
+ * Tells if the url is "race.html"									 *
+ *********************************************************************/
 function getURL(){
 	var url = window.location + "";
 	return(url.indexOf("race.html"));
 }
 
+/*********************************************************************
+ * When the check-in button is clicked, it calls the checkin.html	 *
+ * with the race id of that specific race							 *
+ *********************************************************************/
 function checkinClicked(){
 	window.location = "checkin.html?raceId="+raceID.toString();
 }
 
-<<<<<<< HEAD
 //function getLiveTweets(){
 //	liveTweets = true;
 //	request = new XMLHttpRequest();
@@ -460,13 +583,12 @@ function checkinClicked(){
 //	for(var i=0; i<tweetManager.getSize(); i++)
 //		temp.innerHTML += tweetManager.getElementAt(i).user + "<br>" + tweetManager.getElementAt(i).tweet;
 //}
-=======
-function sendTweet(){
-	request = new XMLHttpRequest();
-	var msg = document.getElementById("tweet").value;
-	var url = "tweet?text="+msg;
-	request.onreadystatechange = handleResponse;
-	request.open("GET",url,true);
-	request.send(null);	
-}
->>>>>>> 601681cfc20f6ca8766bf53b6bef28e53d099de6
+//
+//function sendTweet(){
+//	request = new XMLHttpRequest();
+//	var msg = document.getElementById("tweet").value;
+//	var url = "tweet?text="+msg;
+//	request.onreadystatechange = handleResponse;
+//	request.open("GET",url,true);
+//	request.send(null);	
+//}
