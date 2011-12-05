@@ -26,12 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import twitter4j.Twitter;
-import twitter4j.internal.http.HttpRequest;
 
 /******************************************************
- * This is a controller class that is responsible for * setting up the race for
- * a user. It calls the model * to ensure that the database is updated
- * accordingly *
+ * This is a controller class that is responsible for * 
+ * setting up the race for a user. It calls the model * 
+ * to ensure that the database is updated accordingly *
  ******************************************************/
 
 public class CreateRaceController extends HttpServlet {
@@ -67,63 +66,47 @@ public class CreateRaceController extends HttpServlet {
 	 * This is the doGet method which will take a request and a response and
 	 * work with the request then inform the page where to go next.
 	 * 
-	 * @param request
-	 *            The request which contains the JSON
-	 * @param response
-	 *            The response that will be passed back.
+	 * @param request 	The request which contains the JSON
+	 * @param response	The response that will be passed back.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		String forward = "";
-
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// Creates the JSON Object from the request.
 			JSONObject jsonObj = getJSON(request.getReader());
 
 			// Adds the race to the database.
 			createRace(jsonObj, request);
-
+			
+			// If it has got to this point it should mean everything went well.
 			response.setStatus(HttpServletResponse.SC_OK);
 
-			RequestDispatcher dispatcher = request
-					.getRequestDispatcher(forward);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("");
 			dispatcher.forward(request, response);
+			
 		} catch (IOException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Problem when reading the JSON object.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Problem when reading the JSON object. Reason: "+ e.getMessage());
 		} catch (JSONException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Problem with the JSON object.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Problem with the JSON object. Reason: "+ e.getMessage());
 		} catch (ParseException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Problem with the Date object.");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Problem with the Date object. Reason: "+ e.getMessage());
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_CONFLICT,
-					"Problem occured with the SQL.");
+			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
 		} catch (InsertException e) {
-			response.sendError(
-					HttpServletResponse.SC_CONFLICT,
-					"Problem inserting into database. Reason: "
-							+ e.getMessage());
+			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem inserting into database. Reason: "+ e.getMessage());
 		}
 	}
 
 	/**
 	 * Will just pass request and response on to doGet.
 	 * 
-	 * @param request
-	 *            The request which contains the JSON
-	 * @param response
-	 *            The response that will be passed back.
+	 * @param request	The request which contains the JSON
+	 * @param response	The response that will be passed back.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 
@@ -131,24 +114,25 @@ public class CreateRaceController extends HttpServlet {
 	 * This function takes in a reader and tries to read a JSON Object out of
 	 * it.
 	 * 
-	 * @param reader
-	 *            predefined object that should have JSON object in it.
-	 * @return The json object is successfully parsed.
+	 * @param reader	predefined object that should have JSON object in it.
+	 * @return			The json object is successfully parsed.
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	private JSONObject getJSON(BufferedReader reader) throws IOException,
-			JSONException {
+	private JSONObject getJSON(BufferedReader reader) throws IOException, JSONException {
 		StringBuffer buffer = new StringBuffer();
 		String line = null;
 		JSONObject jsonObject;
-
+		
+		// Cycles throught the reader.
 		while ((line = reader.readLine()) != null) {
 			buffer.append(line);
 		}
-
+		
+		// Print it out to console for debug purposes.
 		System.out.println(buffer.toString());
-
+		
+		// Changes it to a string
 		jsonObject = new JSONObject(buffer.toString());
 
 		return jsonObject;
@@ -158,20 +142,21 @@ public class CreateRaceController extends HttpServlet {
 	 * This function is responsible for preparing the data for the race and then
 	 * adding it to the database.
 	 * 
-	 * @param json
-	 *            This is the JSON object containing everything.
-	 * @param request
+	 * @param json		This is the JSON object containing everything.
+	 * @param request	Request which is used to get the current session.
 	 * @throws ParseException
 	 * @throws JSONException
 	 * @throws SQLException
 	 * @throws InsertException
 	 */
-	private void createRace(JSONObject json, HttpServletRequest request)
-			throws ParseException, JSONException, SQLException, InsertException {
+	private void createRace(JSONObject json, HttpServletRequest request) throws ParseException, JSONException, SQLException, InsertException {
+		// Race name
 		String name = json.getString("name");
-
+		// The date the race starts
 		Calendar dateTime = advDateParse(json.getString("dateTime"));
+		// The list of racer names
 		String[] racers = advRacersParse(json.getJSONArray("racers"));
+		// The list of item objects.
 		ItemObj[] items = advItemsParse(json.getJSONArray("items"));
 
 		// Starts adding things to the DB.
@@ -179,8 +164,7 @@ public class CreateRaceController extends HttpServlet {
 		// Adds/makes sure user are in DB.
 		userModel.addUsers(racers);
 
-		// Creator is always the first racers in the list.
-		// int creator = userModel.getUserID(racers[0]);
+		// Gets the creator from the session since the creator is the user logged in
 		HttpSession session = request.getSession();
 		int creatorID = (Integer) session.getAttribute("userid");
 		String creatorName = userModel.getUserName(creatorID);
@@ -192,22 +176,18 @@ public class CreateRaceController extends HttpServlet {
 		itemModel.addItems(items, raceID);
 
 		// Adds the racers of the race to the racer DB.
-		sendInvites(racers, raceID, request); // TODO dont have to add to user
-												// table because they will
-												// dumbly be added right away
+		sendInvites(racers, raceID, request); // TODO Users id auto created when racers created.
 		racerModel.addRacers(racers, raceID);
 		racerModel.addRacer(creatorName, raceID);
 		racerModel.setAttend(raceID, creatorID, true);
-
 	}
 
 	/**
 	 * This is helper function that parses through the JSONArray and makes it
 	 * into a readable format that can be sent to the DB.
 	 * 
-	 * @param itemsArray
-	 *            The items in a JSON array.
-	 * @return The items in a ItemObj array.
+	 * @param itemsArray	The items in a JSON array.
+	 * @return 				The items in a ItemObj array.
 	 * @throws JSONException
 	 */
 	private ItemObj[] advItemsParse(JSONArray itemsArray) throws JSONException {
@@ -257,6 +237,7 @@ public class CreateRaceController extends HttpServlet {
 	 */
 	private Calendar advDateParse(String dateStr) throws ParseException {
 		Calendar date = Calendar.getInstance();
+		// This must be the same way the date is formatted in the view.
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
 		date.setTime(formatter.parse(dateStr));
@@ -264,14 +245,24 @@ public class CreateRaceController extends HttpServlet {
 		return date;
 	}
 
-	private void sendInvites(String[] racers, int raceID,
-			HttpServletRequest request) {
-		Twitter twitter = (Twitter) request.getSession()
-				.getAttribute("twitter");
-		String invite = "%USER% Join my awesome race at http://ec2-50-112-43-245.us-west-2.compute.amazonaws.com:8080/MappedRacer/joinRace?raceId="
-				+ raceID;
+	/**
+	 * This function is used to send out the invitiations to racers of the race via
+	 * twitter. 
+	 * 
+	 * @param racers	The list of racer names.
+	 * @param raceID	The race's ID.
+	 * @param request	The request that contains the session.
+	 */
+	private void sendInvites(String[] racers, int raceID, HttpServletRequest request) {
+		Twitter twitter = (Twitter) request.getSession().getAttribute("twitter");
+		
+		// The message that will end up being posted on twitter.
+		String invite = "%USER% Join my awesome race at http://ec2-50-112-43-245.us-west-2.compute.amazonaws.com:8080/MappedRacer/joinRace?raceId="	+ raceID;
+		
+		// Loops through all the racers sending out the invitation.
 		for (String racer : racers) {
 			String userInvite = invite.replaceAll("%USER%", racer);
+			
 			try {
 				TweetController.postTweet(userInvite, twitter);
 			} catch (ServletException e) {
