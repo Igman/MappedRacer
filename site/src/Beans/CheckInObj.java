@@ -1,5 +1,10 @@
 package Beans;
 
+/**
+ * 
+ * @author Christiaan Fernando
+ *
+ */
 public class CheckInObj {
 	private int ID;
 	private int userID;

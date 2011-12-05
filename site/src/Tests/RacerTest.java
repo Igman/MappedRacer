@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Beans.Conn;
@@ -22,16 +24,16 @@ import Exceptions.InsertException;
 import Exceptions.SelectException;
 
 public class RacerTest {
-	private Connection c;
-	private int raceID;
-	private int userId1;
-	private int userId2;
-	private int userId3;
+	private static Connection c;
+	private static int raceID;
+	private static int userId1;
+	private static int userId2;
+	private static int userId3;
 	
-	private Racer racer;
+	private static Racer racer;
 	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		c = Conn.getInstance().getConnection();
 		
 		PreparedStatement ps;
@@ -45,7 +47,7 @@ public class RacerTest {
 		ps = c.prepareStatement("DELETE FROM Race WHERE 1 = 1");
 		ps.executeUpdate();
 		
-		c.commit();
+		System.out.println("Cleared Tables");
 		
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 		ps.setString(1, "Bob");
@@ -57,29 +59,22 @@ public class RacerTest {
 		ps.setString(1, "Charles");
 		userId3 = ps.executeUpdate();
 		
-		c.commit();
-		
-		ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
-		ps.setString(1, "Race From Hell");
-		ps.setString(2, "20:23");
-		ps.setInt(3, userId1);
-		System.out.println(ps.toString());
-		raceID = ps.executeUpdate();
+		System.out.println("Added Users");
 		
 		c.commit();
 		ps.close();
 	}
 
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDown() throws Exception {
 		PreparedStatement ps;
 		int row;
 		
-		ps = c.prepareStatement("DELETE * FROM Racer");
+		ps = c.prepareStatement("DELETE * FROM Racer WHERE 1 = 1");
 		row = ps.executeUpdate();
-		ps = c.prepareStatement("DELETE * FROM User");
+		ps = c.prepareStatement("DELETE * FROM User WHERE 1 = 1");
 		row = ps.executeUpdate();
-		ps = c.prepareStatement("DELETE * FROM Race");
+		ps = c.prepareStatement("DELETE * FROM Race WHERE 1 = 1");
 		row = ps.executeUpdate();
 		
 		c.commit();
@@ -88,31 +83,50 @@ public class RacerTest {
 
 	@Test
 	public final void testAddRacers() {
+		PreparedStatement ps;
+		
 		String[] testValues = {"Alice", "Charles"};
 		List<Integer> ltest = new ArrayList<Integer>();
 		boolean test = false;
 		
+		System.out.println("Start Test 1");
 		try {
 			test = racer.addRacers(testValues, raceID);
 			ltest = racer.getRacersInt(raceID);
+			ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID) VALUES (?,?,?)");
+			ps.setString(1, "Race From Hell");
+			ps.setString(2, "2011-10-10 20:23");
+			ps.setInt(3, userId1);
+			System.out.println(ps.toString());
+			raceID = ps.executeUpdate();
+			test = true;
 		} catch (InsertException e) {
 			e.printStackTrace();
+			test = false;
 		} catch (SelectException e) {
 			e.printStackTrace();
+			test = false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			test = false;
 		}
+		System.out.println("End Test 1");
 		assertTrue(test);
 		assertTrue(ltest.contains(new Integer(userId2)));
 		assertTrue(ltest.contains(new Integer(userId3)));
-		
 	}
 
 	@Test
 	public final void testAddRacer() {
 		PreparedStatement ps;
 		
+		System.out.println("Start Test 2");
 		try {
-			ps = c.prepareStatement("INSERT INTO Users(uname) VALUES 'David'");
+			ps = c.prepareStatement("INSERT INTO Users(uname) VALUES ?");
+			ps.setString(1, "David");
 			ps.executeUpdate();
+			System.out.println(ps.toString());
 			
 			c.commit();
 			ps.close();
@@ -123,13 +137,12 @@ public class RacerTest {
 		} catch (InsertException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println("End Test 2");
 		assertTrue(true);
 	}
 
 	@Test
 	public final void testGetRacersObj() {
-		PreparedStatement ps;
 		boolean test1 = false;
 		boolean test2 = false;
 		boolean test3 = false;
