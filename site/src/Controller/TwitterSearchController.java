@@ -20,8 +20,19 @@ import twitter4j.TwitterException;
 import Beans.Racer;
 import Beans.RacerObj;
 
+/**
+ * This is controller designed to search for all the tweets from users in volved in a given race
+ * 
+ * @author Ignacio Rodirguez
+ *
+ */
 public class TwitterSearchController extends HttpServlet {
 	
+	/**
+	 * Responds with a JSON object representing all the tweets from the users in a given race
+	 * 
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");
 		String raceId = request.getParameter("raceId");
@@ -39,6 +50,15 @@ public class TwitterSearchController extends HttpServlet {
 
 	}
 	
+	/**
+	 * Searches for all tweets from users in a given race
+	 * 
+	 * @param raceId - The race id to search for
+	 * @param twitter - A twitter session to use
+	 * @return A JSON object with tweets from the rquested users
+	 * @throws ServletException
+	 * @throws SQLException
+	 */
 	public static String getRaceTweets(int raceId,Twitter twitter) throws ServletException, SQLException{
 		Racer racerController;
 		try {
@@ -54,6 +74,14 @@ public class TwitterSearchController extends HttpServlet {
 		return search(userIds, twitter);
 	}
 	
+	/**
+	 * Helper method to search for tweets from a collection of users
+	 * 
+	 * @param userNames The usernames to search twitter for
+	 * @param twitter The twittersession to use
+	 * @return A Json object representing the last 3 resulting tweets
+	 * @throws ServletException
+	 */
 	private static String search(Collection<String> userNames, Twitter twitter) throws ServletException{
 		StringBuilder queryString = new StringBuilder();
 		for(String userName : userNames){
@@ -69,9 +97,6 @@ public class TwitterSearchController extends HttpServlet {
 		} catch (TwitterException e) {
             throw new ServletException(e); 
 		}
-		for (Tweet tweet : results.getTweets()) {
-	        System.out.println(tweet.getFromUser() + ":" + tweet.getText());
-	    }
 		return results.toString();
 	}
 

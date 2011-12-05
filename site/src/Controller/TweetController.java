@@ -1,4 +1,6 @@
-/*
+/**
+ * A controller class responsible for posting tweets through the currently logged in user
+ * 
  * Author: Ignacio Rodriguez
  * This is based largely off the sample code found at https://github.com/yusuke/sign-in-with-twitter
  */
@@ -17,6 +19,9 @@ import twitter4j.TwitterException;
 
 public class TweetController extends HttpServlet{
 	
+	/**
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String text = request.getParameter("text");
@@ -24,6 +29,13 @@ public class TweetController extends HttpServlet{
         postTweet(text, twitter);
 	}
 
+	/**
+	 * Posts a tweet using a given twitter session
+	 * 
+	 * @param text - The text to tweet
+	 * @param twitter - The twitter session to use
+	 * @throws ServletException
+	 */
 	public static void postTweet(String text, Twitter twitter)
 			throws ServletException {
 		try {
