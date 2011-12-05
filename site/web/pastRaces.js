@@ -1,3 +1,7 @@
+/*********************************************************************
+ * This class shows the past races (races raced) from a specific user*
+ *********************************************************************/
+
 var raceManager = new Manager(40);
 var request;
 var sendOnce = true;
@@ -5,6 +9,11 @@ var sendRaceId = false;
 var sizePerRace = 105;
 var numberOfRaces = 5;
 
+/*********************************************************************
+ * sizeOfSquare() is a method whose purpose is to dynamically set the*
+ * height of the square background where the list of races are 		 *
+ * presented.														 *
+ *********************************************************************/ 
 function sizeOfSquare(){
 	
 	var div = document.getElementById('roundSquare_races');
@@ -17,8 +26,11 @@ function sizeOfSquare(){
 	}
 }
 
+/*********************************************************************
+ * Method that sends that calls ViewHistoryController.java class	 *
+ * in order to display the past races from a certain user.			 *
+ *********************************************************************/
 function send(){
-	
 	request = new XMLHttpRequest();
 	var url = "ViewHistoryController";
 	request.onreadystatechange = handleResponse;
@@ -26,6 +38,10 @@ function send(){
 	request.send();
 }
 
+/*********************************************************************
+ * Method for handling the server's response. It receives a JSON 	 *
+ * object from the server and calls receiveJSON for its manipulation *
+ *********************************************************************/
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4)){
 		var jsonString = request.responseText;
@@ -33,6 +49,12 @@ function handleResponse(){
 	}
 }
 
+
+/*********************************************************************
+ * This method receives the JSON object sent by the server and		 *
+ * manipulates the information, in this case, the list of races from *
+ * a certain user, and calls fillRaces() for display in the web page *
+ *********************************************************************/ 
 function receiveJSON(jsonString){
 	var jsonObject = eval('('+jsonString+')');
 	
@@ -44,6 +66,12 @@ function receiveJSON(jsonString){
 	fillRaces();
 }
 
+/*********************************************************************
+ * This is a class created in order to manage every other class into *
+ * a dynamic array. It contains basic methods such as getting the 	 *
+ * size of the array, adding and getting an element, and finally 	 *
+ * resizing the array.												 *
+ *********************************************************************/ 
 function Manager(){
 	this.markerArray = new Array(40);
 	this.size = 0;
@@ -88,6 +116,11 @@ function Manager(){
 	}
 }
 
+/*********************************************************************
+ * Race class. It contains the variables a race should contains such *
+ * as the race and creator id, name, time, score and the ranking a 	 *
+ * user had. Meaning, the position based on the other racer's score	 *
+ *********************************************************************/
 function Race(raceId, creatorId, name, time, rank, score){
 	this.raceId = raceId;
 	this.creatorId = creatorId;
@@ -97,6 +130,10 @@ function Race(raceId, creatorId, name, time, rank, score){
 	this.score = score;
 }
 
+/*********************************************************************
+ * Method that displays the races from a certain user in a div on the*
+ * webpage.														     *
+ *********************************************************************/
 function fillRaces(){
 	var objectDiv = document.getElementById('raceList');
 	var i;

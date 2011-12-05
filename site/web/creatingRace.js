@@ -1,3 +1,12 @@
+/*********************************************************************
+ *	This Javascript class creates a new race by retrieving from the  *
+ *	text boxes the required information. It also allow the user drop *
+ *	pins (Final destination, positive and negative items). As an 	 *
+ *	additional feature, it validates the forms and that the map		 *
+ *	contains at least a final destination; information minimum		 *
+ *	required to create a race into de database.						 *
+ *********************************************************************/
+
 var ubc = new google.maps.LatLng(49.263261,-123.253899);
 var positive = 'img/star.png';
 var negative = 'img/bomb.png';
@@ -20,10 +29,23 @@ var negativeIcon = 3;
 var jsonString;
 var countUsers = 0;
 
+/*********************************************************************
+ * This function sets the type of the item:							 *
+ * 1. Final destination												 *
+ * 2. Positive Item													 *
+ * 3. Negative Item													 *
+ *********************************************************************/
 function setType(itemType){
 	type = itemType;
 }
-		
+
+/*********************************************************************
+ * Initial method called when createRace.html is loaded. The 		 *
+ * functionality of this method is to set the basic options Google 	 *
+ * Maps uses, such as the zoom and the way it is presented (ROADMAP) *
+ * as well as the zoom. After the options are set, the map object is *
+ * created and a click listener is added to it.						 *
+ *********************************************************************/
 function initialize() {
 	var myOptions = {
 	   	zoom: zoomOfMap,
@@ -37,7 +59,15 @@ function initialize() {
 		addMarker(event.latLng);						
 	});
 }
-		
+
+/*********************************************************************
+ * This method adds a pin (marker) to the map depending on the type	 *
+ * of marker needed. It also makes sure only one final destination is*
+ * added to the map. It creates the marker object, and calls 		 *
+ * setIcon() that sets the image to the marker and addRadius() that  *
+ * adds a circle around the marker to set a radius. At the end, an 	 *
+ * array of these markers is stored.								 *
+ *********************************************************************/
 function addMarker(latlang){
 	if((finalDestinationMarker == false && type > 0) || type > 1){
 		var location = new google.maps.LatLng(latlang.lat(), latlang.lng());	
@@ -56,6 +86,10 @@ function addMarker(latlang){
 	}
 }
 
+/*********************************************************************
+ * SetIcon checks which type of marker was set and based on this info*
+ * adds the image to the marker that is dropped on the map.			 *
+ *********************************************************************/
 function setIcon(){
 	if(type == goalIcon){
 		marker.setIcon(goal);
@@ -67,6 +101,12 @@ function setIcon(){
 		marker.setIcon(negative);
 }
 
+/*********************************************************************
+ * AddRadius creates a circle object inside the Google Map. This 	 *
+ * object contains attributes such as adding the radius of it. 250mt *
+ * is the radius decided to allow users to check-in inside a marker  *
+ * for the system to recognize them.								 *
+ *********************************************************************/
 function addRadius(){
 	circle = new google.maps.Circle({
 	  map: map,
@@ -77,6 +117,12 @@ function addRadius(){
 	circle.bindTo('center', marker, 'position');
 }
 
+/*********************************************************************
+ * This is a class created in order to manage every other class into *
+ * a dynamic array. It contains basic methods such as getting the 	 *
+ * size of the array, adding and getting an element, and finally 	 *
+ * resizing the array.												 *
+ *********************************************************************/ 		
 function ItemManager(){
 	this.markerArray = new Array(40);
 	this.size = 0;
@@ -109,17 +155,23 @@ function ItemManager(){
 
 }
 
+/*********************************************************************
+ * Marker class. It contains the variables necessary to get values	 *
+ * from the marker dropped and store them in the DB 				 *
+ *********************************************************************/
 function Marker(location, type, value){
 	this.location = location;
 	this.type = type;
 	this.value = value;
 }
 
-//function display(){
-//	for(var i=0; i<im.getSize(); i++)
-//		alert(im.getElementAt(i).location + "     " + im.getElementAt(i).type);
-//}
-
+/*********************************************************************
+ * This method validates a name race, at least one friend is invited *
+ * as well as a final destination, date and time is inserted. If this*
+ * requirements are not addressed, an alert message is popped to tell*
+ * the user the required information is missing. When everything is  *
+ * as it is supposed to be a JSON object will be created.			 *
+ *********************************************************************/
 function validate(){
 	var total = 0;
 	var raceName = document.getElementById("raceName_text");
@@ -169,6 +221,11 @@ function validate(){
 		createJSON();
 }
 
+/*********************************************************************
+ * This method adds the username inserted in the invite friend text	 *
+ * box to ann array. Before it validates the first character is the @*
+ * sign, and it restricts the number of friends invited to 4		 *
+ *********************************************************************/
 function addUser(){
 	var username = document.getElementById("addFriends").value;
 	if (username[0] == "@" && countUsers < 4){
@@ -183,45 +240,11 @@ function addUser(){
 	}
 }
 
-function createJSON(){
-//	var items = [];
-//	var users  = [];
-//	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
-//	
-//	jsonObject.push({"name":document.getElementById("raceName_text")});
-//	
-//	for(var i=0; i<im.getSize(); i++){
-//		var x = im.getElementAt(i);
-//		if(x.type == 1){
-//			items.push({"location":x.location, "type":x.type, "value":'0'});
-//		}
-//		else if(x.type == 2){
-//			items.push({"location":x.location, "type":x.type, "value":'250'});
-//		}
-//		else if(x.type == 3){
-//			items.push({"location":x.location, "type":x.type, "value":'-250'});
-//		}
-//	}
-//	jsonObject.push({"items":items});
-//	for(var i=0; i<userArray.length; i++){
-//		if(i==0){
-//			users.push({"username":'@ssalazars'});
-//		}
-//		else{
-//			users.push({"username":userArray[i]});
-//		}
-//	}
-//	jsonObject.push({"racers":users});
-//	jsonObject.push({"dateTime":dateTime});
-	
-//	jsonObject = {
-//		name: document.getElementById("raceName_text").value,
-//		items: [{location: "(12345,67890)", type: "1", value:"0"
-//		}],
-//		racers: [{name: "@ssalazars"}],
-//		dateTime: dateTime
-//	};
-	
+/*********************************************************************
+ * createJSON() is the method in charge of in formatting all the	 *
+ * information gotten and send it to the server as a JSON object.	 *
+ *********************************************************************/
+function createJSON(){	
 	var itemString = '';
 	var racersString = '';
 	var dateTime = document.getElementById("date").value + " " + document.getElementById("time").value;
@@ -253,6 +276,11 @@ function createJSON(){
 	send();
 }
 
+/*********************************************************************
+ * Method that sends the JSON object to server. Creates an 			 *
+ * XMLHttpRequest, sends it to the server as POST, and handles the 	 *
+ * response from the server.										 *
+ *********************************************************************/
 function send(){
 	//var newRace = JSON.stringify(jsonString);
 	var newRace = jsonString;
@@ -263,6 +291,10 @@ function send(){
 	request.send(newRace);
 }
 
+/*********************************************************************
+ * Method for handling the server's response. It redirects the user  *
+ * back to it home page.											 *
+ *********************************************************************/
 function handleResponse(){
 	if((request.status == 200)&&(request.readyState == 4))
 		reDirect("usr_home.html");

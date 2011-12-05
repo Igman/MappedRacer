@@ -1,6 +1,7 @@
 package Beans;
 
 /**
+ * This class represents a CheckIn object.
  * 
  * @author Christiaan Fernando
  *
