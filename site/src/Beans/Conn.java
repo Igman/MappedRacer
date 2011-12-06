@@ -1,13 +1,18 @@
 package Beans;
 
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class sets up the connection to the jdbc
+ * @author Christiaan Fernando
+ *
+ */
 public class Conn {
 	private static Conn instance;
 	private Connection con;

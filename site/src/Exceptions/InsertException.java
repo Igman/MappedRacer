@@ -1,6 +1,12 @@
 package Exceptions;
 
-public class InsertException extends Exception{
+/**
+ * Exception thrown on an INSERT SQL statement
+ * 
+ * @author Christiaan Fernando
+ * 
+ */
+public class InsertException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

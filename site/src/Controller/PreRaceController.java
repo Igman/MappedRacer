@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,19 +16,18 @@ import javax.servlet.http.HttpSession;
 
 import Beans.Race;
 import Beans.RaceObj;
+import Exceptions.SelectException;
 
 /******************************************************
- * Controller class that deals with handling the 	  *
- * pre game lobby where the use can see the races he  *
- * is in.											  *	
+ * Controller class that deals with handling the * pre game lobby where the use
+ * can see the races he * is in. *
  ******************************************************/
 public class PreRaceController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Race raceModel;
 
 	/**
-	 * Constuctor that sets the race model that will be used to
-	 * get the races.
+	 * Constuctor that sets the race model that will be used to get the races.
 	 */
 	public PreRaceController() {
 		super();
@@ -42,18 +42,21 @@ public class PreRaceController extends HttpServlet {
 	}
 
 	/**
-	 * This is the do get that will build a json object that contains all of the 
+	 * This is the do get that will build a json object that contains all of the
 	 * user's races that are coming up or currently active.
 	 * 
-	 * @param request		Contains the session.
-	 * @param response		Json object will be sent back through the response.
+	 * @param request
+	 *            Contains the session.
+	 * @param response
+	 *            Json object will be sent back through the response.
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/json");
 		PrintWriter out = response.getWriter();
-		
+
 		// Gets user id using the session.
 		HttpSession session = request.getSession();
 		int userID = (Integer) session.getAttribute("userid");
@@ -64,8 +67,9 @@ public class PreRaceController extends HttpServlet {
 
 			System.out.println(json);
 			out.println(json);
-		}  catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
+		} catch (SelectException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT,
+					"Problem occured with the SQL. Reason: " + e.getMessage());
 		} finally {
 			out.close();
 		}
@@ -74,37 +78,43 @@ public class PreRaceController extends HttpServlet {
 	/**
 	 * Will just pass request and response on to doGet.
 	 * 
-	 * @param request	The request which contains the JSON
-	 * @param response	The response that will be passed back.
+	 * @param request
+	 *            The request which contains the JSON
+	 * @param response
+	 *            The response that will be passed back.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
-	
+
 	/**
-	 * This function does the work of setting up the JSON object from the 
+	 * This function does the work of setting up the JSON object from the
 	 * request to the model about the races for a user.
 	 * 
-	 * @param userID	The user that the races will be for.
-	 * @return			The list of races for the user.
+	 * @param userID
+	 *            The user that the races will be for.
+	 * @return The list of races for the user.
+	 * @throws SelectException
 	 * @throws SQLException
 	 */
-	private String getJSONRaceList(int userID) throws SQLException {
+	private String getJSONRaceList(int userID) throws SelectException {
 		// Gets the list of races for the user.
-		List<RaceObj> races = raceModel.getRacesObj(userID, false);
-		Iterator<RaceObj> iterator = races.iterator();
-		
+		List<RaceObj> races = new ArrayList<RaceObj>();
+
 		// Begins creating the json object.
 		StringBuffer json = new StringBuffer("{races:[");
-		
+
+		races = raceModel.getRacesObj(userID, false);
+		Iterator<RaceObj> iterator = races.iterator();
+
 		// All dates must be formatted like this in both view and controller.
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 
 		RaceObj temp;
-		
+
 		// Loops through the list of races and sets the JSON object.
 		while (iterator.hasNext()) {
 			temp = iterator.next();
@@ -115,7 +125,7 @@ public class PreRaceController extends HttpServlet {
 					+ sdf.format((java.util.Date) temp.getStart())
 					+ "\", score:\"" + temp.getScore() + "\"},");
 		}
-		
+
 		// Sets the ending characters of the JSON object.
 		if (races.isEmpty()) {
 			json.append("]");

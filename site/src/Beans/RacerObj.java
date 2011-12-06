@@ -1,6 +1,10 @@
 package Beans;
 
-
+/**
+ * This item represents a Racer object.
+ * @author Christiaan Fernando
+ *
+ */
 public class RacerObj {
 	private int userId;
 	private String userName;

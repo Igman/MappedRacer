@@ -43,6 +43,8 @@ public class CheckIn {
 	public void addCheckIn(int userId, int raceId, String picture,
 			String comment, String geoLocation) throws InsertException {
 		PreparedStatement ps;
+		int rows = -1;
+
 		try {
 			ps = c.prepareStatement("INSERT INTO CheckIn(userid, raceid, picture, comment, geolocation) VALUES (?,?,?,?,?)");
 
@@ -52,12 +54,24 @@ public class CheckIn {
 			ps.setString(4, comment);
 			ps.setString(5, geoLocation);
 
-			ps.executeUpdate();
-			c.commit();
-			ps.close();
 		} catch (SQLException e) {
 			throw new InsertException("Failed to insert check-in");
 		}
+		try {
+			if ((rows = ps.executeUpdate()) != 1)
+				throw new InsertException(
+						"CheckIn wasn't updated in the database " + rows
+								+ " rows updated.");
+		} catch (SQLException e) {
+			throw new InsertException("Database error");
+		}
+		try {
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new InsertException("Database error");
+		}
+
 	}
 
 	/**
@@ -98,6 +112,7 @@ public class CheckIn {
 
 			rs = ps.executeQuery();
 			ps.close();
+			c.commit();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get check-ins");
 		}
@@ -153,6 +168,8 @@ public class CheckIn {
 
 				results.add(checkInObj);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned check-ins");
 		}
@@ -189,6 +206,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned user id");
 		}
@@ -225,6 +244,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race id");
 		}
@@ -261,6 +282,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned pic url");
 		}
@@ -281,6 +304,7 @@ public class CheckIn {
 	 */
 	public void setPic(int checkInId, String pic) throws UpdateException {
 		PreparedStatement ps = null;
+		int rows = -1;
 
 		try {
 			ps = c.prepareStatement("UPDATE Checkin SET picture = ? WHERE ID = ?");
@@ -293,7 +317,8 @@ public class CheckIn {
 		try {
 			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
-						"Pic url wasn't updated in the database");
+						"Pic url wasn't updated in the database. " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}
@@ -336,6 +361,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned comment");
 		}
@@ -357,6 +384,7 @@ public class CheckIn {
 	public void setComment(int checkInId, String comment)
 			throws UpdateException {
 		PreparedStatement ps = null;
+		int rows = -1;
 
 		try {
 			ps = c.prepareStatement("UPDATE CheckIn SET comment = ? WHERE ID = ?");
@@ -370,7 +398,8 @@ public class CheckIn {
 		try {
 			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
-						"Comment wasn't updated in the database");
+						"Comment wasn't updated in the database " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}
@@ -394,7 +423,7 @@ public class CheckIn {
 	 * @return The location
 	 * @throws SelectException
 	 */
-	public String getLocation(int checkInId) throws SelectException{
+	public String getLocation(int checkInId) throws SelectException {
 		PreparedStatement ps;
 		ResultSet rs = null;
 		String result = "";
@@ -407,12 +436,13 @@ public class CheckIn {
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select location");
 		}
-		
 
 		try {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned location");
 		}
@@ -431,8 +461,10 @@ public class CheckIn {
 	 *            The new location
 	 * @throws UpdateException
 	 */
-	public void setLocation(int checkInId, String location) throws UpdateException{
+	public void setLocation(int checkInId, String location)
+			throws UpdateException {
 		PreparedStatement ps = null;
+		int rows = -1;
 		
 		try {
 			ps = c.prepareStatement("UPDATE CheckIn SET location = ? WHERE ID = ?");
@@ -446,7 +478,8 @@ public class CheckIn {
 		try {
 			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
-						"location wasn't updated in the database");
+						"location wasn't updated in the database " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}

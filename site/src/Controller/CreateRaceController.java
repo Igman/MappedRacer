@@ -14,18 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Beans.Race;
-import Beans.User;
-import Beans.Racer;
-import Beans.Item;
-import Beans.ItemObj;
-import Exceptions.InsertException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import twitter4j.Twitter;
+import Beans.Item;
+import Beans.ItemObj;
+import Beans.Race;
+import Beans.Racer;
+import Beans.User;
+import Exceptions.InsertException;
+import Exceptions.SelectException;
+import Exceptions.UpdateException;
 
 /******************************************************
  * This is a controller class that is responsible for * 
@@ -170,7 +171,12 @@ public class CreateRaceController extends HttpServlet {
 		String creatorName = userModel.getUserName(creatorID);
 
 		// Creates the new race in the race DB.
-		int raceID = raceModel.createRace(name, dateTime, creatorID);
+		int raceID = 0;
+		try {
+			raceID = raceModel.createRace(name, dateTime, creatorID);
+		} catch (SelectException e) {
+			System.out.println(e.toString());
+		}
 
 		// Adds the items in the race to the items DB.
 		itemModel.addItems(items, raceID);
@@ -179,7 +185,11 @@ public class CreateRaceController extends HttpServlet {
 		sendInvites(racers, raceID, request); // TODO Users id auto created when racers created.
 		racerModel.addRacers(racers, raceID);
 		racerModel.addRacer(creatorName, raceID);
-		racerModel.setAttend(raceID, creatorID, true);
+		try {
+			racerModel.setAttend(raceID, creatorID, true);
+		} catch (UpdateException e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	/**
