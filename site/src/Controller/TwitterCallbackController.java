@@ -38,6 +38,7 @@ public class TwitterCallbackController extends HttpServlet {
 			AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
 			setupUser(accessToken, session);
 			session.removeAttribute("requestToken");
+			session.setAttribute("loggedin", true);
 		}catch (TwitterException e) {
             throw new ServletException(e);
         }
