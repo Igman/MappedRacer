@@ -67,7 +67,7 @@ public class Race {
 		} catch (SQLException e) {
 			throw new InsertException("Failed to insert race");
 		}
-
+		
 		// rows should be 1. Throw error otherwise
 		try {
 			if ((rows = ps.executeUpdate()) != 1)
@@ -87,7 +87,7 @@ public class Race {
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get ID for created race");
 		}
-
+		
 		int raceID = -1;
 		try {
 			while (rs.next()) {
@@ -97,7 +97,7 @@ public class Race {
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race ID");
 		}
-
+		
 		return raceID;
 	}
 
@@ -118,7 +118,7 @@ public class Race {
 		PreparedStatement ps;
 		ResultSet rs = null;
 		RaceObj raceObj = new RaceObj();
-
+		
 		try {
 			ps = c.prepareStatement("SELECT name, start FROM race WHERE ID = ? AND creator = ?");
 			ps.setInt(1, raceId);
@@ -140,6 +140,7 @@ public class Race {
 			throw new SelectException("Error on returned RaceObj");
 		}
 
+		
 		raceObj.setCreatorId(creatorId);
 		raceObj.setId(raceId);
 		return raceObj;
@@ -169,6 +170,7 @@ public class Race {
 			ps.setInt(1, userId);
 			ps.setBoolean(2, isFinished);
 
+			
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get races");
@@ -264,7 +266,7 @@ public class Race {
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race name");
 		}
-
+		
 		return result;
 	}
 

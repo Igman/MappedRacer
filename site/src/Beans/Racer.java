@@ -120,6 +120,7 @@ public class Racer {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get racers");
 		}
@@ -153,7 +154,7 @@ public class Racer {
 		List<RacerObj> results = new ArrayList<RacerObj>();
 		PreparedStatement ps;
 		ResultSet rs = null;
-
+		
 		try {
 			ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ? ORDER BY score DESC");
 			ps.setInt(1, raceId);
@@ -200,7 +201,7 @@ public class Racer {
 			ps = c.prepareStatement("SELECT Attend FROM Racers WHERE RaceId = ? AND UserId = ?");
 			ps.setInt(1, raceId);
 			ps.setInt(2, userId);
-
+			
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get attend status");
@@ -272,7 +273,7 @@ public class Racer {
 		PreparedStatement ps;
 		ResultSet rs = null;
 		int result = 0;
-
+		
 		try {
 			ps = c.prepareStatement("SELECT score FROM Racers WHERE userID = ? AND raceID = ?");
 			ps.setInt(1, userID);
@@ -290,6 +291,7 @@ public class Racer {
 			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned score");
+			
 		}
 
 		return result;
@@ -399,7 +401,7 @@ public class Racer {
 			ps.setInt(1, raceID);
 			ps.setInt(2, raceID);
 			ps.setInt(3, userID);
-
+			
 			rs = ps.executeQuery();
 
 		} catch (SQLException e) {
@@ -414,6 +416,7 @@ public class Racer {
 			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned racer rank");
+			
 		}
 
 		return rank;

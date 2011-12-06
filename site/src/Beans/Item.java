@@ -356,11 +356,14 @@ public class Item {
 		ResultSet rs = null;
 		int result = -1;
 
+
 		try {
 			ps = c.prepareStatement("SELECT ValueWeight FROM Item WHERE ID = ?");
 			ps.setInt(1, itemId);
 
 			rs = ps.executeQuery();
+			ps.close();
+			
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get item value");
 		}
@@ -369,8 +372,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			
 			c.commit();
-			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item value");
 		}
@@ -391,6 +394,7 @@ public class Item {
 	 */
 	public void setValue(int itemID, int value) throws UpdateException {
 		PreparedStatement ps;
+		
 		int rows = -1;
 
 		try {
@@ -430,6 +434,7 @@ public class Item {
 	 */
 	public String getLocation(int itemId) throws SelectException {
 		PreparedStatement ps;
+		
 		ResultSet rs = null;
 		String result = "";
 
@@ -451,7 +456,7 @@ public class Item {
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item location");
 		}
-
+		
 		return result;
 	}
 
