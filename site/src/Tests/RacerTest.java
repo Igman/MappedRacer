@@ -160,7 +160,8 @@ public class RacerTest {
 				test3 = (temp.getUserName().compareTo(uname[i]) == 0);
 				i++;
 			}
-		} catch (SQLException e) {
+		} catch (SelectException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		assertTrue(test1);
