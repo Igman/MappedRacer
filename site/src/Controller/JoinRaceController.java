@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import Beans.Racer;
 import Exceptions.UpdateException;
-//import twitter4j.Twitter; // Not needed.
 
 /******************************************************
  * This class is used by a user who is joining a race *											  *

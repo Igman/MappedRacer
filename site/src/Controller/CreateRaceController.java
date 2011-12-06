@@ -14,20 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Beans.Race;
-import Beans.User;
-import Beans.Racer;
-import Beans.Item;
-import Beans.ItemObj;
-import Exceptions.InsertException;
-import Exceptions.SelectException;
-import Exceptions.UpdateException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import twitter4j.Twitter;
+import Beans.Item;
+import Beans.ItemObj;
+import Beans.Race;
+import Beans.Racer;
+import Beans.User;
+import Exceptions.InsertException;
+import Exceptions.SelectException;
+import Exceptions.UpdateException;
 
 /******************************************************
  * This is a controller class that is responsible for * 
