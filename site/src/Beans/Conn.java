@@ -14,8 +14,8 @@ public class Conn {
 	private ResultSet rs;
 	private Statement st;
 
-	private final String CONNECTURL = "jdbc:mysql://localhost:3306/mappedrace";//TODO make racer!!!
-	private final String USER = "root";
+	private final String CONNECTURL = "jdbc:mysql://localhost:3306/mappedrace";
+	private final String USER = "test";//TODO make TEST USERRRRR!!!
 	private final String PASS = "";
 
 	/**

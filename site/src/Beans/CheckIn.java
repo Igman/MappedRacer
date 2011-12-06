@@ -33,16 +33,11 @@ public class CheckIn {
 	 * comment, location and picture url, this method will add a check-in with
 	 * this information to the database.
 	 * 
-	 * @param userId
-	 *            ID of the user creating this check-in
-	 * @param raceId
-	 *            ID of the race this check-in was created in
-	 * @param picture
-	 *            Url of an image the user wants to add to this check-in
-	 * @param comment
-	 *            A comment the user wants to associate with this check-in
-	 * @param geoLocation
-	 *            The location of this check-in
+	 * @param userId		ID of the user creating this check-in
+	 * @param raceId		ID of the race this check-in was created in
+	 * @param picture		Url of an image the user wants to add to this check-in
+	 * @param comment		A comment the user wants to associate with this check-in
+	 * @param geoLocation	The location of this check-in
 	 * @throws InsertException
 	 */
 	public void addCheckIn(int userId, int raceId, String picture,

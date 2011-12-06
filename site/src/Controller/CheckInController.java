@@ -125,7 +125,7 @@ public class CheckInController extends HttpServlet {
 			buffer.append(line);
 		}
 
-		System.out.println(buffer.toString());
+		System.out.println("CheckInController: "+buffer.toString());
 		// Gets the object as a json string.
 		jsonObject = new JSONObject(buffer.toString());
 
