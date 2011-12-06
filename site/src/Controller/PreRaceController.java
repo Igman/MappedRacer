@@ -102,7 +102,7 @@ public class PreRaceController extends HttpServlet {
 	 */
 	private String getJSONRaceList(int userID) throws SelectException {
 		// Gets the list of races for the user.
-		List<RaceObj> races = new ArrayList<RaceObj>();
+		List<RaceObj> races;
 
 		// Begins creating the json object.
 		StringBuffer json = new StringBuffer("{races:[");

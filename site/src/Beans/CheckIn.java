@@ -17,6 +17,7 @@ import Exceptions.UpdateException;
  **********************************************/
 
 public class CheckIn {
+	private static final long serialVersionUID = 1L;
 	private Connection c;
 
 	/**
