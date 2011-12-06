@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class PreRaceController extends HttpServlet {
 	private Race raceModel;
 
 	/**
-	 * Constuctor that sets the race model that will be used to get the races.
+	 * Constructor that sets the race model that will be used to get the races.
 	 */
 	public PreRaceController() {
 		super();
