@@ -1,8 +1,9 @@
 package Beans;
 
 /**
- * Class for the item object. TODO: Is this the best way to pass an object
- * as an array and have it mapped to the model class...?
+ * This class represents an Item object.
+ * @author Christiaan Fernando
+ *
  */
 public class ItemObj {
 	private int itemId;

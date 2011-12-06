@@ -48,6 +48,8 @@ public class CheckIn {
 	public void addCheckIn(int userId, int raceId, String picture,
 			String comment, String geoLocation) throws InsertException {
 		PreparedStatement ps;
+		int rows = -1;
+
 		try {
 			ps = c.prepareStatement("INSERT INTO CheckIn(userid, raceid, picture, comment, geolocation) VALUES (?,?,?,?,?)");
 
@@ -57,12 +59,24 @@ public class CheckIn {
 			ps.setString(4, comment);
 			ps.setString(5, geoLocation);
 
-			ps.executeUpdate();
-			c.commit();
-			ps.close();
 		} catch (SQLException e) {
 			throw new InsertException("Failed to insert check-in");
 		}
+		try {
+			if ((rows = ps.executeUpdate()) != 1)
+				throw new InsertException(
+						"CheckIn wasn't updated in the database " + rows
+								+ " rows updated.");
+		} catch (SQLException e) {
+			throw new InsertException("Database error");
+		}
+		try {
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new InsertException("Database error");
+		}
+
 	}
 
 	/**
@@ -294,7 +308,8 @@ public class CheckIn {
 		try {
 			if ((rows = ps.executeUpdate()) != 1)
 				throw new UpdateException(
-						"Pic url wasn't updated in the database");
+						"Pic url wasn't updated in the database. " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}
@@ -371,7 +386,8 @@ public class CheckIn {
 		try {
 			if ((rows = ps.executeUpdate()) != 1)
 				throw new UpdateException(
-						"Comment wasn't updated in the database");
+						"Comment wasn't updated in the database " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}
@@ -395,7 +411,7 @@ public class CheckIn {
 	 * @return The location
 	 * @throws SelectException
 	 */
-	public String getLocation(int checkInId) throws SelectException{
+	public String getLocation(int checkInId) throws SelectException {
 		PreparedStatement ps;
 		ResultSet rs = null;
 		String result = "";
@@ -407,7 +423,6 @@ public class CheckIn {
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select location");
 		}
-		
 
 		try {
 			while (rs.next()) {
@@ -431,7 +446,8 @@ public class CheckIn {
 	 *            The new location
 	 * @throws UpdateException
 	 */
-	public void setLocation(int checkInId, String location) throws UpdateException{
+	public void setLocation(int checkInId, String location)
+			throws UpdateException {
 		PreparedStatement ps = null;
 		int rows = -1;
 
@@ -447,7 +463,8 @@ public class CheckIn {
 		try {
 			if ((rows = ps.executeUpdate()) != 1)
 				throw new UpdateException(
-						"location wasn't updated in the database");
+						"location wasn't updated in the database " + rows
+								+ " rows updated.");
 		} catch (SQLException e) {
 			throw new UpdateException("Failed to update database");
 		}
