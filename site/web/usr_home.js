@@ -19,7 +19,8 @@ function sizeOfSquare(){
 	
 	var div = document.getElementById('roundSquare_races');
 	
-	div.style.height = sizePerRace * numberOfRaces + 'px';
+	if(numberOfRaces > 1)
+		div.style.height = sizePerRace * numberOfRaces + 'px';
 	
 	if(sendOnce){
 		sendOnce = false;

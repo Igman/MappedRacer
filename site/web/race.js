@@ -424,7 +424,7 @@ function handleResponse(){
 			var jsonString = request.responseText;
 			receiveJSON(jsonString)
 		}else{
-			markerToDelete = -1;
+			//markerToDelete = -1;
 			reDirect("race.html?raceId="+raceID.toString());
 		}
 	}
