@@ -1,12 +1,10 @@
 package Beans;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -98,7 +96,7 @@ public class Item {
 		ps.setInt(5, raceID);
 		
 		//throw error if fail
-		int rows = ps.executeUpdate();
+		ps.executeUpdate();
 		
 		c.commit();
 		ps.close();
@@ -186,7 +184,7 @@ public class Item {
 		ps.setInt(2, itemId);
 		
 		//throw error if fail
-		int rows = ps.executeUpdate();
+		ps.executeUpdate();
 		
 		c.commit();
 		ps.close();

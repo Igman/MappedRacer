@@ -24,7 +24,8 @@ import twitter4j.auth.RequestToken;
 import Beans.User;
 
 public class TwitterCallbackController extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */

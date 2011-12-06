@@ -1,11 +1,8 @@
 package Beans;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +53,7 @@ public class Race {
 		ps.setInt(3, creator);
 
 		// rowCount should be 1. Throw error otherwise
-		int rowCount = ps.executeUpdate();
+		ps.executeUpdate();
 
 		// Retrieves the race id of the created race.
 		ps = c.prepareStatement("SELECT MAX(ID) FROM Race");
@@ -165,7 +162,7 @@ public class Race {
 		ps.setInt(2, raceId);
 		
 		//throw error if fail
-		int rows = ps.executeUpdate();
+		ps.executeUpdate();
 		
 		c.commit();
 		ps.close();

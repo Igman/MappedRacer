@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
-import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import Beans.Racer;
@@ -27,7 +26,8 @@ import Beans.RacerObj;
  *
  */
 public class TwitterSearchController extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Responds with a JSON object representing all the tweets from the users in a given race
 	 * 
@@ -67,7 +67,7 @@ public class TwitterSearchController extends HttpServlet {
 			throw new ServletException(e);
 		}
 		List<RacerObj> racers = racerController.getRacersObj(raceId);
-		Collection<String> userIds = new HashSet();
+		Collection<String> userIds = new HashSet<String>();
 		for(RacerObj racer : racers){
 			userIds.add(racer.getUserName().replace("@",""));
 		}

@@ -281,7 +281,6 @@ public class CheckIn {
 	 */
 	public void setPic(int checkInId, String pic) throws UpdateException {
 		PreparedStatement ps = null;
-		int rows = -1;
 
 		try {
 			ps = c.prepareStatement("UPDATE Checkin SET picture = ? WHERE ID = ?");
@@ -292,7 +291,7 @@ public class CheckIn {
 		}
 
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"Pic url wasn't updated in the database");
 		} catch (SQLException e) {
@@ -357,7 +356,6 @@ public class CheckIn {
 	public void setComment(int checkInId, String comment)
 			throws UpdateException {
 		PreparedStatement ps = null;
-		int rows = -1;
 
 		try {
 			ps = c.prepareStatement("UPDATE CheckIn SET comment = ? WHERE ID = ?");
@@ -369,7 +367,7 @@ public class CheckIn {
 
 		// throw error if fail
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"Comment wasn't updated in the database");
 		} catch (SQLException e) {
@@ -433,8 +431,7 @@ public class CheckIn {
 	 */
 	public void setLocation(int checkInId, String location) throws UpdateException{
 		PreparedStatement ps = null;
-		int rows = -1;
-
+		
 		try {
 			ps = c.prepareStatement("UPDATE CheckIn SET location = ? WHERE ID = ?");
 			ps.setString(1, location);
@@ -445,7 +442,7 @@ public class CheckIn {
 
 		// throw error if fail
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"location wasn't updated in the database");
 		} catch (SQLException e) {

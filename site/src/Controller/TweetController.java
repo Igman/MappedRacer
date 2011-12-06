@@ -18,7 +18,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class TweetController extends HttpServlet{
-	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */

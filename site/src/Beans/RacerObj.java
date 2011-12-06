@@ -1,6 +1,5 @@
 package Beans;
 
-import java.sql.Time;
 
 public class RacerObj {
 	private int userId;
