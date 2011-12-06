@@ -84,6 +84,7 @@ public class Race {
 		try {
 			ps = c.prepareStatement("SELECT MAX(ID) FROM Race");
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get ID for created race");
 		}
@@ -93,7 +94,7 @@ public class Race {
 			while (rs.next()) {
 				raceID = rs.getInt(1);
 			}
-			ps.close();
+			
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race ID");
 		}
