@@ -220,8 +220,7 @@ public class CheckInController extends HttpServlet {
 
 				// Loops through all the racers. updating their score.
 				while (iter.hasNext()) {
-					racerModel.updateScore(iter.next().getUserId(), raceId,
-							score);
+					racerModel.updateScore(iter.next().getUserId(), raceId,	score);
 				}
 				
 				// Just to be safe it will not fall through to next case.
@@ -237,7 +236,7 @@ public class CheckInController extends HttpServlet {
 
 			}
 
-			itemModel.setValue(markerToDelete, 0);
+			itemModel.setStatus(markerToDelete, false);
 		} catch (UpdateException e) {
 			System.out.println(e.toString());
 		} catch (SelectException e) {

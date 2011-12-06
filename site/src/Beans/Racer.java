@@ -81,7 +81,7 @@ public class Racer {
 		try {
 			username = PrepString(username);
 			int userID = userModel.addUser(username);
-			boolean attend = false;
+			boolean attend = true;
 
 			ps = c.prepareStatement("INSERT INTO Racers(raceId, userId, attend) VALUES (?,?,?)");
 

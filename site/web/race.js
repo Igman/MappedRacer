@@ -139,8 +139,9 @@ function updateUserMarkers(){
 			map: map,																			
 		});
 		
-		isItInsideRadius(location);
 		
+		isItInsideRadius(location);
+		//alert("MARKER TO BE DELETED: "+markerToDelete);
 		for(var j=0; j<userManager.getSize(); j++){
 			if(userid == userManager.getElementAt(j).id){
 				innerid = userManager.getElementAt(j).innerId;
@@ -176,10 +177,15 @@ function isItInsideRadius(location){
 		var item = itemManager.getElementAt(i);
 		distance = google.maps.geometry.spherical.computeDistanceBetween(location,item.location);
 		
+		
 		if(itemManager.getElementAt(i).type == 1 && itIsRace)
-			document.getElementById("distanceToDestination").innerHTML = "Distance to destination: "+distance+"km";
+			document.getElementById("distanceToDestination").innerHTML = "Distance to destination: "+parseInt(distance)+"m";
 		
 		if(distance < sizeOfRadius){
+//			if(itemManager.getElementAt(i).type == 1){
+//				alert("Congratulations! You have won the race!");
+//			}
+			
 			deleteMarkerIcon(itemManager.getElementAt(i));
 		}				
 		
@@ -394,7 +400,7 @@ function deleteMarkerIcon(marker){
  * information gotten and send it to the server as a JSON object.	 *
  *********************************************************************/
 function createJSON(pic,msg,location){
-	updateUserMarkers();
+	//updateUserMarkers();
 	var jsonString = '{"location": "'+location+'", "comment": "'+msg+'", "picture": "'+pic+'", "raceId": "'+raceID+'", "markerToDelete": "'+markerToDelete+'", "postTweet": "'+document.getElementById("postTwitter").checked+'"}';
 	send(jsonString);
 }
@@ -422,7 +428,7 @@ function handleResponse(){
 		if(raceIdSent){
 			raceIdSent = false;
 			var jsonString = request.responseText;
-			receiveJSON(jsonString)
+			receiveJSON(jsonString);
 		}else{
 			//markerToDelete = -1;
 			reDirect("race.html?raceId="+raceID.toString());
@@ -459,6 +465,7 @@ function receiveJSON(jsonString){
 	var lat;
 	var lng;
 	var position;
+	//var isThereAFinalDestination = false;
 	
 	for(var i=0; i<jsonObject.items.length; i++){
 		
@@ -471,7 +478,15 @@ function receiveJSON(jsonString){
 		
 		var itemObject = new Item(jsonObject.items[i].id,position,jsonObject.items[i].type,jsonObject.items[i].value);
 		itemManager.addElement(itemObject);
+		
+		if(jsonObject.items[i].type == 1)
+			isThereAFinalDestination = true;
 	}
+
+//	if(!isThereAFinalDestination){
+//		alert("The race has ended");
+//		window.location = "usr_home.html";
+//	}
 	for(var i=0; i<jsonObject.racers.length; i++){
 		var userObject = new User(jsonObject.racers[i].userID,jsonObject.racers[i].username,jsonObject.racers[i].score, i+1);
 		userManager.addElement(userObject);
@@ -491,12 +506,13 @@ function receiveJSON(jsonString){
 	}
 	
 	updateMarkers();
-	updateUserMarkers();
 	
 	if(getURL() > 0){
 		itIsRace = true;
 		updatePositions();
 	}
+	
+	updateUserMarkers();
 }
 
 /*********************************************************************
@@ -514,7 +530,7 @@ function updatePositions(){
 	
 	for(var i=0; i<userManager.getSize(); i++)
 		positionsDiv.innerHTML += userManager.getElementAt(i).username + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + userManager.getElementAt(i).score + "<br>";
-	
+
 	//getLiveTweets();
 }
 
@@ -523,7 +539,8 @@ function updatePositions(){
  *********************************************************************/
 function getURL(){
 	var url = window.location + "";
-	return(url.indexOf("race.html"));
+	//alert("URL: "+url+" INDEX OF: "+url.indexOf("race.html",0));
+	return(url.indexOf("race.html",0));
 }
 
 /*********************************************************************
@@ -584,11 +601,12 @@ function checkinClicked(){
 //		temp.innerHTML += tweetManager.getElementAt(i).user + "<br>" + tweetManager.getElementAt(i).tweet;
 //}
 //
-//function sendTweet(){
-//	request = new XMLHttpRequest();
-//	var msg = document.getElementById("tweet").value;
-//	var url = "tweet?text="+msg;
-//	request.onreadystatechange = handleResponse;
-//	request.open("GET",url,true);
-//	request.send(null);	
-//}
+function sendTweet(){
+	alert("Your tweet has been successfully sent")
+	request = new XMLHttpRequest();
+	var msg = document.getElementById("tweet").value;
+	var url = "tweet?text="+msg;
+	request.onreadystatechange = handleResponse;
+	request.open("GET",url,true);
+	request.send(null);	
+}
