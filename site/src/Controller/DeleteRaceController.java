@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Beans.Race;
+import Exceptions.DeleteException;
 
 /******************************************************
  * This class is used to delete a race because it is  *
@@ -60,7 +61,7 @@ public class DeleteRaceController extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("");
 			dispatcher.forward(request, response);
 			
-		} catch (SQLException e) {
+		} catch (DeleteException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
 		}
 	}

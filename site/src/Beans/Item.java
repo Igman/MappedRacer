@@ -1,12 +1,10 @@
 package Beans;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import Exceptions.InsertException;
@@ -109,6 +107,7 @@ public class Item {
 	 *            Booleans as to whether item will be active or not.
 	 * @throws UpdateException
 	 */
+
 	public void addItem(int value, String location, int type, int raceID,
 			boolean active) throws InsertException {
 		PreparedStatement ps = null;
@@ -141,7 +140,6 @@ public class Item {
 		} catch (SQLException e) {
 			throw new InsertException("Database error");
 		}
-
 	}
 
 	/**
@@ -174,6 +172,8 @@ public class Item {
 				Integer temp = rs.getInt(1);
 				results.add(temp);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned items");
 		}
@@ -218,6 +218,8 @@ public class Item {
 
 				results.add(itemObj);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned items");
 		}
@@ -252,6 +254,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item type");
 		}
@@ -287,6 +291,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getBoolean(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item status");
 		}
@@ -333,7 +339,6 @@ public class Item {
 		} catch (SQLException e) {
 			throw new UpdateException("Database error");
 		}
-
 	}
 
 	/**
@@ -364,6 +369,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item value");
 		}
@@ -439,6 +446,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item location");
 		}
@@ -475,6 +484,8 @@ public class Item {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race id");
 		}

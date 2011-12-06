@@ -18,6 +18,7 @@ import Beans.Race;
 import Beans.RaceObj;
 import Beans.Racer;
 import Beans.RacerObj;
+import Exceptions.SelectException;
 
 /******************************************************
  * This class returns all the details for a race to   *
@@ -84,7 +85,7 @@ public class EditRaceController extends HttpServlet {
 			
 			System.out.println("EditRaceController: "+result);
 			out.print(result);
-		} catch (SQLException e) {
+		} catch (SelectException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
 		}
 	}
@@ -119,28 +120,36 @@ public class EditRaceController extends HttpServlet {
 	 * @return 		The list of items as json string.
 	 * @throws SQLException
 	 */
-	private String advItemsGet() throws SQLException {
+	private String advItemsGet() {
 		// Starts the json string.
 		StringBuffer json = new StringBuffer("items:[");
 		
 		// Gets the list of the item objects.
-		List<ItemObj> list = itemModel.getItemsObj(raceObj.getId());
-		Iterator<ItemObj> iter = list.iterator();
+		List<ItemObj> list;
+		try {
+			list = itemModel.getItemsObj(raceObj.getId());
+			Iterator<ItemObj> iter = list.iterator();
+			
 
-		while (iter.hasNext()) {
-			ItemObj temp = iter.next();
-			// Adds new value.
-			json.append("{id:\"" + temp.getItemId() + "\", type:\""
-					+ temp.getType() + "\", location:\"" + temp.getLocation()
-					+ "\", value:\"" + temp.getValue() + "\"},");
+			while (iter.hasNext()) {
+				ItemObj temp = iter.next();
+				// Adds new value.
+				json.append("{id:\"" + temp.getItemId() + "\", type:\""
+						+ temp.getType() + "\", location:\"" + temp.getLocation()
+						+ "\", value:\"" + temp.getValue() + "\"},");
+			}
+			
+			// Adds the end of the of the string.
+			if (list.isEmpty()) {
+				json.append("]");
+			} else {
+				// replace last character with ]
+				json.setCharAt(json.length() - 1, ']');
+			}
+		} catch (SelectException e) {
+			System.out.println(e.toString());
 		}
-		// Adds the end of the of the string.
-		if (list.isEmpty()) {
-			json.append("]");
-		} else {
-			// replace last character with ]
-			json.setCharAt(json.length() - 1, ']');
-		}
+		
 
 		return json.toString();
 	}
@@ -151,28 +160,34 @@ public class EditRaceController extends HttpServlet {
 	 * @return				JSON string.
 	 * @throws SQLException
 	 */
-	private String advRacersGet() throws SQLException {
+	private String advRacersGet(){
 		// Starts the json string.
 		StringBuffer json = new StringBuffer("racers:[");
 		
 		// Gets the list of the item objects.
-		List<RacerObj> list = racerModel.getRacersObj(raceObj.getId());
-		Iterator<RacerObj> iter = list.iterator();
+		List<RacerObj> list;
+		try {
+			list = racerModel.getRacersObj(raceObj.getId());
+			Iterator<RacerObj> iter = list.iterator();
 
-		while (iter.hasNext()) {
-			RacerObj temp = iter.next();
-			// Adds new value.
-			json.append("{userID:\"" + temp.getUserId() + "\", username:\""
-					+ temp.getUserName() + "\", score:\"" + temp.getScore()
-					+ "\"},");
+			while (iter.hasNext()) {
+				RacerObj temp = iter.next();
+				// Adds new value.
+				json.append("{userID:\"" + temp.getUserId() + "\", username:\""
+						+ temp.getUserName() + "\", score:\"" + temp.getScore()
+						+ "\"},");
+			}
+			// Adds the end of the of the string.
+			if (list.isEmpty()) {
+				json.append("]");
+			} else {
+				// replace last character with ]
+				json.setCharAt(json.length() - 1, ']');
+			}
+		} catch (SelectException e) {
+			System.out.println(e.toString());
 		}
-		// Adds the end of the of the string.
-		if (list.isEmpty()) {
-			json.append("]");
-		} else {
-			// replace last character with ]
-			json.setCharAt(json.length() - 1, ']');
-		}
+		
 		return json.toString();
 	}
 }

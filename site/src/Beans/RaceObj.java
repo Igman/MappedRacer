@@ -1,8 +1,12 @@
 package Beans;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
+/**
+ * This class represents the Race Object
+ * @author Christiaan Fernando
+ *
+ */
 public class RaceObj {
 	private int id;
 	private int creatorId;

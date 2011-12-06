@@ -15,26 +15,26 @@ import javax.servlet.http.HttpSession;
 import Beans.Race;
 import Beans.RaceObj;
 import Beans.Racer;
+import Exceptions.SelectException;
 
 /*********************************************************
- * Controller class that gets all the history for a user *
- * and returns it as a json object. This includes the    *
- * races the user has been in and the rank and points    *
- * they achieved during those races.					 *
+ * Controller class that gets all the history for a user * and returns it as a
+ * json object. This includes the * races the user has been in and the rank and
+ * points * they achieved during those races. *
  *********************************************************/
-public class ViewHistoryController extends HttpServlet{
+public class ViewHistoryController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Race raceModel;
 	private Racer racerModel;
-	
+
 	/**
-	 * Constuctor that sets the race model and the racers model that
-	 * will be used to to get the history in this controller.
+	 * Constuctor that sets the race model and the racers model that will be
+	 * used to to get the history in this controller.
 	 */
 	public ViewHistoryController() {
 		super();
-		
+
 		try {
 			raceModel = new Race();
 			racerModel = new Racer();
@@ -44,87 +44,99 @@ public class ViewHistoryController extends HttpServlet{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * This is the do get that will take the request and get the session with the user id and 
-	 * return the past races of that user in a JSON object.
+	 * This is the do get that will take the request and get the session with
+	 * the user id and return the past races of that user in a JSON object.
 	 * 
-	 * @param request 		Contains the session with the user id in it.
-	 * @param response		Out put the JSON object to.
+	 * @param request
+	 *            Contains the session with the user id in it.
+	 * @param response
+	 *            Out put the JSON object to.
 	 * @throws ServletException
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		
+
 		// Get session -> get user ID.
 		HttpSession session = request.getSession();
 		int userID = (Integer) session.getAttribute("userid");
 
 		try {
 			// Adds the check ins to JSON
-			String json =  getJSONRaces(userID);
-			
+			String json = getJSONRaces(userID);
+
 			System.out.println(json);
 			out.println(json);
-		}  catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
+		} catch (SelectException e) {
+			response.sendError(HttpServletResponse.SC_CONFLICT,
+					"Problem occured with the SQL. Reason: " + e.getMessage());
 		} finally {
 			out.close();
-		}		
-
+		}
 
 	}
 
 	/**
 	 * Will just pass request and response on to doGet.
 	 * 
-	 * @param request	The request which contains the JSON
-	 * @param response	The response that will be passed back.
+	 * @param request
+	 *            The request which contains the JSON
+	 * @param response
+	 *            The response that will be passed back.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
-	
+
 	/**
-	 * This function does the work of setting up the JSON object from the 
+	 * This function does the work of setting up the JSON object from the
 	 * request to the model about the races for a user.
 	 * 
-	 * @param userID	The user that the races will be for.
-	 * @return			The list of races for the user.
+	 * @param userID
+	 *            The user that the races will be for.
+	 * @return The list of races for the user.
+	 * @throws SelectException
 	 * @throws SQLException
 	 */
-	private String getJSONRaces(int userID) throws SQLException {
+	private String getJSONRaces(int userID) throws SelectException {
 		// Gets the list of races for the user.
 		List<RaceObj> races = raceModel.getRacesObj(userID, true);
-		
+
 		Iterator<RaceObj> iterator = races.iterator();
-		
+
 		// Begins creating the json object.
 		StringBuffer json = new StringBuffer("{races:[");
 		RaceObj temp;
-		
+
 		// Loops through the list of races and sets the JSON object.
 		while (iterator.hasNext()) {
 			temp = iterator.next();
-			
-			json.append("{raceID:\""+temp.getId()+"\", creatorID:\""+temp.getCreatorId()+"\", name:\""+temp.getName()+ "\", time:\""+ temp.getStart().toString() +"\", rank:\""+racerModel.getRacerRank(userID, temp.getId()) +"\", score:\""+ temp.getScore() + "\"},");
+
+			json.append("{raceID:\"" + temp.getId() + "\", creatorID:\""
+					+ temp.getCreatorId() + "\", name:\"" + temp.getName()
+					+ "\", time:\"" + temp.getStart().toString()
+					+ "\", rank:\""
+					+ racerModel.getRacerRank(userID, temp.getId())
+					+ "\", score:\"" + temp.getScore() + "\"},");
 		}
-		
+
 		// Sets the ending characters of the JSON object.
-		if(races.isEmpty()){
+		if (races.isEmpty()) {
 			json.append("]");
-		}else{
+		} else {
 			// replace last character with ]
-			json.setCharAt( json.length()-1,']');
+			json.setCharAt(json.length() - 1, ']');
 		}
-		
+
 		json.append("}");
-        
+
 		return json.toString();
 	}
 }

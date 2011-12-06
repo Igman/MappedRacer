@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Beans.Racer;
+import Exceptions.UpdateException;
 //import twitter4j.Twitter; // Not needed.
 
 /******************************************************
@@ -45,7 +46,7 @@ public class JoinRaceController extends HttpServlet {
 			racerModel.setAttend(Integer.parseInt(raceId),(Integer)request.getSession().getAttribute("userid"), true);
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Problem with the Number formatting. Reason: "+ e.getMessage());
-			} catch (SQLException e) {
+			} catch (UpdateException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT, "Problem occured with the SQL. Reason: "+ e.getMessage());
 		}
 		

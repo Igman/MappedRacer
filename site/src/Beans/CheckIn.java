@@ -116,6 +116,8 @@ public class CheckIn {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get check-ins");
 		}
@@ -125,6 +127,8 @@ public class CheckIn {
 				Integer temp = rs.getInt(1);
 				results.add(temp);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned check-ins");
 		}
@@ -170,6 +174,8 @@ public class CheckIn {
 
 				results.add(checkInObj);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned check-ins");
 		}
@@ -205,6 +211,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned user id");
 		}
@@ -240,6 +248,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race id");
 		}
@@ -275,6 +285,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned pic url");
 		}
@@ -306,7 +318,7 @@ public class CheckIn {
 		}
 
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"Pic url wasn't updated in the database. " + rows
 								+ " rows updated.");
@@ -351,6 +363,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned comment");
 		}
@@ -384,7 +398,7 @@ public class CheckIn {
 
 		// throw error if fail
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"Comment wasn't updated in the database " + rows
 								+ " rows updated.");
@@ -428,6 +442,8 @@ public class CheckIn {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned location");
 		}
@@ -450,7 +466,7 @@ public class CheckIn {
 			throws UpdateException {
 		PreparedStatement ps = null;
 		int rows = -1;
-
+		
 		try {
 			ps = c.prepareStatement("UPDATE CheckIn SET location = ? WHERE ID = ?");
 			ps.setString(1, location);
@@ -461,7 +477,7 @@ public class CheckIn {
 
 		// throw error if fail
 		try {
-			if ((rows = ps.executeUpdate()) != 1)
+			if (ps.executeUpdate() == -1)
 				throw new UpdateException(
 						"location wasn't updated in the database " + rows
 								+ " rows updated.");

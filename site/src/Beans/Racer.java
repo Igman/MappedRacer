@@ -1,18 +1,15 @@
 package Beans;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
 import Exceptions.InsertException;
 import Exceptions.SelectException;
+import Exceptions.UpdateException;
 
 /******************************************************
  * This is a model class that will set and get any * properties that have to do
@@ -25,6 +22,8 @@ public class Racer {
 	private User userModel;
 
 	/**
+	 * Default Constructor
+	 * 
 	 * This function is the constructor which will set up the connection
 	 * required to communicate with the DB.
 	 * 
@@ -122,8 +121,7 @@ public class Racer {
 
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
-			throw new SelectException(
-					"Could not find the selected userId from raceId: " + raceId);
+			throw new SelectException("Unable to get racers");
 		}
 
 		try {
@@ -131,8 +129,10 @@ public class Racer {
 				Integer temp = rs.getInt(1);
 				results.add(temp);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
-			throw new SelectException("Returned ResultSet was invalid");
+			throw new SelectException("Error on returned racers");
 		}
 
 		return results;
@@ -146,26 +146,38 @@ public class Racer {
 	 * 
 	 * @param raceId
 	 * @return List<RacerObj> of racers
+	 * @throws SelectException
 	 * @throws SQLException
 	 */
-	public List<RacerObj> getRacersObj(int raceId) throws SQLException {
+	public List<RacerObj> getRacersObj(int raceId) throws SelectException {
 		List<RacerObj> results = new ArrayList<RacerObj>();
 		PreparedStatement ps;
+		ResultSet rs = null;
 
-		ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ? ORDER BY score DESC");
-		ps.setInt(1, raceId);
+		try {
+			ps = c.prepareStatement("SELECT r.attend, r.score, u.uid, u.uname FROM Racers r LEFT JOIN Users u ON (r.userid = u.uid) WHERE r.raceid = ? ORDER BY score DESC");
+			ps.setInt(1, raceId);
 
-		ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			throw new SelectException("Unable to get racers");
+		}
 
-		while (rs.next()) {
-			RacerObj racerObj = new RacerObj();
-			racerObj.setAttend(rs.getBoolean(1));
-			racerObj.setScore(rs.getInt(2));
-			racerObj.setUserId(rs.getInt(3));
-			racerObj.setUserName(rs.getString(4));
-			racerObj.setRaceId(raceId);
+		try {
+			while (rs.next()) {
+				RacerObj racerObj = new RacerObj();
+				racerObj.setAttend(rs.getBoolean(1));
+				racerObj.setScore(rs.getInt(2));
+				racerObj.setUserId(rs.getInt(3));
+				racerObj.setUserName(rs.getString(4));
+				racerObj.setRaceId(raceId);
 
-			results.add(racerObj);
+				results.add(racerObj);
+			}
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new SelectException("Error on returned racers");
 		}
 
 		return results;
@@ -177,20 +189,31 @@ public class Racer {
 	 * @param raceId
 	 * @param userId
 	 * @return
-	 * @throws SQLException
+	 * @throws SelectException
 	 */
-	public boolean getAttend(int raceId, int userId) throws SQLException {
+	public boolean getAttend(int raceId, int userId) throws SelectException {
 		PreparedStatement ps;
+		ResultSet rs = null;
 		boolean result = false;
 
-		ps = c.prepareStatement("SELECT Attend FROM Racers WHERE RaceId = ? AND UserId = ?");
-		ps.setInt(1, raceId);
-		ps.setInt(2, userId);
+		try {
+			ps = c.prepareStatement("SELECT Attend FROM Racers WHERE RaceId = ? AND UserId = ?");
+			ps.setInt(1, raceId);
+			ps.setInt(2, userId);
 
-		ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			throw new SelectException("Unable to get attend status");
+		}
 
-		while (rs.next()) {
-			result = rs.getBoolean(1);
+		try {
+			while (rs.next()) {
+				result = rs.getBoolean(1);
+			}
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new SelectException("Error on returned attend status");
 		}
 
 		return result;
@@ -202,21 +225,39 @@ public class Racer {
 	 * @param raceId
 	 * @param userId
 	 * @param attend
-	 * @throws SQLException
+	 * @throws UpdateException
 	 */
 	public void setAttend(int raceId, int userId, boolean attend)
-			throws SQLException {
-		PreparedStatement ps;
+			throws UpdateException {
+		PreparedStatement ps = null;
+		int rows = -1;
 
-		ps = c.prepareStatement("UPDATE Racers SET Attend = ? WHERE RaceId = ? AND UserId = ?");
-		ps.setBoolean(1, attend);
-		ps.setInt(2, raceId);
-		ps.setInt(3, userId);
+		try {
+			ps = c.prepareStatement("UPDATE Racers SET Attend = ? WHERE RaceId = ? AND UserId = ?");
+			ps.setBoolean(1, attend);
+			ps.setInt(2, raceId);
+			ps.setInt(3, userId);
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update attend status");
+		}
 
-		ps.executeUpdate();
+		// throw error if fail
+		try {
+			if ((rows = ps.executeUpdate()) != 1)
+				throw new UpdateException(
+						"Attend status wasn't updated in the database " + rows
+								+ " rows updated.");
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update the database");
+		}
 
-		c.commit();
-		ps.close();
+		try {
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new UpdateException("Database Error");
+		}
+
 	}
 
 	/**
@@ -225,20 +266,30 @@ public class Racer {
 	 * @param userID
 	 * @param raceID
 	 * @return
-	 * @throws SQLException
+	 * @throws SelectException
 	 */
-	public int getScore(int userID, int raceID) throws SQLException {
+	public int getScore(int userID, int raceID) throws SelectException {
 		PreparedStatement ps;
+		ResultSet rs = null;
 		int result = 0;
 
-		ps = c.prepareStatement("SELECT score FROM Racers WHERE userID = ? AND raceID = ?");
+		try {
+			ps = c.prepareStatement("SELECT score FROM Racers WHERE userID = ? AND raceID = ?");
+			ps.setInt(1, userID);
+			ps.setInt(2, raceID);
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			throw new SelectException("Unable to get score");
+		}
 
-		ps.setInt(1, userID);
-		ps.setInt(2, raceID);
-		ResultSet rs = ps.executeQuery();
-
-		while (rs.next()) {
-			result = rs.getInt(1);
+		try {
+			while (rs.next()) {
+				result = rs.getInt(1);
+			}
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new SelectException("Error on returned score");
 		}
 
 		return result;
@@ -250,21 +301,39 @@ public class Racer {
 	 * @param userID
 	 * @param raceID
 	 * @param score
-	 * @throws SQLException
+	 * @throws UpdateException
 	 */
-	public void setScore(int userID, int raceID, int score) throws SQLException {
+	public void setScore(int userID, int raceID, int score)
+			throws UpdateException {
 		PreparedStatement ps;
+		int rows = -1;
 
-		ps = c.prepareStatement("UPDATE Racers SET score = ? WHERE userID = ? AND raceID = ?");
+		try {
+			ps = c.prepareStatement("UPDATE Racers SET score = ? WHERE userID = ? AND raceID = ?");
+			ps.setInt(1, score);
+			ps.setInt(2, userID);
+			ps.setInt(3, raceID);
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update score");
+		}
 
-		ps.setInt(1, score);
-		ps.setInt(2, userID);
-		ps.setInt(3, raceID);
+		// throw error if fail
+		try {
+			if ((rows = ps.executeUpdate()) != 1)
+				throw new UpdateException(
+						"Score wasn't updated in the database " + rows
+								+ " rows updated.");
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update the database");
+		}
 
-		ps.executeUpdate();
+		try {
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new UpdateException("Database error");
+		}
 
-		c.commit();
-		ps.close();
 	}
 
 	/**
@@ -275,46 +344,91 @@ public class Racer {
 	 * @param userID
 	 * @param raceID
 	 * @param score
-	 * @throws SQLException
+	 * @throws UpdateException
 	 */
 	public void updateScore(int userID, int raceID, int score)
-			throws SQLException {
+			throws UpdateException {
 		PreparedStatement ps;
+		int rows = -1;
 
-		ps = c.prepareStatement("UPDATE Racers SET score = score + ? WHERE userID = ? AND raceID = ?");
+		try {
+			ps = c.prepareStatement("UPDATE Racers SET score = score + ? WHERE userID = ? AND raceID = ?");
+			ps.setInt(1, score);
+			ps.setInt(2, userID);
+			ps.setInt(3, raceID);
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update score");
+		}
 
-		ps.setInt(1, score);
-		ps.setInt(2, userID);
-		ps.setInt(3, raceID);
+		try {
+			if ((rows = ps.executeUpdate()) != 1)
+				throw new UpdateException(
+						"Score wasn't updated in the database " + rows
+								+ " rows updated.");
+		} catch (SQLException e) {
+			throw new UpdateException("Failed to update the database");
+		}
 
-		ps.executeUpdate();
+		try {
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new UpdateException("Database error");
+		}
 
-		c.commit();
-		ps.close();
 	}
 
+	/**
+	 * Get Racer Rank
+	 * 
+	 * Given a user ID and a race ID, this gets the rank of the corresponding
+	 * racer.
+	 * 
+	 * @param userID
+	 * @param raceID
+	 * @return
+	 * @throws SelectException
+	 */
+	public int getRacerRank(int userID, int raceID) throws SelectException {
+		PreparedStatement ps;
+		ResultSet rs = null;
+		int rank = -1;
+
+		try {
+			ps = c.prepareStatement("SELECT (SELECT count(*) FROM racers r2 WHERE r2.score > r.score AND r2.raceID = ?) + 1 AS rank FROM racers r WHERE r.raceid = ? AND userid = ?");
+			ps.setInt(1, raceID);
+			ps.setInt(2, raceID);
+			ps.setInt(3, userID);
+
+			rs = ps.executeQuery();
+
+		} catch (SQLException e) {
+			throw new SelectException("Unable to select racer rank");
+		}
+
+		try {
+			while (rs.next()) {
+				rank = rs.getInt(1);
+			}
+			c.commit();
+			ps.close();
+		} catch (SQLException e) {
+			throw new SelectException("Error on returned racer rank");
+		}
+
+		return rank;
+	}
+
+	/**
+	 * Helper method to standardize Twitter usernames.
+	 * 
+	 * @param username
+	 * @return
+	 */
 	private String PrepString(String username) {
 		if (!username.startsWith("@")) {
 			username = "@" + username;
 		}
 		return username.toLowerCase();
-	}
-	
-	public int getRacerRank(int userID, int raceID) throws SQLException{
-		PreparedStatement ps;
-		int rank = -1;
-
-		ps = c.prepareStatement("SELECT (SELECT count(*) FROM racers r2 WHERE r2.score > r.score AND r2.raceID = ?) + 1 AS rank FROM racers r WHERE r.raceid = ? AND userid = ?");
-		ps.setInt(1, raceID);
-		ps.setInt(2, raceID);
-		ps.setInt(3, userID);
-
-		ResultSet rs = ps.executeQuery();
-
-		while (rs.next()) {
-			rank = rs.getInt(1);
-		}
-
-		return rank;
 	}
 }

@@ -20,6 +20,8 @@ import Beans.Racer;
 import Beans.Item;
 import Beans.ItemObj;
 import Exceptions.InsertException;
+import Exceptions.SelectException;
+import Exceptions.UpdateException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,7 +172,12 @@ public class CreateRaceController extends HttpServlet {
 		String creatorName = userModel.getUserName(creatorID);
 
 		// Creates the new race in the race DB.
-		int raceID = raceModel.createRace(name, dateTime, creatorID);
+		int raceID = 0;
+		try {
+			raceID = raceModel.createRace(name, dateTime, creatorID);
+		} catch (SelectException e) {
+			System.out.println(e.toString());
+		}
 
 		// Adds the items in the race to the items DB.
 		itemModel.addItems(items, raceID);
@@ -179,7 +186,11 @@ public class CreateRaceController extends HttpServlet {
 		sendInvites(racers, raceID, request); // TODO Users id auto created when racers created.
 		racerModel.addRacers(racers, raceID);
 		racerModel.addRacer(creatorName, raceID);
-		racerModel.setAttend(raceID, creatorID, true);
+		try {
+			racerModel.setAttend(raceID, creatorID, true);
+		} catch (UpdateException e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	/**

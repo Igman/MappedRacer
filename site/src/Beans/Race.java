@@ -1,11 +1,8 @@
 package Beans;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -137,6 +134,8 @@ public class Race {
 				raceObj.setName(rs.getString(1));
 				raceObj.setStart(rs.getTimestamp(2));
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned RaceObj");
 		}
@@ -186,6 +185,8 @@ public class Race {
 				raceObj.setScore(rs.getInt(5));
 				results.add(raceObj);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned races");
 		}
@@ -258,6 +259,8 @@ public class Race {
 			while (rs.next()) {
 				result = rs.getString(1);
 			}
+			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned race name");
 		}
@@ -305,6 +308,5 @@ public class Race {
 		} catch (SQLException e) {
 			throw new UpdateException("Database Error");
 		}
-
 	}
 }

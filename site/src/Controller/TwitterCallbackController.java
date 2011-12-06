@@ -1,6 +1,9 @@
-/*
+/**
+ *This is a controller class designed to handle callback requests comming from the twitter login api
+ * 
  * Author: Ignacio Rodriguez
- * This is based largely off the sample code found at https://github.com/yusuke/sign-in-with-twitter
+ * 
+ * Based off the sample code found at https://github.com/yusuke/sign-in-with-twitter
  */
 
 package Controller;
@@ -21,7 +24,11 @@ import twitter4j.auth.RequestToken;
 import Beans.User;
 
 public class TwitterCallbackController extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Twitter twitter = (Twitter)request.getSession().getAttribute("twitter");
 		RequestToken requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
@@ -31,12 +38,19 @@ public class TwitterCallbackController extends HttpServlet {
 			AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
 			setupUser(accessToken, session);
 			session.removeAttribute("requestToken");
+			session.setAttribute("loggedin", true);
 		}catch (TwitterException e) {
             throw new ServletException(e);
         }
         response.sendRedirect(request.getContextPath() + "/usr_home.html");
 	}
 
+	/**
+	 * A helper method to set the user id in the session and if necessary add the use to the database.
+	 * 
+	 * @param accessToken - The user's access token from twitter
+	 * @param session - The current session 
+	 */
 	private void setupUser(AccessToken accessToken, HttpSession session) {
 		String userName = accessToken.getScreenName();
 		try {

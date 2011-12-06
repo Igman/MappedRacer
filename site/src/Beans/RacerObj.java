@@ -1,7 +1,10 @@
 package Beans;
 
-import java.sql.Time;
-
+/**
+ * This item represents a Racer object.
+ * @author Christiaan Fernando
+ *
+ */
 public class RacerObj {
 	private int userId;
 	private String userName;
