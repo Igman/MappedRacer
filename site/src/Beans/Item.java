@@ -111,7 +111,7 @@ public class Item {
 		ps.setInt(1, raceId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			Integer temp = rs.getInt(1);
 			results.add(temp);
@@ -128,7 +128,7 @@ public class Item {
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			ItemObj itemObj = new ItemObj();
 			itemObj.setItemId(rs.getInt(1));
@@ -152,7 +152,7 @@ public class Item {
 		ps.setInt(1, itemId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getInt(1);
 		}
@@ -168,7 +168,7 @@ public class Item {
 		ps.setInt(1, itemId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getBoolean(1);
 		}
@@ -198,7 +198,7 @@ public class Item {
 		ps.setInt(1, itemId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getInt(1);
 		}
@@ -214,7 +214,7 @@ public class Item {
 		ps.setInt(1, itemId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getString(1);
 		}
@@ -230,7 +230,7 @@ public class Item {
 		ps.setInt(1, itemId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getInt(1);
 		}

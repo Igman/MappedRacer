@@ -54,17 +54,17 @@ public class Race {
 
 		// rowCount should be 1. Throw error otherwise
 		ps.executeUpdate();
-
+		ps.close();
 		// Retrieves the race id of the created race.
 		ps = c.prepareStatement("SELECT MAX(ID) FROM Race");
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		int raceID = -1;
 		while (rs.next()) {
 			raceID = rs.getInt(1);
 		}
-		ps.close();
+		
 		return raceID;
 	}
 	
@@ -85,7 +85,7 @@ public class Race {
 		ps.setInt(2, creatorId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			raceObj.setName(rs.getString(1));
 			raceObj.setStart(rs.getTimestamp(2));
@@ -111,7 +111,7 @@ public class Race {
 		ps.setBoolean(2, isFinished);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			RaceObj raceObj = new RaceObj();
 
@@ -146,7 +146,7 @@ public class Race {
 		ps.setInt(1, raceId);
 		
 		ResultSet rs = ps.executeQuery();
-		
+		ps.close();
 		while (rs.next()) {
 			result = rs.getString(1);
 		}

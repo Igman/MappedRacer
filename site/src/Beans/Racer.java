@@ -117,6 +117,7 @@ public class Racer {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException(
 					"Could not find the selected userId from raceId: " + raceId);
@@ -152,7 +153,7 @@ public class Racer {
 		ps.setInt(1, raceId);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			RacerObj racerObj = new RacerObj();
 			racerObj.setAttend(rs.getBoolean(1));
@@ -184,7 +185,7 @@ public class Racer {
 		ps.setInt(2, userId);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			result = rs.getBoolean(1);
 		}
@@ -232,7 +233,7 @@ public class Racer {
 		ps.setInt(1, userID);
 		ps.setInt(2, raceID);
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			result = rs.getInt(1);
 		}
@@ -306,7 +307,7 @@ public class Racer {
 		ps.setInt(3, userID);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			rank = rs.getInt(1);
 		}

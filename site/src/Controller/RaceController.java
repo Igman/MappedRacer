@@ -91,7 +91,9 @@ public class RaceController extends HttpServlet {
 			
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_CONFLICT,	"Problem occured with the SQL.  Reason: "+ e.getMessage());
-		}finally {
+		} catch (SelectException e) {
+			System.out.println(e.toString());
+		} finally {
 			out.close();
 		}		
 	}
@@ -115,14 +117,12 @@ public class RaceController extends HttpServlet {
 	 * @return			String representing the JSON.
 	 * @throws SQLException
 	 */
-	private String getJSONCheckIn(int raceID) throws SQLException {
+	private String getJSONCheckIn(int raceID) throws SQLException, SelectException{
 		// Gets list of checkins as check in objects.
 		List<CheckInObj> checkIns = null;
-		try {
-			checkIns = checkInModel.getCheckInObjects(raceID);
-		} catch (SelectException e) {
-			System.out.println(e.toString());
-		}
+
+		checkIns = checkInModel.getCheckInObjects(raceID);
+		
 		Iterator<CheckInObj> iterator = checkIns.iterator();
 		
 		// Beginning of the JSON object.

@@ -199,9 +199,10 @@ public class CheckInController extends HttpServlet {
 				racerModel.updateScore(iter.next().getUserId(), raceId, score);
 			}
 			
-			// This will fall through to next case to negate the effects to the user
-			// who picked up the item since they should not lose points. TODO?
-			score *= -2;
+			// Just to be safe it will not fall through to next case.
+			// give user back his points.
+			racerModel.updateScore(userId, raceId, score * -1);
+			break;
 		case 2:
 			racerModel.updateScore(userId, raceId, score);
 			break;

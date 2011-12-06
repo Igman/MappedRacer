@@ -5,9 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,47 +34,53 @@ public class RacerTest {
 		
 		PreparedStatement ps;
 		racer = new Racer();
-		Time time = new Time(Calendar.getInstance().getTimeInMillis());
+		//Time time = new Time(Calendar.getInstance().getTimeInMillis()); // FINDBUG Error since never read.
 		
 		ps = c.prepareStatement("DELETE FROM Racers WHERE 1 = 1");
 		ps.executeUpdate();
+		ps.close();
 		ps = c.prepareStatement("DELETE FROM Users WHERE 1 = 1");
 		ps.executeUpdate();
+		ps.close();
 		ps = c.prepareStatement("DELETE FROM Race WHERE 1 = 1");
 		ps.executeUpdate();
+		ps.close();
 		
 		System.out.println("Cleared Tables");
 		
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 		ps.setString(1, "Bob");
 		userId1 = ps.executeUpdate();
+		ps.close();
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 		ps.setString(1, "Alice");
 		userId2 = ps.executeUpdate();
+		ps.close();// FINDBUG gave close error not sure if this is how it fixes it.
 		ps = c.prepareStatement("INSERT INTO Users(uname) VALUES (?)");
 		ps.setString(1, "Charles");
 		userId3 = ps.executeUpdate();
-		
+		ps.close();
 		System.out.println("Added Users");
 		
 		c.commit();
-		ps.close();
 	}
 
 	@AfterClass
 	public static void tearDown() throws Exception {
 		PreparedStatement ps;
-		int row;
+		//int row; // FINDBUG error since neveer actually read.
 		
 		ps = c.prepareStatement("DELETE * FROM Racer WHERE 1 = 1");
-		row = ps.executeUpdate();
-		ps = c.prepareStatement("DELETE * FROM User WHERE 1 = 1");
-		row = ps.executeUpdate();
-		ps = c.prepareStatement("DELETE * FROM Race WHERE 1 = 1");
-		row = ps.executeUpdate();
-		
-		c.commit();
+		ps.executeUpdate();
 		ps.close();
+		ps = c.prepareStatement("DELETE * FROM User WHERE 1 = 1");
+		ps.executeUpdate();
+		ps.close();
+		ps = c.prepareStatement("DELETE * FROM Race WHERE 1 = 1");
+		ps.executeUpdate();
+		ps.close();
+		c.commit();
+		
 	}
 
 	@Test
@@ -97,6 +101,7 @@ public class RacerTest {
 			ps.setInt(3, userId1);
 			System.out.println(ps.toString());
 			raceID = ps.executeUpdate();
+			ps.close();
 			test = true;
 		} catch (InsertException e) {
 			e.printStackTrace();
@@ -111,8 +116,8 @@ public class RacerTest {
 		}
 		System.out.println("End Test 1");
 		assertTrue(test);
-		assertTrue(ltest.contains(new Integer(userId2)));
-		assertTrue(ltest.contains(new Integer(userId3)));
+		assertTrue(ltest.contains(Integer.valueOf(userId2)));// FINDBUG error changed from new Integer(userId2)
+		assertTrue(ltest.contains(Integer.valueOf(userId3)));
 	}
 
 	@Test

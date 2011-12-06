@@ -44,10 +44,11 @@ public class User {
 
 		ps.setString(1, PrepString(userName));
 		rs = ps.executeQuery();
+		ps.close();
 		if (rs.next()) {
 			userID = rs.getInt(1);
 		}
-
+		
 		return userID;
 	}
 	
@@ -69,6 +70,7 @@ public class User {
 
 		ps.setInt(1, userId);
 		rs = ps.executeQuery();
+		ps.close();
 		if (rs.next()) {
 			userName = rs.getString(1);
 		}
@@ -98,7 +100,8 @@ public class User {
 
 			ps.executeUpdate();
 			userID = getUserID(uname);
-
+			
+			ps.close();
 			c.commit();
 		}
 
@@ -134,7 +137,7 @@ public class User {
 		ps.setInt(1, userId);
 
 		ResultSet rs = ps.executeQuery();
-
+		ps.close();
 		while (rs.next()) {
 			Integer temp = rs.getInt(1);
 			results.add(temp);

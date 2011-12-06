@@ -97,6 +97,7 @@ public class CheckIn {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get check-ins");
 		}
@@ -135,6 +136,7 @@ public class CheckIn {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get check-ins");
 		}
@@ -178,6 +180,7 @@ public class CheckIn {
 			ps.setInt(1, checkInId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select user id");
 		}
@@ -213,6 +216,7 @@ public class CheckIn {
 			ps.setInt(1, checkInId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select race id");
 		}
@@ -248,6 +252,7 @@ public class CheckIn {
 			ps.setInt(1, checkInId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select pic url");
 		}
@@ -322,6 +327,7 @@ public class CheckIn {
 			ps.setInt(1, checkInId);
 
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select comment");
 		}
@@ -397,6 +403,7 @@ public class CheckIn {
 			ps = c.prepareStatement("SELECT geolocation FROM CheckIn WHERE ID = ?");
 			ps.setInt(1, checkInId);
 			rs = ps.executeQuery();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to select location");
 		}
