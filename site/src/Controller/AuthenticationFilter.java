@@ -12,12 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * A filter for blocking  unauthorized access to site
+ * 
+ * @author Ignacio Rodriguez
+ *
+ */
 public class AuthenticationFilter implements Filter {
 
+	/**
+	 * @see javax.servlet.Filter#destroy()
+	 */
 	@Override
 	public void destroy() {
 	}
 
+	/**
+	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -30,6 +42,9 @@ public class AuthenticationFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+	/**
+	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+	 */
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 	}
