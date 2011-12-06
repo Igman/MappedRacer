@@ -60,22 +60,16 @@ public class Race {
 		try {
 			ps = c.prepareStatement("INSERT INTO Race(Name, Start, CreatorID,FINISHED) VALUES (?,?,?,0)");
 			ps.setString(1, name);
-			java.sql.Timestamp temp = new java.sql.Timestamp(
-					dateTime.getTimeInMillis());
+			java.sql.Timestamp temp = new java.sql.Timestamp(dateTime.getTimeInMillis());
 			ps.setTimestamp(2, temp);
 			ps.setInt(3, creator);
-		} catch (SQLException e) {
-			throw new InsertException("Failed to insert race");
-		}
-		
-		// rows should be 1. Throw error otherwise
-		try {
+			
+			// rows should be 1. Throw error otherwise
 			if ((rows = ps.executeUpdate()) != 1)
-				throw new InsertException(
-						"Race wasn't updated in the database " + rows
-								+ " rows updated.");
+				throw new InsertException("Race wasn't updated in the database " + rows + " rows updated.");
+			ps.close();
 		} catch (SQLException e) {
-			throw new InsertException("Database Error");
+			throw new InsertException("Database Error/Failed to insert race");
 		}
 
 		// Retrieves the race id of the created race.
