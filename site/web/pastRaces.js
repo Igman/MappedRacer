@@ -7,7 +7,6 @@ var request;
 var sendOnce = true;
 var sendRaceId = false;
 var sizePerRace = 105;
-var numberOfRaces = 5;
 var numberOfRaces = 1;
 
 /*********************************************************************
@@ -19,7 +18,6 @@ function sizeOfSquare(){
 	
 	var div = document.getElementById('roundSquare_races');
 	
-	div.style.height = sizePerRace * numberOfRaces + 'px';
 	if(sizePerRace > 1)
 		div.style.height = sizePerRace * numberOfRaces + 'px';
 	
