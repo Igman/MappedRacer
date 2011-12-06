@@ -120,7 +120,6 @@ public class Racer {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
-			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get racers");
 		}

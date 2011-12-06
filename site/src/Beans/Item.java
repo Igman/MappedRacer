@@ -362,7 +362,7 @@ public class Item {
 			ps.setInt(1, itemId);
 
 			rs = ps.executeQuery();
-			ps.close();
+			
 			
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get item value");
@@ -374,6 +374,7 @@ public class Item {
 			}
 			
 			c.commit();
+			ps.close();
 		} catch (SQLException e) {
 			throw new SelectException("Error on returned item value");
 		}

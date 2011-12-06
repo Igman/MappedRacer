@@ -72,25 +72,22 @@ public class Race {
 			throw new InsertException("Database Error/Failed to insert race");
 		}
 
+		int raceID = -1;
 		// Retrieves the race id of the created race.
 		// TODO what if a race is deleted from the middle of the database. Is
 		// the new one's ID still the max?
 		try {
 			ps = c.prepareStatement("SELECT MAX(ID) FROM Race");
 			rs = ps.executeQuery();
-			ps.close();
-		} catch (SQLException e) {
-			throw new SelectException("Unable to get ID for created race");
-		}
-		
-		int raceID = -1;
-		try {
+			
+
 			while (rs.next()) {
 				raceID = rs.getInt(1);
 			}
+			ps.close();
 			
 		} catch (SQLException e) {
-			throw new SelectException("Error on returned race ID");
+			throw new SelectException("Unable to get ID for created race");
 		}
 		
 		return raceID;

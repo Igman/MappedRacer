@@ -152,7 +152,7 @@ public class CheckIn {
 			ps.setInt(1, raceId);
 
 			rs = ps.executeQuery();
-			ps.close();
+			
 		} catch (SQLException e) {
 			throw new SelectException("Unable to get check-ins");
 		}
