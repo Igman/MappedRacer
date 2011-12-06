@@ -10,6 +10,16 @@
            <welcome-file>default.htm</welcome-file>
            <welcome-file>default.jsp</welcome-file>
          </welcome-file-list>
+         
+         <filter>
+             <filter-name>authenticate</filter-name>
+             <filter-class>Controller.AuthenticationFilter
+               </filter-class>
+         </filter>
+         <filter-mapping>
+             <filter-name>authenticate</filter-name>
+             <url-pattern>*.html</url-pattern>
+         </filter-mapping>
     <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>Controller.LoginController
@@ -112,6 +122,7 @@
        <servlet-name>ViewHistoryController</servlet-name>
        <url-pattern>/ViewHistoryController</url-pattern>
      </servlet-mapping>
+
     <!-- <error-page>
            <exception-type>twitter4j.TwitterException</exception-type>
            <location>/error.jsp</location>
